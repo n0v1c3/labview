@@ -50,7 +50,7 @@ lvProjectY := 0
 
 lvPanel := "Front Panel"
 lvPanelWidth := A_ScreenWidth - lvControlsWidth
-lvPanelHeigth := MonitorWorkAreaBottom - lvControlsHeight
+lvPanelHeight := MonitorWorkAreaBottom - lvControlsHeight
 lvPanelX := lvControlsWidth
 lvPanelY := 0
 
