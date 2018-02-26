@@ -6,7 +6,13 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ;WinMove, %WinTitle%,, (A_ScreenWidth/2)-(Width/2), (A_ScreenHeight/2)-(Height/2)
 
 Debug := False
+
 XOffset := -10
+YOffset := -3
+
+lvProj := "lvproj"
+lvBlock := "Block Diagram"
+lvPanel := "Front Panel"
 
 ; Get current monitor and workspace information
 SysGet, MonitorCount, MonitorCount
@@ -27,14 +33,43 @@ Loop, %MonitorCount%
 
 ; TODO-TJG[180225] ~ Shortcut to organize all LabVIEW windows for a project
 ; Make active window into a project explorer
-#+a::
-WinGetTitle, WinTitle, A
-WinMove, %WinTitle%,, (XOffset), 0, (A_ScreenWidth*0.2), (MonitorWorkAreaBottom)
-Return
+;#+e::
+^+e::
+WinGetTitle, OriginalWindow, A
 
-; TODO-TJG[180225] ~ Override LabVIEW Ctrl+E to put the next workspace into place
-; Make active window into a workspace
-#+s::
-WinGetTitle, WinTitle, A
-WinMove, %WinTitle%,, (A_ScreenWidth*0.2+(2*XOffset)), 0, (A_ScreenWidth*0.8-(2*XOffset)), (MonitorWorkAreaBottom)
+WinGet windows, List
+Loop %windows%
+{
+	id := windows%A_Index%
+	WinGetTitle wt, ahk_id %id%
+	
+	IfInString, wt, lvProj
+	{
+		if (Debug)
+		{
+			MsgBox %wt%
+		}
+		
+		WinActivate, %wt%
+		WinGetTitle, WinTitle, A
+		
+		IfInString, wt, %lvPanel%
+		{
+			WinMove, %WinTitle%,, (A_ScreenWidth*0.2+(2*XOffset)), (YOffset), (A_ScreenWidth*0.8-(2*XOffset)), (MonitorWorkAreaBottom-(2*YOffset))
+		}
+		Else
+		{
+			IfInString, wt, %lvBlock%
+			{
+				WinMove, %WinTitle%,, (A_ScreenWidth*0.2+(2*XOffset)), (YOffset), (A_ScreenWidth*0.8-(2*XOffset)), (MonitorWorkAreaBottom-(2*YOffset))
+			}
+			Else
+			{
+				WinMove, %WinTitle%,, (XOffset), (YOffset), (A_ScreenWidth*0.2), (MonitorWorkAreaBottom-(2*YOffset))
+			}
+		}
+	}
+}
+
+WinActivate, %OriginalWindow%
 Return
