@@ -7,13 +7,6 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 Debug := False
 
-XOffset := -10
-YOffset := -3
-
-lvProj := "lvproj"
-lvBlock := "Block Diagram"
-lvPanel := "Front Panel"
-
 ; Get current monitor and workspace information
 SysGet, MonitorCount, MonitorCount
 SysGet, MonitorPrimary, MonitorPrimary
@@ -31,9 +24,38 @@ Loop, %MonitorCount%
 	}
 }
 
-; TODO-TJG[180225] ~ Shortcut to organize all LabVIEW windows for a project
+lvControls := "Controls"
+lvControlsWidth := 375
+lvControlsHeight := 250
+lvControlsX := 0
+lvControlsY := MonitorWorkAreaBottom - lvControlsHeight
+
+lvFunctions := "Functions"
+lvFunctionsWidth := lvControlsWidth
+lvFunctionsHeight := lvControlsHeight
+lvFunctionsX := 0
+lvFunctionsY := MonitorWorkAreaBottom - lvFunctionsHeight
+
+
+lvProj := "lvproj"
+lvProjectWidth := lvControlsWidth
+lvProjectHeight := MonitorWorkAreaBottom - lvControlsHeight
+lvProjectX := 0
+lvProjectY := 0
+
+lvPanel := "Front Panel"
+lvPanelWidth := A_ScreenWidth - lvControlsWidth
+lvPanelHeigth := MonitorWorkAreaBottom
+lvPanelX := lvControlsWidth
+lvPanelY := 0
+
+lvBlock := "Block Diagram"
+lvBlockWidth := A_ScreenWidth - lvControlsWidth
+lvBlockHeight := MonitorWorkAreaBottom
+lvBlockX := lvControlsWidth
+lvBlockY := 0
+
 ; Make active window into a project explorer
-;#+e::
 ^+e::
 WinGetTitle, OriginalWindow, A
 
@@ -42,11 +64,9 @@ Loop %windows%
 {
 	id := windows%A_Index%
 	WinGetTitle wt, ahk_id %id%
-	
 	IfInString, wt, lvProj
 	{
-		if (Debug)
-		{
+		if (Debug) {
 			MsgBox %wt%
 		}
 		
@@ -55,17 +75,17 @@ Loop %windows%
 		
 		IfInString, wt, %lvPanel%
 		{
-			WinMove, %WinTitle%,, (A_ScreenWidth*0.2+(2*XOffset)), (YOffset), (A_ScreenWidth*0.8-(2*XOffset)), (MonitorWorkAreaBottom-(2*YOffset))
+			WinMove, %WinTitle%,, lvPanelX, lvPanelY, lvPanelWidth, lvPanelHeigth
 		}
 		Else
 		{
 			IfInString, wt, %lvBlock%
 			{
-				WinMove, %WinTitle%,, (A_ScreenWidth*0.2+(2*XOffset)), (YOffset), (A_ScreenWidth*0.8-(2*XOffset)), (MonitorWorkAreaBottom-(2*YOffset))
+				WinMove, %WinTitle%,, lvBlockX, lvBlockY, lvBlockWidth, lvBlockHeight
 			}
 			Else
 			{
-				WinMove, %WinTitle%,, (XOffset), (YOffset), (A_ScreenWidth*0.2), (MonitorWorkAreaBottom-(2*YOffset))
+				WinMove, %WinTitle%,, lvProjectX, lvProjectY, lvProjectWidth, lvProjectHeight
 			}
 		}
 	}
