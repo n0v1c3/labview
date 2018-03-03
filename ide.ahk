@@ -3,196 +3,180 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-SelectBlockDiagram:
-Gui, LVBD: Submit
-WinActivate, %BlockDiagram%
-Return
-
-^b::
-BlockDiagramList := CurrentBlockDiagrams()
-Gui, LVBD: New, , LV - Blocks
-Gui, Add, DropDownList, w600 vBlockDiagram, %BlockDiagramList%
-;GuiControl, Move, vBlockDiagram, % "w" 600 ; Change width of the BlockDiagramList after it has been created
-Gui, Show, , LV - Blocks
-Return
-
-#IfWinActive LV - Blocks
-Enter::
-	GoSub, SelectBlockDiagram
-Return ; Enter
-#IfWinActive
-
-;WinMove, %WinTitle%,, (A_ScreenWidth/2)-(Width/2), (A_ScreenHeight/2)-(Height/2)
-
-Debug := False
-
 ; Get current monitor and workspace information
 SysGet, MonitorCount, MonitorCount
 SysGet, MonitorPrimary, MonitorPrimary
-if (Debug) {
-	MsgBox, Monitor Count:`t%MonitorCount%`nPrimary Monitor:`t%MonitorPrimary%
-}
-; TODO-TJG[180225] ~ Handle multiple monitors
 Loop, %MonitorCount%
 {
     SysGet, MonitorName, MonitorName, %A_Index%
     SysGet, Monitor, Monitor, %A_Index%
     SysGet, MonitorWorkArea, MonitorWorkArea, %A_Index%
-;MsgBox, Monitor:`t#%A_Index%`nName:`t%MonitorName%`nLeft:`t%MonitorLeft% (%MonitorWorkAreaLeft% work)`nTop:`t%MonitorTop% (%MonitorWorkAreaTop% work)`nRight:`t%MonitorRight% (%MonitorWorkAreaRight% work)`nBottom:`t%MonitorBottom% (%MonitorWorkAreaBottom% work)
-	if (Debug) {
-		MsgBox, Monitor:`t#%A_Index%`nName:`t%MonitorName%`nLeft:`t%MonitorLeft% (%MonitorWorkAreaLeft% work)`nTop:`t%MonitorTop% (%MonitorWorkAreaTop% work)`nRight:`t%MonitorRight% (%MonitorWorkAreaRight% work)`nBottom:`t%MonitorBottom% (%MonitorWorkAreaBottom% work)
-	}
 }
 
+; General IDE Sizing and Positions
 xOffset := 0
 leftPanelWidth := 400
 bottomPanelHeight := 250
 bottomPanelY := MonitorWorkAreaBottom - bottomPanelHeight
 rightPanelWidth := A_ScreenWidth - leftPanelWidth
 
-; TODO-TJG [180226] ~ Change to array of data
-lvControls := "Controls"
-lvControlsWidth := leftPanelWidth
-lvControlsHeight := bottomPanelHeight
-lvControlsX := leftPanelWidth ; In right panel
-lvControlsY := bottomPanelY
+; Specific IDE Sizing and Positions
+Row := 0
+LVWindowInfo := []
 
-lvFunctions := "Functions"
-lvFunctionsWidth := leftPanelWidth
-lvFunctionsHeight := bottomPanelHeight
-lvFunctionsX := leftPanelWidth ; In right panel
-lvFunctionsY := bottomPanelY
+Row += 1
+LVWindowInfo[Row,1] := "Controls"
+LVWindowInfo[Row,2] := leftPanelWidth
+LVWindowInfo[Row,3] := bottomPanelHeight
+LVWindowInfo[Row,4] := leftPanelWidth
+LVWindowInfo[Row,5] := bottomPanelY
 
+Row += 1
+LVWindowInfo[Row,1] := "Functions"
+LVWindowInfo[Row,2] := leftPanelWidth
+LVWindowInfo[Row,3] := bottomPanelHeight
+LVWindowInfo[Row,4] := leftPanelWidth
+LVWindowInfo[Row,5] := bottomPanelY
 
-lvProj := "Project Explorer"
-lvProject := "Project Explorer"
-lvProjectWidth := leftPanelWidth
-lvProjectHeight := bottomPanelY
-lvProjectX := 0
-lvProjectY := 0
+Row += 1
+LVWindowInfo[Row,1] := "Project Explorer"
+LVWindowInfo[Row,2] := leftPanelWidth
+LVWindowInfo[Row,3] := bottomPanelY
+LVWindowInfo[Row,4] := 0
+LVWindowInfo[Row,5] := 0
 
-lvPanel := "Front Panel"
-lvPanelWidth := rightPanelWidth
-lvPanelHeight := bottomPanelY
-lvPanelX := leftPanelWidth
-lvPanelY := 0
+; Do NOT reposition or resize the Front Panel
+Row += 1
+LVWindowInfo[Row,1] := "Front Panel"
+; LVWindowInfo[Row,2] := rightPanelWidth
+; LVWindowInfo[Row,3] := bottomPanelY
+; LVWindowInfo[Row,4] := leftPanelWidth
+; LVWindowInfo[Row,5] := 0
 
-lvBlock := "Block Diagram"
-lvBlockWidth := rightPanelWidth
-lvBlockHeight := bottomPanelY
-lvBlockX := leftPanelWidth
-lvBlockY := 0
+Row += 1
+LVWindowInfo[Row,1] := "Block Diagram"
+LVWindowInfo[Row,2] := rightPanelWidth
+LVWindowInfo[Row,3] := bottomPanelY
+LVWindowInfo[Row,4] := leftPanelWidth
+LVWindowInfo[Row,5] := 0
 
-lvProbes := "Probe Watch"
-lvProbesWidth := rightPanelWidth - leftPanelWidth
-lvProbesHeight := bottomPanelHeight
-lvProbesX := leftPanelWidth * 2
-lvProbesY := bottomPanelY
+Row += 1
+LVWindowInfo[Row,1] := "Probe Watch"
+LVWindowInfo[Row,2] := rightPanelWidth - leftPanelWidth
+LVWindowInfo[Row,3] := bottomPanelHeight
+LVWindowInfo[Row,4] := leftPanelWidth * 2
+LVWindowInfo[Row,5] := bottomPanelY
 
-lvBookmarks := "Bookmark Manager"
-lvBookmarksWidth := rightPanelWidth - leftPanelWidth
-lvBookmarksHeight := bottomPanelHeight
-lvBookmarksX := leftPanelWidth * 2
-lvBookmarksY := bottomPanelY
+Row += 1
+LVWindowInfo[Row,1] := "Bookmark Manager"
+LVWindowInfo[Row,2] := rightPanelWidth - leftPanelWidth
+LVWindowInfo[Row,3] := bottomPanelHeight
+LVWindowInfo[Row,4] := leftPanelWidth * 2
+LVWindowInfo[Row,5] := bottomPanelY
 
-lvTools := "Tools"
-lvToolsX := MonitorWorkAreaRight - 115
-lvToolsY := bottomPanelY - 200
+Row += 1
+LVWindowInfo[Row,1] := "Navigation"
+LVWindowInfo[Row,2] := leftPanelWidth
+LVWindowInfo[Row,3] := bottomPanelHeight
+LVWindowInfo[Row,4] := 0
+LVWindowInfo[Row,5] := bottomPanelY
+
+Row += 1
+; Do NOT change the size of the Tools window
+LVWindowInfo[Row,1] := "Tools"
+LVWindowInfo[Row,4] := leftPanelWidth + rightPanelWidth - 115
+LVWindowInfo[Row,5] := bottomPanelY - 200
+
+; Activate Block Diagram selected from the dropdown list
+SelectBlockDiagram:
+Gui, LVBD: Submit
+WinActivate, %BlockDiagram%
+Return
+
+; Display the Block Diagram dropdown list
+^`::
+BlockDiagramList := CurrentBlockDiagrams()
+Gui, LVBD: New, , LV - Blocks
+Gui, Add, DropDownList, w600 vBlockDiagram, %BlockDiagramList%
+Gui, Show, , LV - Blocks
+Return
+
+; Window specific shortcuts for the LVBD GUI
+#IfWinActive LV - Blocks
+; Submit
+Enter::
+	GoSub, SelectBlockDiagram
+Return
+
+; Hide
+~Esc::
+Gui, LVBD: Hide
+Return
+#IfWinActive
 
 ; Layout LabVIEW windows into an IDE format
-$^e::
-Send, ^e
+^+`::
 WinGet windows, List
 Loop %windows%
 {
-	lvWindow := False
-	
 	id := windows%A_Index%
 	WinGetTitle wt, ahk_id %id%
 	
-	; TODO-TJG [180226] ~ Use data array to find index of valid values for current window
-	IfInString, wt, %lvProject%
+	For Row in LVWindowInfo
 	{
-		lvWinX := lvProjectX
-		lvWinY := lvProjectY
-		lvWinWidth := lvProjectWidth
-		lvWinHeight := lvProjectHeight
-		lvWindow := True
-	}
-	
-	Else IfInString, wt, %lvPanel%
-	{
-		lvWinX := lvPanelX
-		lvWinY := lvPanelY
-		lvWinWidth := lvPanelWidth
-		lvWinHeight := lvPanelHeight
-		lvWindow := True
-	}
-	
-	Else IfInString, wt, %lvBlock%
-	{
-		lvWinX := lvBlockX
-		lvWinY := lvBlockY
-		lvWinWidth := lvBlockWidth
-		lvWinHeight := lvBlockHeight
-		lvWindow := True
-	}
-	
-	Else IfInString, wt, %lvControls%
-	{
-		lvWinX := lvControlsX
-		lvWinY := lvControlsY
-		lvWinWidth := lvControlsWidth
-		lvWinHeight := lvControlsHeight
-		lvWindow := True
-	}
-	
-	Else IfInString, wt, %lvFunctions%
-	{
-		lvWinX := lvFunctionsX
-		lvWinY := lvFunctionsY
-		lvWinWidth := lvFunctionsWidth
-		lvWinHeight := lvFunctionsHeight
-		lvWindow := True
-	}
-	
-	Else IfInString, wt, %lvProbes%
-	{
-		lvWinX := lvProbesX
-		lvWinY := lvProbesY
-		lvWinWidth := lvProbesWidth
-		lvWinHeight := lvProbesHeight
-		lvWindow := True
-	}
-	
-	Else IfInString, wt, %lvTools%
-	{
-		lvWinX := lvToolsX
-		lvWinY := lvToolsY
-		lvWinWidth := lvToolsWidth
-		lvWinHeight := lvToolsHeight
-		lvWindow := True
-	}
-	
-	Else IfInString, wt, %lvBookmarks%
-	{
-		lvWinX := lvBookmarksX
-		lvWinY := lvBookmarksY
-		lvWinWidth := lvBookmarksWidth
-		lvWinHeight := lvBookmarksHeight
-		lvWindow := True
-	}
-	
-	If lvWindow
-	{
-		WinMove, %wt%,, lvWinX + xOffset, lvWinY, lvWinWidth, lvWinHeight
+		LVWindowTitle := LVWindowInfo[Row,1]
+		IfInString, wt, %LVWindowTitle%
+		{
+			LVWindowWidth := LVWindowInfo[Row,2]
+			LVWindowHeight := LVWindowInfo[Row,3]
+			LVWindowX := LVWindowInfo[Row,4]
+			LVWindowY := LVWindowInfo[Row,5]
+			WinMove, %wt%,, LVWindowX + xOffset, LVWindowY, LVWindowWidth, LVWindowHeight
+		}
 	}
 }
 Return
 
+; TODO-TJG [180302] ~ Turn this into a flexible shortcut to center the current Diagram or Panel
+^b::
+MouseClick, Left, -200, 500
+MouseClick, WheelDown
+Return
 
+; Slow the mouse down
+Alt::
+; System DLL for mouse speed
+DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 2, UInt, 0)
+; Prevent key repeat
+KeyWait Alt
+Return
+
+; Speed the mouse up
+Alt Up::
+; System DLL for mouse speed
+DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, UInt, 0)
+Return
+
+; Click
+Ctrl::
+MouseClick
+KeyWait Ctrl ; Prevent key repeat
+Return
+
+; Reload this script
+F12::
+Reload
+Return
+
+; Kill this script
++F12::
+ExitApp
+Reload
+
+; Get list of open Block Diagrams for a dropdown list
 CurrentBlockDiagrams()
 {
+	; TODO-TJG [180302] ~ Better access to this variable from the array
 	lvBlock := "Block Diagram"
 	WindowList := ""
 	isFirst := True
