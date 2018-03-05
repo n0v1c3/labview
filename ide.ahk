@@ -3,92 +3,115 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-; Name: ide.ahk
-; Description: Manage windows to create a simulated IDE for LabVIEW development
-; TODOs:
-; TODO-TJG [180227] ~ Open all mandatory windows if they are not open yet
-; TODO-TJG [180225] ~ Handle multiple monitors
-; TODO-TJG [180226] ~ Change to array of data
-; TODO-TJG [180227] ~ Store original window properties and restore on save
-; TODO-TJG [180228] ~ Center Block Diagram based off navigation window
+; Get current monitor and workspace information
+SysGet, MonitorCount, MonitorCount
+SysGet, MonitorPrimary, MonitorPrimary
+Loop, %MonitorCount%
+{
+    SysGet, MonitorName, MonitorName, %A_Index%
+    SysGet, Monitor, Monitor, %A_Index%
+    SysGet, MonitorWorkArea, MonitorWorkArea, %A_Index%
+}
 
-xOffset := -1920 ; Default xOffset (IDE on primary monitor)
-
+; General IDE Sizing and Positions
+xOffset := -1920
 leftPanelWidth := 400
 bottomPanelHeight := 250
 bottomPanelY := MonitorWorkAreaBottom - bottomPanelHeight
 rightPanelWidth := A_ScreenWidth - leftPanelWidth
 
-lvControls := "Controls"
-lvControlsWidth := leftPanelWidth
-lvControlsHeight := bottomPanelHeight
-lvControlsX := leftPanelWidth ; In right panel
-lvControlsY := bottomPanelY
+; Specific IDE Sizing and Positions
+Row := 0
+LVWindowInfo := []
 
-lvFunctions := "Functions"
-lvFunctionsWidth := leftPanelWidth
-lvFunctionsHeight := bottomPanelHeight
-lvFunctionsX := leftPanelWidth ; In right panel
-lvFunctionsY := bottomPanelY
+Row += 1
+LVWindowInfo[Row,1] := "Controls"
+LVWindowInfo[Row,2] := leftPanelWidth
+LVWindowInfo[Row,3] := bottomPanelHeight
+LVWindowInfo[Row,4] := leftPanelWidth
+LVWindowInfo[Row,5] := bottomPanelY
 
-lvProject := "Project Explorer"
-lvProject := "Project Explorer"
-lvProjectWidth := leftPanelWidth
-lvProjectHeight := bottomPanelY
-lvProjectX := 0
-lvProjectY := 0
+Row += 1
+LVWindowInfo[Row,1] := "Functions"
+LVWindowInfo[Row,2] := leftPanelWidth
+LVWindowInfo[Row,3] := bottomPanelHeight
+LVWindowInfo[Row,4] := leftPanelWidth
+LVWindowInfo[Row,5] := bottomPanelY
 
-lvPanel := "Front Panel"
-lvPanelWidth := rightPanelWidth
-lvPanelHeight := bottomPanelY
-lvPanelX := leftPanelWidth
-lvPanelY := 0
+Row += 1
+LVWindowInfo[Row,1] := "Project Explorer"
+LVWindowInfo[Row,2] := leftPanelWidth
+LVWindowInfo[Row,3] := bottomPanelY
+LVWindowInfo[Row,4] := 0
+LVWindowInfo[Row,5] := 0
 
-lvBlock := "Block Diagram"
-lvBlockWidth := rightPanelWidth
-lvBlockHeight := bottomPanelY
-lvBlockX := leftPanelWidth
-lvBlockY := 0
+; Do NOT reposition or resize the Front Panel
+Row += 1
+LVWindowInfo[Row,1] := "Front Panel"
+; LVWindowInfo[Row,2] := rightPanelWidth
+; LVWindowInfo[Row,3] := bottomPanelY
+; LVWindowInfo[Row,4] := leftPanelWidth
+; LVWindowInfo[Row,5] := 0
 
-lvProbes := "Probe Watch"
-lvProbesWidth := (rightPanelWidth - leftPanelWidth)/2
-lvProbesHeight := bottomPanelHeight
-lvProbesX := leftPanelWidth * 2
-lvProbesY := bottomPanelY
+Row += 1
+LVWindowInfo[Row,1] := "Block Diagram"
+LVWindowInfo[Row,2] := rightPanelWidth
+LVWindowInfo[Row,3] := bottomPanelY
+LVWindowInfo[Row,4] := leftPanelWidth
+LVWindowInfo[Row,5] := 0
 
-lvBookmarks := "Bookmark Manager"
-lvBookmarksWidth := (rightPanelWidth - leftPanelWidth)/2
-lvBookmarksHeight := bottomPanelHeight
-lvBookmarksX := leftPanelWidth * 2 + lvProbesWidth
-lvBookmarksY := bottomPanelY
+Row += 1
+LVWindowInfo[Row,1] := "Probe Watch"
+LVWindowInfo[Row,2] := rightPanelWidth - leftPanelWidth
+LVWindowInfo[Row,3] := bottomPanelHeight
+LVWindowInfo[Row,4] := leftPanelWidth * 2
+LVWindowInfo[Row,5] := bottomPanelY
 
-lvNavigation := "Navigation"
-lvNavigationWidth := leftPanelWidth
-lvNavigationHeight := bottomPanelHeight
-lvNavigationX := 0
-lvNavigationY := bottomPanelY
+Row += 1
+LVWindowInfo[Row,1] := "Bookmark Manager"
+LVWindowInfo[Row,2] := rightPanelWidth - leftPanelWidth
+LVWindowInfo[Row,3] := bottomPanelHeight
+LVWindowInfo[Row,4] := leftPanelWidth * 2
+LVWindowInfo[Row,5] := bottomPanelY
 
-lvTools := "Tools"
-lvToolsX := MonitorWorkAreaRight - 115
-lvToolsY := bottomPanelY - 200
+Row += 1
+LVWindowInfo[Row,1] := "Navigation"
+LVWindowInfo[Row,2] := leftPanelWidth
+LVWindowInfo[Row,3] := bottomPanelHeight
+LVWindowInfo[Row,4] := 0
+LVWindowInfo[Row,5] := bottomPanelY
 
+Row += 1
+; Do NOT change the size of the Tools window
+LVWindowInfo[Row,1] := "Tools"
+LVWindowInfo[Row,4] := leftPanelWidth + rightPanelWidth - 115
+LVWindowInfo[Row,5] := bottomPanelY - 200
+
+; Activate Block Diagram selected from the dropdown list
 SelectBlockDiagram:
 Gui, LVBD: Submit
 WinActivate, %BlockDiagram%
 Return
 
-^b::
+; Display the Block Diagram dropdown list
+^`::
 BlockDiagramList := CurrentBlockDiagrams()
 Gui, LVBD: New, , LV - Blocks
 Gui, Add, DropDownList, w600 vBlockDiagram, %BlockDiagramList%
-;GuiControl, Move, vBlockDiagram, % "w" 600 ; Change width of the BlockDiagramList after it has been created
 Gui, Show, , LV - Blocks
 Return
 
+; Window specific shortcuts for the LVBD GUI
 #IfWinActive LV - Blocks
+; Submit
 Enter::
 	GoSub, SelectBlockDiagram
-Return ; Enter
+Return
+
+; Hide
+~Esc::
+Gui, LVBD: Hide
+Return
 #IfWinActive
 
 ; Get current monitor and workspace information
@@ -108,107 +131,63 @@ Loop, %MonitorCount%
 
 
 ; Layout LabVIEW windows into an IDE format
-^`::
-Sleep, 100
+^+`::
 WinGet windows, List
 Loop %windows%
 {
-	
 	id := windows%A_Index%
 	WinGetTitle wt, ahk_id %id%
 	lvWindow := False
 	
-	IfInString, wt, %lvProject%
+	For Row in LVWindowInfo
 	{
-		lvWinX := lvProjectX
-		lvWinY := lvProjectY
-		lvWinWidth := lvProjectWidth
-		lvWinHeight := lvProjectHeight
-		lvWindow := True
-	}
-	
-	Else IfInString, wt, %lvPanel%
-	{
-		lvWinX := lvPanelX
-		lvWinY := lvPanelY
-		lvWinWidth := lvPanelWidth
-		lvWinHeight := lvPanelHeight
-		lvWindow := False
-	}
-	
-	Else IfInString, wt, %lvBlock%
-	{
-		lvWinX := lvBlockX
-		lvWinY := lvBlockY
-		lvWinWidth := lvBlockWidth
-		lvWinHeight := lvBlockHeight
-		lvWindow := True
-	}
-	
-	Else IfInString, wt, %lvControls%
-	{
-		lvWinX := lvControlsX
-		lvWinY := lvControlsY
-		lvWinWidth := lvControlsWidth
-		lvWinHeight := lvControlsHeight
-		lvWindow := True
-	}
-	
-	Else IfInString, wt, %lvFunctions%
-	{
-		lvWinX := lvFunctionsX
-		lvWinY := lvFunctionsY
-		lvWinWidth := lvFunctionsWidth
-		lvWinHeight := lvFunctionsHeight
-		lvWindow := True
-	}
-	
-	Else IfInString, wt, %lvProbes%
-	{
-		lvWinX := lvProbesX
-		lvWinY := lvProbesY
-		lvWinWidth := lvProbesWidth
-		lvWinHeight := lvProbesHeight
-		lvWindow := True
-	}
-	
-	Else IfInString, wt, %lvTools%
-	{
-		lvWinX := lvToolsX
-		lvWinY := lvToolsY
-		lvWinWidth := lvToolsWidth
-		lvWinHeight := lvToolsHeight
-		lvWindow := False
-	}
-	
-	Else IfInString, wt, %lvBookmarks%
-	{
-		lvWinX := lvBookmarksX
-		lvWinY := lvBookmarksY
-		lvWinWidth := lvBookmarksWidth
-		lvWinHeight := lvBookmarksHeight
-		lvWindow := True
-	}
-	
-	Else IfInString, wt, %lvNavigation%
-	{
-		lvWinX := lvNavigationX
-		lvWinY := lvNavigationY
-		lvWinWidth := lvNavigationWidth
-		lvWinHeight := lvNavigationHeight
-		lvWindow := True
-	}
-	
-	If lvWindow
-	{
-		WinMove, %wt%,, lvWinX + xOffset, lvWinY, lvWinWidth, lvWinHeight
+		LVWindowTitle := LVWindowInfo[Row,1]
+		IfInString, wt, %LVWindowTitle%
+		{
+			LVWindowWidth := LVWindowInfo[Row,2]
+			LVWindowHeight := LVWindowInfo[Row,3]
+			LVWindowX := LVWindowInfo[Row,4]
+			LVWindowY := LVWindowInfo[Row,5]
+			WinMove, %wt%,, LVWindowX + xOffset, LVWindowY, LVWindowWidth, LVWindowHeight
+		}
 	}
 }
 Return
 
+; Slow the mouse down
+Alt::
+; System DLL for mouse speed
+DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 2, UInt, 0)
+; Prevent key repeat
+KeyWait Alt
+Return
 
+; Speed the mouse up
+Alt Up::
+; System DLL for mouse speed
+DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, UInt, 0)
+Return
+
+; Click
+Ctrl::
+MouseClick
+KeyWait Ctrl ; Prevent key repeat
+Return
+
+; Reload this script
+F12::
+Reload
+Return
+
+; Kill this script
++F12::
+ExitApp
+Reload
+
+; Get list of open Block Diagrams for a dropdown list
 CurrentBlockDiagrams()
 {
+	; TODO-TJG [180302] ~ Better access to this variable from the array
 	lvBlock := "Block Diagram"
 	WindowList := ""
 	isFirst := True
