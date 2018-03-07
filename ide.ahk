@@ -121,7 +121,7 @@ Loop %windows%
 {
 	id := windows%A_Index%
 	WinGetTitle wt, ahk_id %id%
-	
+
 	For Row in LVWindowInfo
 	{
 		LVWindowTitle := LVWindowInfo[Row,1]
@@ -180,7 +180,7 @@ CurrentBlockDiagrams()
 	lvBlock := "Block Diagram"
 	WindowList := ""
 	isFirst := True
-	
+
 	WinGet windows, List
 	Loop %windows%
 	{
