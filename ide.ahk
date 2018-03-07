@@ -2,6 +2,9 @@
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+SetTitleMatchMode, RegEx
+
+; TODO-TJG [180306] ~ Names that are too long do not work with LVBD GUI
 
 ; Get current monitor and workspace information
 SysGet, MonitorCount, MonitorCount
@@ -11,13 +14,17 @@ Loop, %MonitorCount%
     SysGet, MonitorName, MonitorName, %A_Index%
     SysGet, Monitor, Monitor, %A_Index%
     SysGet, MonitorWorkArea, MonitorWorkArea, %A_Index%
+	if (xOffset > MonitorWorkAreaLeft || MonitorWorkAreaLeft == 0)
+	{
+		xOffset := MonitorWorkAreaLeft
+		height := MonitorWorkAreaBottom
+	}
 }
 
 ; General IDE Sizing and Positions
-xOffset := -1920
 leftPanelWidth := 400
 bottomPanelHeight := 250
-bottomPanelY := MonitorWorkAreaBottom - bottomPanelHeight
+bottomPanelY := height - bottomPanelHeight
 rightPanelWidth := A_ScreenWidth - leftPanelWidth
 
 ; Specific IDE Sizing and Positions
@@ -44,14 +51,15 @@ LVWindowInfo[Row,2] := leftPanelWidth
 LVWindowInfo[Row,3] := bottomPanelY
 LVWindowInfo[Row,4] := 0
 LVWindowInfo[Row,5] := 0
+RowPE := Row
 
-; Do NOT reposition or resize the Front Panel
+; Do NOT resize the Front Panel
 Row += 1
 LVWindowInfo[Row,1] := "Front Panel"
 ; LVWindowInfo[Row,2] := rightPanelWidth
 ; LVWindowInfo[Row,3] := bottomPanelY
-; LVWindowInfo[Row,4] := leftPanelWidth
-; LVWindowInfo[Row,5] := 0
+LVWindowInfo[Row,4] := leftPanelWidth
+LVWindowInfo[Row,5] := 0
 
 Row += 1
 LVWindowInfo[Row,1] := "Block Diagram"
@@ -69,6 +77,27 @@ LVWindowInfo[Row,5] := bottomPanelY
 
 Row += 1
 LVWindowInfo[Row,1] := "Bookmark Manager"
+LVWindowInfo[Row,2] := rightPanelWidth - leftPanelWidth
+LVWindowInfo[Row,3] := bottomPanelHeight
+LVWindowInfo[Row,4] := leftPanelWidth * 2
+LVWindowInfo[Row,5] := bottomPanelY
+
+Row += 1
+LVWindowInfo[Row,1] := "Error list"
+LVWindowInfo[Row,2] := rightPanelWidth - leftPanelWidth
+LVWindowInfo[Row,3] := bottomPanelHeight
+LVWindowInfo[Row,4] := leftPanelWidth * 2
+LVWindowInfo[Row,5] := bottomPanelY
+
+Row += 1
+LVWindowInfo[Row,1] := "VI Hierarchy"
+LVWindowInfo[Row,2] := rightPanelWidth - leftPanelWidth
+LVWindowInfo[Row,3] := bottomPanelHeight
+LVWindowInfo[Row,4] := leftPanelWidth * 2
+LVWindowInfo[Row,5] := bottomPanelY
+
+Row += 1
+LVWindowInfo[Row,1] := "LabVIEW Class Hierarchy"
 LVWindowInfo[Row,2] := rightPanelWidth - leftPanelWidth
 LVWindowInfo[Row,3] := bottomPanelHeight
 LVWindowInfo[Row,4] := leftPanelWidth * 2
@@ -114,22 +143,6 @@ Gui, LVBD: Hide
 Return
 #IfWinActive
 
-; Get current monitor and workspace information
-SysGet, MonitorCount, MonitorCount
-SysGet, MonitorPrimary, MonitorPrimary
-Loop, %MonitorCount%
-{
-    SysGet, MonitorName, MonitorName, %A_Index%
-    SysGet, Monitor, Monitor, %A_Index%
-    SysGet, MonitorWorkArea, MonitorWorkArea, %A_Index%
-	; MsgBox, Monitor:`t#%A_Index%`nName:`t%MonitorName%`nLeft:`t%MonitorLeft% (%MonitorWorkAreaLeft% work)`nTop:`t%MonitorTop% (%MonitorWorkAreaTop% work)`nRight:`t%MonitorRight% (%MonitorWorkAreaRight% work)`nBottom:`t%MonitorBottom% (%MonitorWorkAreaBottom% work)
-	if (MonitorWorkAreaLeft < xOffset)
-	{
-		xOffset := MonitorWorkAreaLeft
-	}
-}
-
-
 ; Layout LabVIEW windows into an IDE format
 ^+`::
 WinGet windows, List
@@ -138,7 +151,7 @@ Loop %windows%
 	id := windows%A_Index%
 	WinGetTitle wt, ahk_id %id%
 
-  For Row in LVWindowInfo
+	For Row in LVWindowInfo
 	{
 		LVWindowTitle := LVWindowInfo[Row,1]
 		IfInString, wt, %LVWindowTitle%
@@ -153,19 +166,34 @@ Loop %windows%
 }
 Return
 
-; Slow the mouse down
-Alt::
-; System DLL for mouse speed
-DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 2, UInt, 0)
-; Prevent key repeat
-KeyWait Alt
+; Clean window swap
+$^e::
+Send, ^e
+; TODO-TJG [180306] ~ Remove the need for this sleep.
+Sleep, 250
+WinGet, currentWindow, ID, A
+; WinMove, ahk_id %currentWindow%,, leftPanelWidth, 0
+WinActivate, .*Project Explorer
+WinActivate, VI Hierarchy
+WinActivate, LabVIEW Class Hierarchy
+WinActivate, Bookmark Manager
+WinActivate, Error list
+WinActivate, ahk_id %currentWindow%
 Return
 
-; Speed the mouse up
-Alt Up::
+; Slow the mouse down
+;Alt::
 ; System DLL for mouse speed
-DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, UInt, 0)
-Return
+;DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 2, UInt, 0)
+; Prevent key repeat
+;KeyWait Alt
+;Return
+
+; Speed the mouse up
+;Alt Up::
+; System DLL for mouse speed
+;DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, UInt, 0)
+;Return
 
 ; Click
 Ctrl::
@@ -187,7 +215,6 @@ Reload
 CurrentBlockDiagrams()
 {
 	; TODO-TJG [180302] ~ Better access to this variable from the array
-	lvBlock := "Block Diagram"
 	WindowList := ""
 	isFirst := True
 
@@ -196,7 +223,7 @@ CurrentBlockDiagrams()
 	{
 		id := windows%A_Index%
 		WinGetTitle wt, ahk_id %id%
-		IfInString, wt, %lvBlock%
+		IfInString, wt, Block Diagram
 		{
 			WindowList .= (isFirst ? wt "|" : "|" wt)
 			isFirst := False
