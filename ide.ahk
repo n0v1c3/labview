@@ -14,7 +14,7 @@ Loop, %MonitorCount%
 }
 
 ; General IDE Sizing and Positions
-xOffset := 0
+xOffset := -1920
 leftPanelWidth := 400
 bottomPanelHeight := 250
 bottomPanelY := MonitorWorkAreaBottom - bottomPanelHeight
@@ -114,6 +114,22 @@ Gui, LVBD: Hide
 Return
 #IfWinActive
 
+; Get current monitor and workspace information
+SysGet, MonitorCount, MonitorCount
+SysGet, MonitorPrimary, MonitorPrimary
+Loop, %MonitorCount%
+{
+    SysGet, MonitorName, MonitorName, %A_Index%
+    SysGet, Monitor, Monitor, %A_Index%
+    SysGet, MonitorWorkArea, MonitorWorkArea, %A_Index%
+	; MsgBox, Monitor:`t#%A_Index%`nName:`t%MonitorName%`nLeft:`t%MonitorLeft% (%MonitorWorkAreaLeft% work)`nTop:`t%MonitorTop% (%MonitorWorkAreaTop% work)`nRight:`t%MonitorRight% (%MonitorWorkAreaRight% work)`nBottom:`t%MonitorBottom% (%MonitorWorkAreaBottom% work)
+	if (MonitorWorkAreaLeft < xOffset)
+	{
+		xOffset := MonitorWorkAreaLeft
+	}
+}
+
+
 ; Layout LabVIEW windows into an IDE format
 ^+`::
 WinGet windows, List
@@ -122,7 +138,7 @@ Loop %windows%
 	id := windows%A_Index%
 	WinGetTitle wt, ahk_id %id%
 
-	For Row in LVWindowInfo
+  For Row in LVWindowInfo
 	{
 		LVWindowTitle := LVWindowInfo[Row,1]
 		IfInString, wt, %LVWindowTitle%
@@ -135,12 +151,6 @@ Loop %windows%
 		}
 	}
 }
-Return
-
-; TODO-TJG [180302] ~ Turn this into a flexible shortcut to center the current Diagram or Panel
-^b::
-MouseClick, Left, -200, 500
-MouseClick, WheelDown
 Return
 
 ; Slow the mouse down
