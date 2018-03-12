@@ -58,8 +58,8 @@ Row += 1
 LVWindowInfo[Row,1] := "Front Panel"
 ; LVWindowInfo[Row,2] := rightPanelWidth
 ; LVWindowInfo[Row,3] := bottomPanelY
-LVWindowInfo[Row,4] := leftPanelWidth
-LVWindowInfo[Row,5] := 0
+; LVWindowInfo[Row,4] := leftPanelWidth
+; LVWindowInfo[Row,5] := 0
 
 Row += 1
 LVWindowInfo[Row,1] := "Block Diagram"
@@ -196,10 +196,10 @@ Return
 ;Return
 
 ; Click
-Ctrl::
-MouseClick
-KeyWait Ctrl ; Prevent key repeat
-Return
+; Ctrl::
+; MouseClick
+; KeyWait Ctrl ; Prevent key repeat
+; Return
 
 ; Reload this script
 F12::
