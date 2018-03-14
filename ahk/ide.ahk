@@ -116,13 +116,13 @@ LVWindowInfo[Row,1] := "Tools"
 LVWindowInfo[Row,4] := leftPanelWidth + rightPanelWidth - 115
 LVWindowInfo[Row,5] := bottomPanelY - 200
 
-; Activate Block Diagram selected from the dropdown list
+; Activate Block Diagram selected from the drop-down list
 SelectBlockDiagram:
 Gui, LVBD: Submit
 WinActivate, %BlockDiagram%
 Return
 
-; Display the Block Diagram dropdown list
+; Display the Block Diagram drop-down list
 ^`::
 BlockDiagramList := CurrentBlockDiagrams()
 Gui, LVBD: New, , LV - Blocks
@@ -181,25 +181,29 @@ WinActivate, Error list
 WinActivate, ahk_id %currentWindow%
 Return
 
+^+c::
+While GetKeyState("Shift", "P")
+{
+	Sleep, 1
+}
+Click, Right
+Send, c
+Send, {Enter}
+Return
+
 ; Slow the mouse down
-;Alt::
+Alt::
 ; System DLL for mouse speed
-;DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 2, UInt, 0)
+DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 2, UInt, 0)
 ; Prevent key repeat
 ;KeyWait Alt
-;Return
+Return
 
 ; Speed the mouse up
-;Alt Up::
+Alt Up::
 ; System DLL for mouse speed
-;DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, UInt, 0)
-;Return
-
-; Click
-; Ctrl::
-; MouseClick
-; KeyWait Ctrl ; Prevent key repeat
-; Return
+DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, UInt, 0)
+Return
 
 ; Reload this script
 F12::
@@ -208,10 +212,10 @@ Return
 
 ; Kill this script
 +F12::
-ExitApp
+ExitApp							
 Reload
 
-; Get list of open Block Diagrams for a dropdown list
+; Get list of open Block Diagrams for a drop-down list
 CurrentBlockDiagrams()
 {
 	; TODO-TJG [180302] ~ Better access to this variable from the array
