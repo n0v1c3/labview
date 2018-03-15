@@ -181,18 +181,24 @@ WinActivate, Error list
 WinActivate, ahk_id %currentWindow%
 Return
 
-; ^+c::
-mbutton::
-While GetKeyState("Shift", "P")
-{
-	Sleep, 1
-}
-Click, Right
-Send, c
-Send, {Enter}
+; Clean wires
+MButton::
+	; Prevent shift clicks
+	MouseGetPos x, y ; Save current mouse position
+	While GetKeyState("Shift", "P")
+	{
+		Sleep, 1
+	}
+	MouseMove %x%, %y% ; Prevent small mouse movements
+	
+	; Right click at current mouse location
+	Click, Right
+	Send, c
+	Send, {Enter}
 Return
 
-^+Left::
+; Left align
+^Left::
 MouseGetPos x, y
 MouseMove 450, 60
 Click
@@ -200,7 +206,8 @@ Send, {Down}{Down}{Enter}
 MouseMove %x%, %y%
 Return
 
-^+Up::
+; Top align
+^Up::
 MouseGetPos x, y
 MouseMove 450, 60
 Click
@@ -208,7 +215,8 @@ Send, {Down}{Enter}
 MouseMove %x%, %y%
 Return
 
-^+Down::
+; Bottom align
+^Down::
 MouseGetPos x, y
 MouseMove 450, 60
 Click
@@ -216,7 +224,8 @@ Send, {Down}{Left}{Enter}
 MouseMove %x%, %y%
 Return
 
-^+Right::
+; Right align
+^Right::
 MouseGetPos x, y
 MouseMove 450, 60
 Click
@@ -224,6 +233,25 @@ Send, {Down}{Down}{Left}{Enter}
 MouseMove %x%, %y%
 Return
 
+; Vertical center align
+^+Up::
+MouseGetPos x, y
+MouseMove 450, 60
+Click
+Send, {Down}{Right}{Enter}
+MouseMove %x%, %y%
+Return
+
+; Horizontal center align
+^+Left::
+MouseGetPos x, y
+MouseMove 450, 60
+Click
+Send, {Down}{Down}{Right}{Enter}
+MouseMove %x%, %y%
+Return
+
+; Spacing top edges
 ^!+Up::
 MouseGetPos x, y
 MouseMove 475, 60
@@ -232,6 +260,7 @@ Send, {Down}{Enter}
 MouseMove %x%, %y%
 Return
 
+; Spacing left edges
 ^!+Left::
 MouseGetPos x, y
 MouseMove 475, 60
