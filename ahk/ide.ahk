@@ -181,7 +181,8 @@ WinActivate, Error list
 WinActivate, ahk_id %currentWindow%
 Return
 
-^+c::
+; ^+c::
+mbutton::
 While GetKeyState("Shift", "P")
 {
 	Sleep, 1
@@ -189,6 +190,54 @@ While GetKeyState("Shift", "P")
 Click, Right
 Send, c
 Send, {Enter}
+Return
+
+^+Left::
+MouseGetPos x, y
+MouseMove 450, 60
+Click
+Send, {Down}{Down}{Enter}
+MouseMove %x%, %y%
+Return
+
+^+Up::
+MouseGetPos x, y
+MouseMove 450, 60
+Click
+Send, {Down}{Enter}
+MouseMove %x%, %y%
+Return
+
+^+Down::
+MouseGetPos x, y
+MouseMove 450, 60
+Click
+Send, {Down}{Left}{Enter}
+MouseMove %x%, %y%
+Return
+
+^+Right::
+MouseGetPos x, y
+MouseMove 450, 60
+Click
+Send, {Down}{Down}{Left}{Enter}
+MouseMove %x%, %y%
+Return
+
+^!+Up::
+MouseGetPos x, y
+MouseMove 475, 60
+Click
+Send, {Down}{Enter}
+MouseMove %x%, %y%
+Return
+
+^!+Left::
+MouseGetPos x, y
+MouseMove 475, 60
+Click
+Send, {Down}{Down}{Enter}
+MouseMove %x%, %y%
 Return
 
 ; Slow the mouse down
