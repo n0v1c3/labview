@@ -80,7 +80,7 @@ X,X,X,X,`,None,None
 ,,X,X,`,None,None
 ,,,X,`,None,None
 ,,,,F12,None,Reload AHK IDE script
-X,,,,F12,None,Kill AHK IDE script
+X,,,,F12,None,None
 X,,,X,F12,None,None
 X,X,,,F12,None,None
 X,X,,X,F12,None,None
@@ -94,7 +94,7 @@ X,X,X,X,F12,None,None
 ,X,X,X,F12,None,None
 ,,X,,F12,None,None
 ,,X,X,F12,None,None
-,,,X,F12,None,None
+,,,X,F12,None,Kill AHK IDE script
 ,,,,LButton,Default click action,None
 X,,,,LButton,Wire tool / Make room,None
 X,,,X,LButton,Pan hand tool,None
