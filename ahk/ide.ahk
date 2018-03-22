@@ -5,6 +5,9 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SetTitleMatchMode, RegEx
 
 ; TODO-TJG [180306] ~ Names that are too long do not work with LVBD GUI
+; TODO-TJG [180321] ~ Toggle button for Probe Watch Window
+; TODO-TJG [180321] ~ Move second project windows to secondary monitor
+; TODO-TJG [180321] ~ Center block diagram shortcut
 
 ; Get current monitor and workspace information
 SysGet, MonitorCount, MonitorCount
@@ -69,7 +72,7 @@ LVWindowInfo[Row,4] := leftPanelWidth
 LVWindowInfo[Row,5] := 0
 
 Row += 1
-LVWindowInfo[Row,1] := "Probe Watch"
+LVWindowInfo[Row,1] := "Probe Watch Window"
 LVWindowInfo[Row,2] := rightPanelWidth - leftPanelWidth
 LVWindowInfo[Row,3] := bottomPanelHeight
 LVWindowInfo[Row,4] := leftPanelWidth * 2
@@ -179,6 +182,32 @@ WinActivate, LabVIEW Class Hierarchy
 WinActivate, Bookmark Manager
 WinActivate, Error list
 WinActivate, ahk_id %currentWindow%
+Return
+
+!^e::
+Send, ^{Space}
+Sleep, 200
+Send, err
+Sleep, 200
+Send, {Enter}
+Sleep, 200
+Click
+Sleep, 200
+Send, ErrorIn^{Enter}
+Return
+
+!^+e::
+Send, ^{Space}
+Sleep, 200
+Send, err
+Sleep, 200
+Send, {Down}
+Sleep, 200
+Send, {Enter}
+Sleep, 200
+Click
+Sleep, 200
+Send, ErrorOut^{Enter}
 Return
 
 ; Clean wires
