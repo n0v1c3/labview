@@ -130,8 +130,8 @@ X,X,X,X,MButton,None,None
 ,,,,e,None,None
 X,,,,e,Open Block Diagram / Front Panel,Open Block Diagram / Front Panel and organize windows
 X,,,X,e,This VI in project,None
-X,X,,,e,None,None
-X,X,,X,e,None,None
+X,X,,,e,None,ErrorIn
+X,X,,X,e,None,ErrorOut
 X,,X,,e,None,None
 X,,X,X,e,None,None
 X,X,X,,e,None,None
