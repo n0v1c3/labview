@@ -2,10 +2,13 @@
 LabVIEW libraries and tools
 
 ## Installing
+- Download and install AutoHotKey:
+  - [AHK - Installer](https://autohotkey.com/download/ahk-install.exe)
+  - Default install options should be fine
 - Clone a copy of the repository onto your local system
   - Download from internet `https://github.com/n0v1c3/labview/archive/master.zip`
   - Clone with git `git clone https://github.com/n0v1c3/labview.git`
-- Double click on the `labview/ahk/ide.ahk` file
+- Double click on the `./labview/ahk/ide.ahk` file
 - The application should now be running
   - Verify an AHK icon has appeared in the "System Tray" area
 
