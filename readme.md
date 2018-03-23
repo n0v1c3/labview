@@ -1,6 +1,21 @@
 # labview
 LabVIEW libraries and tools
 
+## Installing
+- Clone a copy of the repository onto your local system
+  - Download from internet `https://github.com/n0v1c3/labview/archive/master.zip`
+  - Clone with git `git clone https://github.com/n0v1c3/labview.git`
+- Double click on the `labview/ahk/ide.ahk` file
+- The application should now be running
+  - Verify an AHK icon has appeared in the "System Tray" area
+
+## Updating
+- Downloaded:
+  - Re-download and replace the existing zip `https://github.com/n0v1c3/labview/archive/master.zip`
+- Cloned:
+  - Pull latest copy using git `git pull`
+    - This may require commiting and merging any local changes prior to pull
+
 ## AutoHotKey (AHK)
 ### IDE
 - `{Ctrl}{Up}` - Align top
