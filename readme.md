@@ -31,3 +31,8 @@ LabVIEW libraries and tools
 - `{MButton}` - Clean wires under cursor
 - `{Ctrl}e` - Open Block Diagram / Front Panel and organize windows
 - `{Alt}` - Slow mouse down
+
+## Links
+- [AutoHotKey](https://autohotkey.com/docs/AutoHotkey.htm)
+- [Git](https://git-scm.com/)
+- [LabVIEW](http://www.ni.com/en-ca/shop/labview.html)
