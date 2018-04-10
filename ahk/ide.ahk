@@ -299,7 +299,7 @@ MouseMove %x%, %y%
 Return
 
 ; Slow the mouse down
-Alt::
+$Alt::
 ; System DLL for mouse speed
 DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 2, UInt, 0)
 ; Prevent key repeat
@@ -312,6 +312,15 @@ Alt Up::
 DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, UInt, 0)
 Return
 
+; Open "Bookmark Manager" window
+^b::
+Send, {Alt}
+Sleep, 250
+Send, v
+Sleep, 100
+Send, m
+Return
+
 ; Reload this script
 F12::
 Reload
@@ -320,7 +329,7 @@ Return
 ; Kill this script
 +F12::
 ExitApp							
-Reload
+Return
 
 ; Get list of open Block Diagrams for a drop-down list
 CurrentBlockDiagrams()
