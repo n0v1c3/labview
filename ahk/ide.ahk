@@ -21,6 +21,7 @@ Loop, %MonitorCount%
 	{
 		xOffset := MonitorWorkAreaLeft
 		height := MonitorWorkAreaBottom
+		width := MonitorWorkAreaRight - MonitorWorkAreaLeft
 	}
 }
 
@@ -28,7 +29,7 @@ Loop, %MonitorCount%
 leftPanelWidth := 400
 bottomPanelHeight := 250
 bottomPanelY := height - bottomPanelHeight
-rightPanelWidth := A_ScreenWidth - leftPanelWidth
+rightPanelWidth := width - leftPanelWidth
 
 ; Specific IDE Sizing and Positions
 Row := 0
