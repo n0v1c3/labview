@@ -4,11 +4,6 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SetTitleMatchMode, RegEx
 
-; TODO-TJG [180306] ~ Names that are too long do not work with LVBD GUI
-; TODO-TJG [180321] ~ Toggle button for Probe Watch Window
-; TODO-TJG [180321] ~ Move second project windows to secondary monitor
-; TODO-TJG [180321] ~ Center block diagram shortcut
-
 ; Get current monitor and workspace information
 SysGet, MonitorCount, MonitorCount
 SysGet, MonitorPrimary, MonitorPrimary
@@ -173,7 +168,6 @@ Return
 ; Clean window swap
 $^e::
 Send, ^e
-; TODO-TJG [180306] ~ Remove the need for this sleep.
 Sleep, 250
 WinGet, currentWindow, ID, A
 ; WinMove, ahk_id %currentWindow%,, leftPanelWidth, 0
@@ -220,8 +214,8 @@ MButton::
 		Sleep, 1
 	}
 	MouseMove %x%, %y% ; Prevent small mouse movements
-	
-	; Right click at current mouse location
+
+  ; Right click at current mouse location
 	Click, Right
 	Send, c
 	Send, {Enter}
@@ -299,12 +293,23 @@ Send, {Down}{Down}{Enter}
 MouseMove %x%, %y%
 Return
 
+; Center block diagram
+^+c::
+MouseGetPos x, y
+; Positions are relative to the active window
+centerX := (leftPanelWidth / 2) - leftPanelWidth
+centerY := bottomPanelY + (bottomPanelHeight / 2)
+MouseMove %centerX%, %centerY%
+Click
+MouseMove %x%, %y%
+Return
+
 ; Slow the mouse down
 $Alt::
 ; System DLL for mouse speed
 DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 2, UInt, 0)
 ; Prevent key repeat
-;KeyWait Alt
+; KeyWait Alt
 Return
 
 ; Speed the mouse up
@@ -329,13 +334,12 @@ Return
 
 ; Kill this script
 +F12::
-ExitApp							
+ExitApp
 Return
 
 ; Get list of open Block Diagrams for a drop-down list
 CurrentBlockDiagrams()
 {
-	; TODO-TJG [180302] ~ Better access to this variable from the array
 	WindowList := ""
 	isFirst := True
 
