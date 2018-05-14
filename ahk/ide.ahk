@@ -2,7 +2,12 @@
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-SetTitleMatchMode, RegEx
+
+SetTitleMatchMode, 2
+
+; TODO-TJG [180514] ~ Select desired working monitor
+; TODO-TJG [180514] ~ Shortcut should also open LabVIEW if not open yet
+; TODO-TJG [180514] ~ Open and place terminal and Netflix windows
 
 ; Get current monitor and workspace information
 SysGet, MonitorCount, MonitorCount
@@ -12,7 +17,7 @@ Loop, %MonitorCount%
     SysGet, MonitorName, MonitorName, %A_Index%
     SysGet, Monitor, Monitor, %A_Index%
     SysGet, MonitorWorkArea, MonitorWorkArea, %A_Index%
-	if (xOffset > MonitorWorkAreaLeft || MonitorWorkAreaLeft == 0)
+	if (MonitorWorkAreaLeft == -1920) ; xOffset > MonitorWorkAreaLeft || MonitorWorkAreaLeft == 0)
 	{
 		xOffset := MonitorWorkAreaLeft
 		height := MonitorWorkAreaBottom
