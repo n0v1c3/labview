@@ -8,6 +8,8 @@ SetTitleMatchMode, 2
 ; TODO-TJG [180514] ~ Select desired working monitor
 ; TODO-TJG [180514] ~ Shortcut should also open LabVIEW if not open yet
 ; TODO-TJG [180514] ~ Open and place terminal and Netflix windows
+; TODO-TJG [180514] ~ With active window size and place into "working" area
+; TODO-TJG [180514] ~ {ctrl}{w} when "Block Diagram" active should close the "Front Panel"
 
 ; Get current monitor and workspace information
 SysGet, MonitorCount, MonitorCount
