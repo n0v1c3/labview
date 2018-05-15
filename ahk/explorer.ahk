@@ -12,21 +12,22 @@ SetWorkingDir %A_ScriptDir%
 ; TODO-TJG [180514] ~ Check if Outlook is open prior to re-open
 ; TODO-TJG [180514] ~ Selector for "Primary" Explorer monitor
 ; TODO-TJG [180514] ~ {Win}{c} for PowerShell terminal window
+; TODO-TJG [180514] ~ Reload script shortcut
 
-<#NumPad5::
+#NumPad5::
 	WinGetPos,,, Width, Height, A
     WinMove, A,, (A_ScreenWidth/2)-(Width/2), (A_ScreenHeight/2)-(Height/2)
 Return
 
 ; Activate all Explorer windows
-<#e::
+#e::
 WinGet, explorerWindows, List, ahk_class CabinetWClass
 Loop %explorerWindows%
 	WinActivate, % "ahk_id " . explorerWindows%A_Index%
 Return
 
 ; Activate the terminal windows
-<#t::
+#t::
 WinGet, terminalWindows, List, ahk_class mintty
 Loop %terminalWindows%
 {
@@ -40,7 +41,7 @@ Loop %terminalWindows%
 Return
 
 ; Activate the putty windows
-<#p::
+#p::
 WinGet, terminalWindows, List, ahk_class PuTTY
 Loop %terminalWindows%
 {
@@ -48,7 +49,7 @@ Loop %terminalWindows%
 }
 Return
 
-<#s::
+#s::
 	WinGet, windowList, List, ahk_class Microsoft-Windows-Tablet-SnipperEditor
 	; Microsoft-Windows-Tablet-SnipperToolbar
 	Loop %windowList%
