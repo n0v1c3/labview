@@ -4,26 +4,20 @@ SendMode Input
 SetWorkingDir %A_ScriptDir%
 
 ; TODO-TJG [180514] ~ Bring active window to center of the current monitor adjust for multiple monitors
-; TODO-TJG [180514] ~ Open minimum of 3 Explorer windows
 ; TODO-TJG [180514] ~ Toggle should be Normal, Always on Top, Always on bottom
-; TODO-TJG [180514] ~ Shortcut to display all active Explorer windows on top
-; TODO-TJG [180514] ~ Snip close "Tool-bar" window
-; TODO-TJG [180514] ~ Snip auto-save to downloads folder and close snip window
-; TODO-TJG [180514] ~ Check if Outlook is open prior to re-open
-; TODO-TJG [180514] ~ Selector for "Primary" Explorer monitor
-; TODO-TJG [180514] ~ {Win}{c} for PowerShell terminal window
 ; TODO-TJG [180514] ~ Reload script shortcut
-
-#NumPad5::
-	WinGetPos,,, Width, Height, A
-    WinMove, A,, (A_ScreenWidth/2)-(Width/2), (A_ScreenHeight/2)-(Height/2)
-Return
-
+	
 ; Activate all Explorer windows
 #e::
 WinGet, explorerWindows, List, ahk_class CabinetWClass
 Loop %explorerWindows%
+{
 	WinActivate, % "ahk_id " . explorerWindows%A_Index%
+	If A_Index <= 3
+	{
+		WinMove, A,, -3840, 360 * (A_Index - 1), 1264, 360
+	}
+}
 Return
 
 ; Activate the terminal windows
@@ -31,23 +25,38 @@ Return
 WinGet, terminalWindows, List, ahk_class mintty
 Loop %terminalWindows%
 {
-	WinGetPos, x, y, width, height, % "ahk_id " . terminalWindows%A_Index%
+	;WinGetPos, x, y, width, height, % "ahk_id " . terminalWindows%A_Index%
 
-	If x < -1920
-	{
+	;If x < -1920
+	;{
 		WinActivate, % "ahk_id " . terminalWindows%A_Index%
-	}
+		WinMove, A,, -1920, 0, 1920, 830
+	;}
+}
+Return
+
+#n::
+WinGet, notepadWindows, List, ahk_class Notepad++
+Loop %notepadWindows%
+{
+	;WinGetPos, x, y, width, height, % "ahk_id " . notepadWindows%A_Index%
+
+	;If x < -1920
+	;{
+		WinActivate, % "ahk_id " . notepadWindows%A_Index%
+		WinMove, A,, -1920, 0, 1920, 830
+	;}
 }
 Return
 
 ; Activate the putty windows
-#p::
-WinGet, terminalWindows, List, ahk_class PuTTY
-Loop %terminalWindows%
-{
-	WinActivate, % "ahk_id " . terminalWindows%A_Index%
-}
-Return
+; #p::
+; WinGet, terminalWindows, List, ahk_class PuTTY
+; Loop %terminalWindows%
+; {
+	; WinActivate, % "ahk_id " . terminalWindows%A_Index%
+; }
+; Return
 
 #s::
 	WinGet, windowList, List, ahk_class Microsoft-Windows-Tablet-SnipperEditor
@@ -70,24 +79,33 @@ Return
 	Run "C:\Program Files (x86)\National Instruments\MAX\NIMax.exe"
 Return
 
+; Outlook
 #o::
-	Run "Outlook.exe"
-	Send, #{Up}
-	Send, #{Right}
+	WinActivate, % "ahk_exe" . "OUTLOOK.EXE"
+	WinMove, A,, -2579, 0, 655, 1080 
+Return
+
+; Chrome
+#c::
+	WinActivate, % "ahk_exe" . "chrome.exe"
+	WinMove, A,, -3840, 0, 1264, 1080 
+Return
+
+; Perforce
+#p::
+	WinActivate, % "ahk_exe" . "p4v.exe"
+	WinMove, A,, -2579, 0, 655, 1080 
+Return
+
+; LabVIEW IDE
+#i::
+	WinGet, labviewWindows, List, ahk_class LVDChild
+	Loop %labviewWindows%
+	{
+		WinActivate, % "ahk_id " . labviewWindows%A_Index%
+	}
 Return
 
 ^SPACE:: 
 Winset, Alwaysontop, , A
 Return
-
-/*
-NumPad4::
-WinGetPos, X, Y, W, H, A, , ,
-WinMove, A, , 1600, , 960,
-Return
-
-NumPad6::
-WinGetPos, X, Y, W, H, A, , ,
-WinMove, A, , 2560, , 960,
-Return
-*/

@@ -9,7 +9,10 @@ SetTitleMatchMode, 2
 ; TODO-TJG [180514] ~ Shortcut should also open LabVIEW if not open yet
 ; TODO-TJG [180514] ~ Open and place terminal and Netflix windows
 ; TODO-TJG [180514] ~ With active window size and place into "working" area
-; TODO-TJG [180514] ~ {ctrl}{w} when "Block Diagram" active should close the "Front Panel"
+; TODO-TJG [180514] ~ {ctrl}{w} when "Block Diagram" active should close the "Front Panel" (x button should do the same)
+; TODO-TJG [180514] ~ Move block diagram "selector" window to the "active" monitor on open
+; TODO-TJG [180514] ~ Create magnifier and toggle switch for "navigation" window area (see windows ahk code)
+; TODO-TJG [180514] ~ Shortcut to play/pause youtube and play music
 
 ; Get current monitor and workspace information
 SysGet, MonitorCount, MonitorCount
