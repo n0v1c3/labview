@@ -76,7 +76,8 @@ Return
 Return
 
 #m::
-	Run "C:\Program Files (x86)\National Instruments\MAX\NIMax.exe"
+	WinActivate, % "ahk_exe" . "NIMax.EXE"
+	WinMove, A,, -2579, 0, 655, 1080 
 Return
 
 ; Outlook
@@ -97,13 +98,9 @@ Return
 	WinMove, A,, -2579, 0, 655, 1080 
 Return
 
-; LabVIEW IDE
+; LabVIEW IDE (position is currently handled in the ide.ahk script)
 #i::
-	WinGet, labviewWindows, List, ahk_class LVDChild
-	Loop %labviewWindows%
-	{
-		WinActivate, % "ahk_id " . labviewWindows%A_Index%
-	}
+	WinActivate, % "ahk_exe" . "LabVIEW.exe"
 Return
 
 ^SPACE:: 
