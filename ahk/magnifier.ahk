@@ -1,58 +1,33 @@
-﻿; Routine: magnifier.ahk
+﻿; magnifier.ahk
 ; Description: On screen magnifier that follows the cursor on the screen
 ; Author: Travis Gall
 
-; ===
-; Initialize
-; ===
-
-; Recommended for performance and compatibility with future AutoHotkey releases
-#NoEnv
-#SingleInstance Force ; Replace old script with new script without confirmation
+; Setup {{{1
 
 ; Set coordinate mode to affect (MouseGetPos, Click, and MouseMove/Click/Drag) all relative to the entire screen
 CoordMode Mouse, Screen
-
 OnExit, ExitSub
 
-; ===
-; Constants
-; ===
-
-; ---
-; Antializing
-; ---
-
+; Constants {{{1
+; Antializing {{{2
 ANTIALIZE_INIT := 1
 
-; ---
-; DLLs
-; ---
-
+; DLLs {{{2
 ; SystemParametersInfo
 DLL_GDC := "GetDC"
-
 DLL_SSBM := "gdi32.dll\SetStretchBltMode"
-
 DLL_SB := "gdi32.dll\StretchBlt"
-
 DLL_SPI := "SystemParametersInfo"
 DLL_SPI_GETMOUSESPEED = 0x70
 DLL_SPI_SETMOUSESPEED = 0x71
 
-; ---
-; Mouse
-; ---
-
+; Mouse {{{2
 MOUSE_MIN := 3
 MOUSE_OVERRIDE_ENABLED_INIT := 0
 MOUSE_CURSOR_LENGTH_INIT := 30
 MOUSE_CURSOR_WIDTH_INIT := 2
 
-; ---
-; Window
-; ---
-
+; Window {{{2
 GUI_WIN_BACKGROUND := f3ffff
 GUI_WIN_COMP_BACKGROUND := ffffff
 GUI_WIN_INIT_OFFSET := 10000
@@ -65,29 +40,17 @@ GUI_WIN_ENABLED_INIT := 1
 GUI_WIN_FROZEN := 0
 GUI_WIN_NAME_INIT := "Magnifier"
 
-; ---
-; Zoom
-; ---
-
+; Zoom {{{2
 ZOOM_LEVEL_INIT := 2
 ZOOM_LEVEL_MAX := 10
 ZOOM_LEVEL_MIN := 1
 
-; ===
-; Variables
-; ===
-
-; ---
-; Antializing
-; ---
-
+; Variables {{{1
+; Antializing {{{2
 ; 1 = On, 0 = Off
 antialize := ANTIALIZE_INIT
 
-; ---
-; Mouse
-; ---
-
+; Mouse {{{2
 ; Retrieve the current speed so that it can be restored later:
 DllCall(DLL_SPI, UInt, DLL_SPI_GETMOUSESPEED, UInt, 0, UIntP, mouseSensitivityOriginal, UInt, 0)
 mouseOverrideEnabled := MOUSE_OVERRIDE_ENABLED_INIT
@@ -95,14 +58,10 @@ mouseCursorVerticalWidth := MOUSE_CURSOR_WIDTH_INIT
 mouseCursorVerticalLength := MOUSE_CURSOR_LENGTH_INIT
 mouseCursorHorizontalWidth := MOUSE_CURSOR_WIDTH_INIT
 mouseCursorHorizontalLength := MOUSE_CURSOR_HEIGHT_INIT
-
 ; Range {1..20}
 mouseSensitivityMultiplier := mouseSensitivityOriginal / ZOOM_LEVEL_MAX 
 
-; ---
-; Windown
-; ---
-
+; Windows {{{2
 winWidth := GUI_WIN_WIDTH_INIT
 winHeight := GUI_WIN_HEIGHT_INIT
 winMouseOffsetX := GUI_WIN_MOUSE_OFFSET_INIT
@@ -112,21 +71,14 @@ winEnabled := GUI_WIN_ENABLED_INIT
 winFrozen := GUI_WIN_FROZEN
 winRepaintDelay := GUI_WIN_REPAINT_DELAY_INIT
 
-; ---
-; Zoom
-; ---
-
+; Zoom {{{2
 zoom :=  ZOOM_LEVEL_INIT
 
-; ===
-; GUI
-; ===
+; GUI {{{1
 
 ; Create a window to display magnification
 Gui +E0x20 -Caption +AlwaysOnTop -Resize +ToolWindow +Border
 Gui Color, %GUI_WIN_BACKGROUND%, %GUI_WIN_COMP_BACKGROUND%
-
-;Gui, Add, Picture, % "x" winWidth/2 " y" winHeight/2 " BackgroundTrans", E:\home\travis\Documents\development\n0v1c3\windows\ahk\testCursor.bmp
 
 ; Display window, initialize off screen to prevent "flicker"
 Gui Show, % "w" winWidth " h" winHeight " x-"winMouseOffsetX " y-"winMouseOffsetY, %winName%
@@ -135,21 +87,11 @@ Gui Show, % "w" winWidth " h" winHeight " x-"winMouseOffsetX " y-"winMouseOffset
 WinGet winID, id,  %winName%
 WinGet screenID, id
 
-; Configure window, components, and screen for transparancy
-;WinSet Transparent, 0, %winName%;%WindowTrans%, %winID% ; Confirm what this line was doing
-;WinSet TransColor, %GUI_WIN_COMP_BACKGROUND%, %winID%
-;WinSet TransColor, %GUI_WIN_COMP_BACKGROUND%, %screenID%
-
-; Adjust shape of the window
-;WinSet, Region, 10-30 W128 H128 E, %winName%
-
 ; Get handles to the device context (DC) for the window and screen
 winDC := DllCall(DLL_GDC, UInt, winID)
 screenDC := DllCall(DLL_GDC, UInt, screenID)
 
-; ===
-; Repaint Loop
-; ===
+; Repaint Loop {{{1
 
 Repaint:
 ; Get current cursor position
@@ -190,22 +132,18 @@ Tooltip
 Return ; ToolTipHide
 
 ExitSub:
-; DC clean upA
-; TODO [161218] - These IDs become invalid
-;DllCall("gdi32.dll\DeleteDC", UInt, %winDC%)
-;DllCall("gdi32.dll\DeleteDC", UInt, %screenDC%)
 
+; Set the original mouse speed
 DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, mouseSensitivityOriginal, UInt, 0)
-ExitApp  ; A script with an OnExit subroutine will not terminate unless the subroutine uses ExitApp.
-Return ; ExitSub
 
-; ===
-; Hotkeys
-; ===
+; A script with an OnExit subroutine will not terminate unless the subroutine uses ExitApp.
+ExitApp
+Return
+
+; Hotkeys {{{1
 
 ; Shift+Win+a
 ; Toggle window antialize
-; TODO [161217] - Ensure that antialiasing can be toggled
 #+a::
 antialize := !antialize
 Return 
