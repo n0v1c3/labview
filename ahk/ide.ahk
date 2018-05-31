@@ -1,18 +1,6 @@
-﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
-; #Warn  ; Enable warnings to assist with detecting common errors.
-SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
-SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-
-SetTitleMatchMode, 2
-
-; TODO-TJG [180514] ~ Select desired working monitor
-; TODO-TJG [180514] ~ Shortcut should also open LabVIEW if not open yet
-; TODO-TJG [180514] ~ Open and place terminal and Netflix windows
-; TODO-TJG [180514] ~ With active window size and place into "working" area
-; TODO-TJG [180514] ~ {ctrl}{w} when "Block Diagram" active should close the "Front Panel" (x button should do the same)
-; TODO-TJG [180514] ~ Move block diagram "selector" window to the "active" monitor on open
-; TODO-TJG [180514] ~ Create magnifier and toggle switch for "navigation" window area (see windows ahk code)
-; TODO-TJG [180514] ~ Shortcut to play/pause youtube and play music
+﻿; ide.ahk
+; Description: Main LabVIEW 
+; Author: Travis Gall
 
 ; Get current monitor and workspace information
 SysGet, MonitorCount, MonitorCount
@@ -335,16 +323,6 @@ Sleep, 250
 Send, v
 Sleep, 100
 Send, m
-Return
-
-; Reload this script
-F12::
-Reload
-Return
-
-; Kill this script
-+F12::
-ExitApp
 Return
 
 ; Get list of open Block Diagrams for a drop-down list

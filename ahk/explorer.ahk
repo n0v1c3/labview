@@ -1,12 +1,7 @@
-#NoEnv
+; ide.ahk
+; Description: Windows that are not part of LabVIEW require management too
+; Author: Travis Gall
 
-SendMode Input
-SetWorkingDir %A_ScriptDir%
-
-; TODO-TJG [180514] ~ Bring active window to center of the current monitor adjust for multiple monitors
-; TODO-TJG [180514] ~ Toggle should be Normal, Always on Top, Always on bottom
-; TODO-TJG [180514] ~ Reload script shortcut
-	
 ; Activate all Explorer windows
 #e::
 WinGet, explorerWindows, List, ahk_class CabinetWClass
@@ -48,15 +43,6 @@ Loop %notepadWindows%
 	;}
 }
 Return
-
-; Activate the putty windows
-; #p::
-; WinGet, terminalWindows, List, ahk_class PuTTY
-; Loop %terminalWindows%
-; {
-	; WinActivate, % "ahk_id " . terminalWindows%A_Index%
-; }
-; Return
 
 #s::
 	WinGet, windowList, List, ahk_class Microsoft-Windows-Tablet-SnipperEditor
