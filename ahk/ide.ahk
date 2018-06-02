@@ -1,6 +1,20 @@
 ﻿; ide.ahk
-; Description: Main LabVIEW 
+; Description: Main LabVIEW
 ; Author: Travis Gall
+
+; Setup {{{1
+; Enable warnings to assist with detecting common errors.
+; #Warn
+; Recommended for performance and compatibility with future AutoHotkey releases.
+#NoEnv
+; Replace old script with new script without confirmation
+#SingleInstance Force
+; Recommended for new scripts due to its superior speed and reliability.
+SendMode Input
+; Ensures a consistent starting directory.
+SetWorkingDir %A_ScriptDir%
+; Partial tital match enabled
+SetTitleMatchMode, 2
 
 ; Get current monitor and workspace information
 SysGet, MonitorCount, MonitorCount

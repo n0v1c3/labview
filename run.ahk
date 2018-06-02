@@ -10,27 +10,55 @@
 ; Replace old script with new script without confirmation
 #SingleInstance Force
 ; Recommended for new scripts due to its superior speed and reliability.
-SendMode Input  
+SendMode Input
 ; Ensures a consistent starting directory.
-SetWorkingDir %A_ScriptDir% 
+SetWorkingDir %A_ScriptDir%
 ; Partial tital match enabled
 SetTitleMatchMode, 2
 
-; Includes {{{1
-; Run all required ahk scripts
-#Include ./ahk/ide.ahk
-#Include ./ahk/explorer.ahk
-
 ; Scripts {{{1
 ; magnifier.ahk {{{2
-Run, %A_AHKPath%, ./ahk/magnifier.ahk
+Run, ahk\ide.ahk
+Run, ahk\explorer.ahk
+Run, ahk\magnifier.ahk
 
 ; Shortcuts {{{1
 ; Reload/Kill {{{2
 F12::
-Reload
+  AHKPanic(1, 0, 0, 0)
+  Reload
 Return
 
 +F12::
-ExitApp
+  AHKPanic(1, 0, 0, 0)
 Return
+
+; Functions {{{1
+; AHK Panic {{{2
+AHKPanic(Kill=0, Pause=0, Suspend=0, SelfToo=0) {
+  DetectHiddenWindows, On
+  WinGet, IDList ,List, ahk_class AutoHotkey
+  Loop %IDList%
+  {
+    ID:=IDList%A_Index%
+    WinGetTitle, ATitle, ahk_id %ID%
+    IfNotInString, ATitle, %A_ScriptFullPath%
+    {
+      If Suspend
+        PostMessage, 0x111, 65305,,, ahk_id %ID%  ; Suspend.
+      If Pause
+        PostMessage, 0x111, 65306,,, ahk_id %ID%  ; Pause.
+      If Kill
+        WinClose, ahk_id %ID% ;kill
+    }
+  }
+  If SelfToo
+  {
+    If Suspend
+      Suspend, Toggle  ; Suspend.
+    If Pause
+      Pause, Toggle, 1  ; Pause.
+    If Kill
+      ExitApp
+  }
+}
