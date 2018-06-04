@@ -98,6 +98,12 @@ Return
 	WinMove, A,, -2579, 0, 655, 1080 
 Return
 
+; Testify (Unit Tests)
+#u::
+	WinActivate, % "ahk_exe" . "Testify - Scripting.exe"
+	WinMove, A,, -3840, 0, 1264, 1080 
+Return
+
 ; LabVIEW IDE (position is currently handled in the ide.ahk script)
 #i::
 	WinActivate, % "ahk_exe" . "LabVIEW.exe"
