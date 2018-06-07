@@ -109,6 +109,12 @@ Return
 	WinActivate, % "ahk_exe" . "LabVIEW.exe"
 Return
 
+; Calculator (fx)
+#f::
+	WinActivate, % "ahk_exe" . "calc.exe"
+	WinMove, A,, -1920, 780, ,  300
+Return
+
 ^SPACE:: 
 Winset, Alwaysontop, , A
 Return
