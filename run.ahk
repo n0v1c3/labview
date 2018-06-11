@@ -20,7 +20,26 @@ SetTitleMatchMode, 2
 ; magnifier.ahk {{{2
 Run, ahk\ide.ahk
 Run, ahk\explorer.ahk
-Run, ahk\magnifier.ahk
+; Run, ahk\magnifier.ahk
+; Run, ahk\mousepad.ahk
+
+; Programs {{{1
+ProgramList := []
+ProgramList.Push("Explorer.exe")
+ProgramList.Push("Outlook.exe")
+ProgramList.Push("NIMax.exe")
+For index, element in ProgramList
+{
+	If WinExist("ahk_exe" . element)
+	{
+		WinActivate
+	}
+	Else
+	{
+		Run, %element%
+	}
+}
+
 
 ; Shortcuts {{{1
 ; Reload/Kill {{{2
@@ -30,7 +49,7 @@ F12::
 Return
 
 +F12::
-  AHKPanic(1, 0, 0, 0)
+  AHKPanic(1, 0, 0, 1)
 Return
 
 ; Functions {{{1
