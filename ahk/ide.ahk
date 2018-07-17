@@ -339,6 +339,31 @@ Sleep, 100
 Send, m
 Return
 
+; Login to "Configuration GUI"
+$^l::
+Send, ^l
+IfWinActive, Configuration
+{
+	Sleep, 250
+	Send, AMI
+	Sleep, 100
+	Send, {Tab}
+	Sleep, 100
+	Send, AdvMeas7612
+	Sleep, 100
+	Send, {Enter}
+}
+Return
+
+$F1::
+Send, {F1}
+IfWinActive, Configuration
+{
+	Sleep, 250
+	Send, {Enter}
+}
+Return
+
 ; Get list of open Block Diagrams for a drop-down list
 CurrentBlockDiagrams()
 {
@@ -358,3 +383,4 @@ CurrentBlockDiagrams()
 	}
 	Return WindowList
 }
+
