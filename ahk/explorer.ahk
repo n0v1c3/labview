@@ -59,20 +59,20 @@ Loop %notepadWindows%
 Return
 
 #s::
-	WinGet, windowList, List, ahk_class Microsoft-Windows-Tablet-SnipperEditor
-	; Microsoft-Windows-Tablet-SnipperToolbar
-	Loop %windowList%
+WinGet, windowList, List, ahk_class Microsoft-Windows-Tablet-SnipperEditor
+; Microsoft-Windows-Tablet-SnipperToolbar
+Loop %windowList%
+{
+	WinActivate, % "ahk_id " . windowList%A_Index%
+	WinClose, A
+	If WinActive("ahk_class #32770")
 	{
-		WinActivate, % "ahk_id " . windowList%A_Index%
-		WinClose, A
-		If WinActive("ahk_class #32770")
-		{
-			Send, {Tab}
-			Send, {Enter}
-		}
-		
+		Send, {Tab}
+		Send, {Enter}
 	}
-	Run "SnippingTool.exe"
+	
+}
+Run "SnippingTool.exe"
 Return
 
 #m::
