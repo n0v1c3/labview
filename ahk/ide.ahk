@@ -330,15 +330,6 @@ Alt Up::
 DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, UInt, 0)
 Return
 
-; Open "Bookmark Manager" window
-^b::
-Send, {Alt}
-Sleep, 250
-Send, v
-Sleep, 100
-Send, m
-Return
-
 ; Login to "Configuration GUI"
 $^l::
 Send, ^l
