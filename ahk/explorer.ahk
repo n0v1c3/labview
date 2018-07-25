@@ -53,7 +53,7 @@ Loop %notepadWindows%
 	;If x < -1920
 	;{
 		WinActivate, % "ahk_id " . notepadWindows%A_Index%
-		WinMove, A,, -1920, 0, 1920, 830
+		WinMove, A,, -3840, 0, 1264, 1080 
 	;}
 }
 Return
@@ -86,6 +86,23 @@ Return
 	WinMove, A,, -2579, 0, 655, 1080 
 Return
 
+$^d::
+IfWinActive, % "ahk_exe" . "OUTLOOK.exe"
+{
+	Send, ^{q}
+	Send, ^{d}
+	Send, {Up}
+}
+Else
+	Send, ^{d}
+Return
+
+; FCSLicenseGenerator
+#g::
+	WinActivate, % "ahk_exe" . "FCSLicenseGenerator.exe"
+	WinMove, A,, -2579, 0, 655, 1080 
+Return
+
 ; Chrome
 #c::
 	WinActivate, % "ahk_exe" . "chrome.exe"
@@ -101,6 +118,19 @@ Return
 ; LabVIEW IDE (position is currently handled in the ide.ahk script)
 #i::
 	WinActivate, % "ahk_exe" . "LabVIEW.exe"
+Return
+
+; FracCommandSetup
+#f::
+	WinActivate, % "ahk_exe" . "FCS.exe"
+	WinMove, A,, -3840, 0, 1264, 1080 
+Return
+
+; Qlarity
+#q::
+	; ahk_class used to prevent the "Tool-Tip" window from being moved instead of the Qlarity window
+	WinActivate, % "ahk_class" . "Afx:00400000:0"
+	WinMove, A,, -3840, 0, 1264, 1080 
 Return
 
 ^SPACE:: 

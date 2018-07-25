@@ -17,17 +17,26 @@ SetWorkingDir %A_ScriptDir%
 SetTitleMatchMode, 2
 
 ; Scripts {{{1
-; magnifier.ahk {{{2
-Run, ahk\ide.ahk
 Run, ahk\explorer.ahk
-; Run, ahk\magnifier.ahk
-; Run, ahk\mousepad.ahk
+Run, ahk\ide.ahk
+;Run, ahk\magnifier.ahk
+Run, ahk\rocker.ahk
 
 ; Programs {{{1
 ProgramList := []
+ProgramList.Push("chrome.exe")
 ProgramList.Push("Explorer.exe")
-ProgramList.Push("Outlook.exe")
+ProgramList.Push("FCS.exe")
+ProgramList.Push("FCSLicenseGenerator.exe")
+ProgramList.Push("LabVIEW.exe")
+ProgramList.Push("mintty.exe")
 ProgramList.Push("NIMax.exe")
+ProgramList.Push("Notepad++.exe")
+ProgramList.Push("Outlook.exe")
+ProgramList.Push("p4v.exe")
+ProgramList.Push("QlarityFoundry.exe")
+ProgramList.Push("Testify - Scripting.exe")
+
 For index, element in ProgramList
 {
 	If WinExist("ahk_exe" . element)
@@ -36,7 +45,7 @@ For index, element in ProgramList
 	}
 	Else
 	{
-		Run, %element%
+		;Run, %element%
 	}
 }
 

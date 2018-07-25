@@ -374,4 +374,3 @@ CurrentBlockDiagrams()
 	}
 	Return WindowList
 }
-
