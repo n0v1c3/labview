@@ -17,11 +17,10 @@ SetWorkingDir %A_ScriptDir%
 SetTitleMatchMode, 2
 
 Counter = 1
-
 RButtonFirst := True
 LButtonFirst := True
 
-~RButton::
+~*RButton::
 If RButtonFirst
 {
 	LButtonFirst := False
@@ -31,6 +30,7 @@ If RButtonFirst
 
 	CtrlCounts := 0
 	LButtonCounts := 0
+	
 	if GetKeyState("RButton")
 	{
 		Loop
@@ -59,9 +59,7 @@ If RButtonFirst
 	}
 
 	; Normal LButton operation
-	If CtrlCounts == 0 && LButtonCounts == 0
-		Send, RButton
-	Else
+	If (CtrlCounts != 0 Or LButtonCounts != 0)
 	{
 		Sleep, 25
 		IfWinExist, ahk_class #32768 ; Close context menu if open
@@ -104,7 +102,7 @@ Return
 
 ;----------
 
-~LButton::
+~*LButton::
 If LButtonFirst
 {
 	RButtonFirst := False
@@ -140,22 +138,28 @@ If LButtonFirst
 				RButtonLock := False
 		}
 	}
-
-	Sleep, 25
-	IfWinExist, ahk_class #32768 ; Close context menu if open
-		Send, {Escape}
 					
 	; Normal LButton operation
-	If CtrlCounts == 0 && RButtonCounts == 0
-		Send, LButton
-		
+	If (CtrlCounts != 0 Or RButtonCounts != 0)
+	{
+		Sleep, 25
+		IfWinExist, ahk_class #32768 ; Close context menu if open
+			Send, {Escape}
+	}
 	; Navigate backwards
 	IfEqual RButtonCounts, 1
 	{
 		
 		; Chrome
 		IfWinActive, % "ahk_exe" . "chrome.exe"
-			Send, !{Right}
+		{
+			; Navigate "Tabs"
+			IfEqual CtrlCounts, 1
+				Send, {Ctrl}{Tab}
+			; Navigate "Forward"
+			Else
+				Send, !{Right}
+		}
 			
 		; Notepad++
 		IfWinActive, % "ahk_exe" . "Notepad++.exe"
@@ -169,11 +173,12 @@ If LButtonFirst
 			Gui, Add, DropDownList, w600 vBlockDiagram, %BlockDiagramList%
 			Gui, Show, , LV - Blocks
 			Send, {End}
-			Counter = 1
+			Counter := 1
 			GoSub, SelectBlockDiagram
 		}
 	}
 
+	
 	IfEqual, RButtonCounts, 2
 		MsgBox, "Test"
 	
