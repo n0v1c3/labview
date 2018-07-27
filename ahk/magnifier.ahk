@@ -19,6 +19,8 @@ SetTitleMatchMode, 2
 CoordMode Mouse, Screen
 OnExit, ExitSub
 
+MsgBox, %1%
+
 ; Constants {{{1
 ; Antializing {{{2
 ANTIALIZE_INIT := 1
@@ -108,7 +110,7 @@ Repaint:
 ; Get current cursor position
 MouseGetPos mouseX, mouseY
 
-if (!winFrozen) {		
+if (!winFrozen) {
     ; Posision window beside the cursor
     WinMove, %winName%, , (mouseX + winMouseOffsetX), (mouseY + winMouseOffsetY)
 }

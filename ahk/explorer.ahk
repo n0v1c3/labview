@@ -2,20 +2,6 @@
 ; Description: Windows that are not part of LabVIEW require management too
 ; Author: Travis Gall
 
-; Setup {{{1
-; Enable warnings to assist with detecting common errors.
-; #Warn
-; Recommended for performance and compatibility with future AutoHotkey releases.
-#NoEnv
-; Replace old script with new script without confirmation
-#SingleInstance Force
-; Recommended for new scripts due to its superior speed and reliability.
-SendMode Input
-; Ensures a consistent starting directory.
-SetWorkingDir %A_ScriptDir%
-; Partial tital match enabled
-SetTitleMatchMode, 2
-
 ; Activate all Explorer windows
 #e::
 WinGet, explorerWindows, List, ahk_class CabinetWClass
@@ -75,6 +61,7 @@ Return
 	Run "SnippingTool.exe"
 Return
 
+; TODO-TJG [180726] - These should be functions and variables
 #m::
 	WinActivate, % "ahk_exe" . "NIMax.EXE"
 	WinMove, A,, -2579, 0, 655, 1080 
