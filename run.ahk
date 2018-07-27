@@ -2,20 +2,6 @@
 ; Description: Run and manage all the scripts for labview
 ; Author: Travis Gall
 
-; Setup {{{1
-; Enable warnings to assist with detecting common errors.
-; #Warn
-; Recommended for performance and compatibility with future AutoHotkey releases.
-#NoEnv
-; Replace old script with new script without confirmation
-#SingleInstance Force
-; Recommended for new scripts due to its superior speed and reliability.
-SendMode Input
-; Ensures a consistent starting directory.
-SetWorkingDir %A_ScriptDir%
-; Partial tital match enabled
-SetTitleMatchMode, 2
-
 #Include lib\init.ahk
 #Include lib\system.ahk
 #Include lib\labview.ahk
@@ -23,12 +9,25 @@ SetTitleMatchMode, 2
 #Include ahk\ide.ahk
 #Include ahk\explorer.ahk
 #Include ahk\magnifier.ahk
+; #Include ahk\mousepad.ahk
+; #Include ahk\rocker.ahk
+#Include ahk\tracker.ahk
 
+; GUI Hooks [{{1
+; Keyboard {{{2
+; Alt {{{3
+; Ctrl {{{3
+; 'F' Keys {{{3
+; Reload this AHK script
 F12::
-  AHKPanic(1, 0, 0, 0)
   Reload
+  ; Will not reach this line
 Return
 
+; Kill this AHK script
 +F12::
-  AHKPanic(1, 0, 0, 1)
+  ExitApp
+  ; Will not reach this line
 Return
+; Mouse {{{2
+

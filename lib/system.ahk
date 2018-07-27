@@ -1,28 +1,30 @@
-﻿AHKPanic(Kill=0, Pause=0, Suspend=0, SelfToo=0) {
-  DetectHiddenWindows, On
-  WinGet, IDList ,List, ahk_class AutoHotkey
-  Loop %IDList%
-  {
-    ID:=IDList%A_Index%
-    WinGetTitle, ATitle, ahk_id %ID%
-    IfNotInString, ATitle, %A_ScriptFullPath%
-    {
-      If Suspend
-        PostMessage, 0x111, 65305,,, ahk_id %ID%  ; Suspend.
-      If Pause
-        PostMessage, 0x111, 65306,,, ahk_id %ID%  ; Pause.
-      If Kill
-        WinClose, ahk_id %ID% ;kill
-    }
-  }
-  If SelfToo
-  {
-    If Suspend
-      Suspend, Toggle  ; Suspend.
-    If Pause
-      Pause, Toggle, 1  ; Pause.
-    If Kill
-      ExitApp
-  }
-  DetectHiddenWindows, Off
+﻿; Variables {{{1
+; Tool set {{{2
+ProgramList := []
+ProgramList.Push("chrome.exe")
+ProgramList.Push("Explorer.exe")
+ProgramList.Push("FCS.exe")
+ProgramList.Push("FCSLicenseGenerator.exe")
+ProgramList.Push("LabVIEW.exe")
+ProgramList.Push("mintty.exe")
+ProgramList.Push("NIMax.exe")
+ProgramList.Push("Notepad++.exe")
+ProgramList.Push("Outlook.exe")
+ProgramList.Push("p4v.exe")
+ProgramList.Push("QlarityFoundry.exe")
+ProgramList.Push("Testify - Scripting.exe")
+
+; Functions {{{1
+; Script {{{1
+; Activate/Run all Progarms {{{2
+For index, element in ProgramList
+{
+	If WinExist("ahk_exe" . element)
+	{
+		WinActivate
+	}
+	Else
+	{
+		;Run, %element%
+	}
 }
