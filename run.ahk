@@ -15,8 +15,14 @@
 
 ; GUI Hooks [{{1
 ; Keyboard {{{2
-; Alt {{{3
-; Ctrl {{{3
+; S {{{3
+^s::
+  #IfWinActive Block Diagram
+    Tracker()
+    ; Original save request
+    ^s
+  #IfWinActive 
+Return
 ; 'F' Keys {{{3
 ; Reload this AHK script
 F12::
