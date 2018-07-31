@@ -3,6 +3,15 @@
 ; Author: Travis Gall
 
 ; Activate all Explorer windows
+WinMoveAll(ClassName, X, Y, W, H)
+{
+  WindGet, WindowList, List, ahk_class ClassName
+  Loop %WindowList%
+  {
+    WinActivate, % "ahk_id " . WindowList%A_Index%
+    WinMove, A,, X, Y, Width, Height
+  }
+}
 #e::
 WinGet, explorerWindows, List, ahk_class CabinetWClass
 Loop %explorerWindows%
@@ -31,17 +40,18 @@ Loop %terminalWindows%
 Return
 
 #n::
-WinGet, notepadWindows, List, ahk_class Notepad++
-Loop %notepadWindows%
-{
+  WinMoveAll("Notepad++", 0, 0, 1264, 1080)
+; WinGet, notepadWindows, List, ahk_class Notepad++
+; Loop %notepadWindows%
+; {
 	;WinGetPos, x, y, width, height, % "ahk_id " . notepadWindows%A_Index%
 
 	;If x < -1920
 	;{
-		WinActivate, % "ahk_id " . notepadWindows%A_Index%
-		WinMove, A,, -3840, 0, 1264, 1080 
+		; WinActivate, % "ahk_id " . notepadWindows%A_Index%
+		; WinMove, A,, -3840, 0, 1264, 1080 
 	;}
-}
+; }
 Return
 
 #s::
@@ -118,8 +128,4 @@ Return
 	; ahk_class used to prevent the "Tool-Tip" window from being moved instead of the Qlarity window
 	WinActivate, % "ahk_class" . "Afx:00400000:0"
 	WinMove, A,, -3840, 0, 1264, 1080 
-Return
-
-^SPACE:: 
-Winset, Alwaysontop, , A
 Return
