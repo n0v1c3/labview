@@ -16,7 +16,8 @@
 ; C {{{3
 ; Chrome
 #c::
-  WinActivateMove("ahk_exe chrome.exe", -3840, 0, 1264, 1080)
+  ; WinActivateMove("ahk_exe chrome.exe", -3840, 0, 1264, 1080)
+  WinActivateMove2(Layouts[Chrome])
 Return
 
 ; D {{{3

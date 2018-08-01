@@ -19,8 +19,15 @@ SetWorkingDir %A_ScriptDir%
 ; Partial tital match enabled
 SetTitleMatchMode, 2
 
-; Variables {{{1
-; Layout {{{2
+; Layout {{{1
+
+; X, Height, Width
+; Monitor[0] will always be the "primary" monitor
+Monitors := [[]]
+MON_X_POS := 0
+MON_WIDTH := 1
+MON_HEIGHT := 2
+
 ; Get current monitor and workspace information
 SysGet, MonitorCount, MonitorCount
 SysGet, MonitorPrimary, MonitorPrimary
@@ -29,6 +36,36 @@ Loop, %MonitorCount%
   SysGet, MonitorName, MonitorName, %A_Index%
   SysGet, Monitor, Monitor, %A_Index%
   SysGet, MonitorWorkArea, MonitorWorkArea, %A_Index%
+
+  ; TODO-TJG [180731] - This should be able to handle "X" monitors
+
+  ; Check the "X" offset
+  If (MonitorWorkAreaLeft = 0)
+  {
+    Monitors[0,MON_X_POS] := MonitorWorkAreaLeft ; X-Offset
+    Monitors[0,MON_WIDTH] := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
+    Monitors[0,MON_HEIGHT] := MonitorWorkAreaBottom ; Height
+  }
+
+  ; Monitors[2] will always trail Monitors[1]
+  Monitors[2] := Monitors[1]
+
+  ; Note: this is not "Else'd" to ensure reuse of the "zero"
+  ;       workspace for this virtual environment
+  If (MonitorWorkAreaLeft <= 0)
+  {
+    Monitors[1,MON_X_POS] := MonitorWorkAreaLeft ; X-Offset
+    Monitors[1,MON_WIDTH] := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
+    Monitors[1,MON_HEIGHT] := MonitorWorkAreaBottom ; Height
+  }
+  ; "Right" monitor will be Monitors[2]
+  Else
+  {
+    Monitors[2,MON_X_POS] := MonitorWorkAreaLeft ; X-Offset
+    Monitors[2,MON_WIDTH] := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
+    Monitors[2,MON_HEIGHT] := MonitorWorkAreaBottom ; Height
+  }
+
   if (MonitorWorkAreaLeft == -1920) ; xOffset > MonitorWorkAreaLeft || MonitorWorkAreaLeft == 0)
   {
     xOffset := MonitorWorkAreaLeft
@@ -36,6 +73,42 @@ Loop, %MonitorCount%
     width := MonitorWorkAreaRight - MonitorWorkAreaLeft
   }
 }
+
+; Relative to Monitors
+Layouts := [[]]
+LAY_NAME := 1
+LAY_EXE := 2
+LAY_X := 3
+LAY_Y := 4
+LAY_WIDTH := 5
+LAY_HEIGHT := 6
+
+LayoutsLength := 0
+
+LayoutsLength++
+CHROME := LayoutsLength
+Layouts[CHROME] := ["Chrome", "ahk_exe chrome.exe", -3849, 0, 1264, 1080]
+
+ProgramList := []
+ProgramList.Push("chrome.exe")
+ProgramList.Push("Explorer.exe")
+ProgramList.Push("FCS.exe")
+ProgramList.Push("FCSLicenseGenerator.exe")
+ProgramList.Push("LabVIEW.exe")
+ProgramList.Push("mintty.exe")
+ProgramList.Push("NIMax.exe")
+ProgramList.Push("Notepad++.exe")
+ProgramList.Push("Outlook.exe")
+ProgramList.Push("p4v.exe")
+ProgramList.Push("QlarityFoundry.exe")
+ProgramList.Push("Testify - Scripting.exe")
+
+MsgBox, % Monitors[2,MON_WIDTH]
+
+; IDE_ProjectExplorer := Monitors[0,APP_X_POS] ,Y,W,H
+; WIN_Explorers[0] := [Monitors[1,APP_X_POS] ,0, 50%, 33%]
+; WIN_Explorers[1] := [Monitors[1,APP_X_POS] , M, 50%, 33%]
+; WIN_Explorers[2] := [Monitors[1,APP_X_POS] ,66%, 50%, 33%]
 
 ; General sizings and Positions
 leftPanelWidth := 400

@@ -9,6 +9,17 @@ WinActivateMove(WindowReference, X, Y, Width, Height)
   WinMove, A,, X, Y, Width, Height
 }
 
+WinActivateMove2(WindowReference)
+{
+  Global LAY_EXE
+  Global LAY_X
+  Global LAY_Y
+  Global LAY_WIDTH
+  Global LAY_HEIGHT
+  WinActivate, % WindowReference[LAY_EXE]
+  WinMove, A,, WindowReference[LAY_X], WindowReference[LAY_Y], WindowReference[LAY_WIDTH], WindowReference[LAY_HEIGHT]
+}
+
 ; Activate all referenced windows
 WinActivateMoveAll(WindowReference, X, Y, Width, Height)
 {
