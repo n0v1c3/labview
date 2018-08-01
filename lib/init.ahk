@@ -87,7 +87,7 @@ LayoutsLength := 0
 
 LayoutsLength++
 CHROME := LayoutsLength
-Layouts[CHROME] := ["Chrome", "ahk_exe chrome.exe", -3849, 0, 1264, 1080]
+Layouts[CHROME] := ["Chrome", "ahk_exe chrome.exe", -3849, 0, 1264, 720]
 
 ProgramList := []
 ProgramList.Push("chrome.exe")
@@ -102,8 +102,6 @@ ProgramList.Push("Outlook.exe")
 ProgramList.Push("p4v.exe")
 ProgramList.Push("QlarityFoundry.exe")
 ProgramList.Push("Testify - Scripting.exe")
-
-MsgBox, % Monitors[2,MON_WIDTH]
 
 ; IDE_ProjectExplorer := Monitors[0,APP_X_POS] ,Y,W,H
 ; WIN_Explorers[0] := [Monitors[1,APP_X_POS] ,0, 50%, 33%]

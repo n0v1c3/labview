@@ -9,7 +9,7 @@
 #Include ahk\ide.ahk
 #Include ahk\explorer.ahk
 #Include ahk\rocker.ahk
-#Include ahk\tracker.ahk
+; #Include ahk\tracker.ahk
 
 ; GUI Hooks {{{1
 ; Keyboard {{{2
@@ -42,25 +42,25 @@ Return
 WinGet, explorerWindows, List, ahk_class CabinetWClass
 Loop %explorerWindows%
 {
-	WinActivate, % "ahk_id " . explorerWindows%A_Index%
-	If A_Index <= 3
-	{
-		WinMove, A,, -3840, 360 * (A_Index - 1), 1264, 360
-	}
+  WinActivate, % "ahk_id " . explorerWindows%A_Index%
+  If A_Index <= 3
+  {
+    WinMove, A,, -3840, 360 * (A_Index - 1), 1264, 360
+  }
 }
 Return
 
 ; F {{{3
 ; FracCommandSetup
 #f::
-  winActivateMove("ahk_exe FCS.exe", -3840, 0, 1264, 1080)
+  winActivateMove("ahk_exe FCS.exe", -3840, 0, 1264, 720)
 Return
 
 ; I {{{3
 ; LabVIEW IDE
 #i::
   ; TODO-TJG [180731] - Fix this useless activate
-	WinActivate, % "ahk_exe" . "LabVIEW.exe"
+  WinActivate, % "ahk_exe" . "LabVIEW.exe"
 Return
 
 ; M {{{3
@@ -78,7 +78,7 @@ Return
 ; N {{{3
 ; Notepad++
 #n::
-  WinActivateMoveAll("ahk_exe notepad++.exe", 0, 0, 1264, 1080)
+  WinActivateMoveAll("ahk_exe notepad++.exe", -3840, 0, 1264, 720)
 Return
 
 ; O {{{3
@@ -96,9 +96,8 @@ Return
 ; Q {{{3
 ; Qlarity
 #q::
-	; ahk_class used to prevent the "Tool-Tip" window from being moved instead of the Qlarity window
-  winActivateMove("ahk_class Afx:00400000:0", -3840, 0, 1264, 1080)
-Return
+  ; ahk_class used to prevent the "Tool-Tip" window from being moved instead of the Qlarity window
+  winActivateMove("ahk_class Afx:00400000:0", -3840, 0, 1264, 720) Return
 
 ; S {{{3
 ; Snipper
@@ -120,8 +119,8 @@ Run "SnippingTool.exe"
 Return
 
 ; Save logger
-^s::
-  Tracker()
+$^s::
+  ; Tracker()
   Send, ^s
 Return
 
@@ -129,6 +128,12 @@ Return
 ; Terminal
 #t::
   WinActivateMove("ahk_exe mintty.exe", -1920, 0, 1920, 830)
+Return
+
+; U {{{3
+; Terminal
+#u::
+  WinActivateMove("ahk_exe Testify - Scripting.exe", -3840, 0, 1264, 720)
 Return
 
 ; ` {{{3
