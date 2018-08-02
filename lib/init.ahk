@@ -84,10 +84,31 @@ LAY_WIDTH := 5
 LAY_HEIGHT := 6
 
 LayoutsLength := 0
+CHROME := ++LayoutsLength
+EXPLORER := ++LayoutsLength
+FCS := ++LayoutsLength
+FCSLG := ++LayoutsLength
+LABVIEW := ++LayoutsLength
+TERM := ++LayoutsLength
+NIMAX := ++LayoutsLength
+NOTEPAD := ++LayoutsLength
+OUTLOOK := ++LayoutsLength
+P4V := ++LayoutsLength
+QLARITY := ++LayoutsLength
+TESTIFY := ++LayoutsLength
 
-LayoutsLength++
-CHROME := LayoutsLength
 Layouts[CHROME] := ["Chrome", "ahk_exe chrome.exe", -3849, 0, 1264, 720]
+; Layouts[EXPLORER] := ["Explorer", "ahk_exe Explorer.exe", , , , ]
+Layouts[FCS] := ["FCS", "ahk_exe FCS.exe", -3840, 0, 1264, 720]
+Layouts[FCSLG] := ["FCSLG", "ahk_exe FCSLicenseGenerator.exe", -2579, 0, 655, 1080]
+; Layouts[LABVIEW] := ["LabVIEW", "ahk_exe LabVIEW.exe", , , , ]
+Layouts[TERM] := ["term", "ahk_exe mintty.exe", -1920, 0, 1920, 830]
+Layouts[NIMAX] := ["NIMax", "ahk_exe NIMax.EXE", -2579, 0, 655, 1080]
+Layouts[NOTEPAD] := ["Notepad", "ahk_exe notepad++.exe", -3840, 0, 1264, 720]
+LayoutsOUTLOOK[] := ["Outlook", "ahk_exe OUTLOOK.exe", -2579, 0, 655, 1080]
+Layouts[P4V] := ["P4V", "ahk_exe p4v.exe", -2579, 0, 655, 1080]
+Layouts[QLARITY] := ["Qlarity", "ahk_class Afx:00400000:0", -3840, 0, 1264, 720]
+Layouts[TESTIFY] := ["Testify", "ahk_exe Testify - Scripting.exe", -3840, 0, 1264, 720]
 
 ProgramList := []
 ProgramList.Push("chrome.exe")

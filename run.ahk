@@ -152,11 +152,12 @@ Return
 Return
 
 ; Mouse {{{2
-
+; RButton {{{3
 ~*RButton::
   RRocker()
 Return
 
+; LButton {{{3
 ~*LButton::
   LRocker()
 Return
