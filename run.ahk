@@ -43,9 +43,9 @@ WinGet, explorerWindows, List, ahk_class CabinetWClass
 Loop %explorerWindows%
 {
   WinActivate, % "ahk_id " . explorerWindows%A_Index%
-  If A_Index <= 3
+  If A_Index <= 2
   {
-    WinMove, A,, -3840, 360 * (A_Index - 1), 1264, 360
+    WinMove, A,, -3840 + ((A_Index - 1) * 632), 720, 632, 360
   }
 }
 Return
@@ -127,11 +127,11 @@ Return
 ; T {{{3
 ; Terminal
 #t::
-  WinActivateMove("ahk_exe mintty.exe", -1920, 0, 1920, 830)
+  WinActivateMove("ahk_exe mintty.exe", -3840, 0, 1264, 720)
 Return
 
 ; U {{{3
-; Terminal
+; Testify (Unit Tests)
 #u::
   WinActivateMove("ahk_exe Testify - Scripting.exe", -3840, 0, 1264, 720)
 Return
