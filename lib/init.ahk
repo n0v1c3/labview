@@ -62,16 +62,12 @@ Loop, %MonitorCount%
   ;       workspace for this virtual environment
   If (MonitorWorkAreaLeft <= MonitorList["mon-3"].X)
   {
+	MonitorList["mon-2"].X := MonitorList["mon-3"].X ; X-Offset
+    MonitorList["mon-2"].W := MonitorList["mon-3"].W ; Width
+    MonitorList["mon-2"].H := MonitorList["mon-3"].H ; Height
     MonitorList["mon-3"].X := MonitorWorkAreaLeft ; X-Offset
     MonitorList["mon-3"].W := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
     MonitorList["mon-3"].H := MonitorWorkAreaBottom ; Height
-  }
-  
-  If (MonitorWorkAreaLeft <= 0 And MonitorWorkAreaLeft >= MonitorList["mon-3"].X)
-  {
-    MonitorList["mon-2"].X := MonitorWorkAreaLeft ; X-Offset
-    MonitorList["mon-2"].W := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
-    MonitorList["mon-2"].H := MonitorWorkAreaBottom ; Height
   }
   
   ; "Right" monitor will be Monitors[2]
@@ -88,14 +84,24 @@ Loop, %MonitorCount%
   }
 }
 
-MsgBox, % MonitorList["mon-3"].X
 ; Perforce cannot be 1/3 of the monitor width
 PerforceAdjust := 15
 
 DefaultLayout := {}
-DefaultLayout.Insert("3_1", {X:MonitorList["mon-3"].X, Y:0, W:MonitorList["mon-3"].W/3*2-PerforceAdjust, H:((MonitorList["mon-3"].H/3)*2)})
+; Monitor 2
+DefaultLayout.Insert("2_1", {X:MonitorList["mon-2"].X, Y:0, W:MonitorList["mon-2"].W/3*2-PerforceAdjust, H:((MonitorList["mon-2"].H/3)*2)})
+DefaultLayout.Insert("2_2", {X:MonitorList["mon-2"].X, Y:0, W:MonitorList["mon-2"].W/3*2-PerforceAdjust, H:((MonitorList["mon-2"].H/3)*2)})
+DefaultLayout.Insert("2_3", {X:MonitorList["mon-2"].X, Y:0, W:MonitorList["mon-2"].W/3*2-PerforceAdjust, H:((MonitorList["mon-2"].H/3)*2)})
+
+; Youtube
+DefaultLayout.Insert("2_4", {X:MonitorList["mon-2"].X+375, Y:646, W:479, H:434})
+
+DefaultLayout.Insert("2_5", {X:MonitorList["mon-2"].X, Y:0, W:MonitorList["mon-2"].W/3*2 - PerforceAdjust, H:((MonitorList["mon-2"].H/3)*2)})
+
+; Monitor 3
+DefaultLayout.Insert("3_1", {X:MonitorList["mon-3"].X, Y:0, W:MonitorList["mon-3"].W/3*2 - PerforceAdjust, H:((MonitorList["mon-3"].H/3)*2)})
 ; DefaultLayout.Insert("3_1", {X:0, Y:0, W:1264, H:720})
-DefaultLayout.Insert("3_2", {X:MonitorList["mon-3"].X + ((MonitorList["mon-3"].W/3)*2) - PerforceAdjust, Y:0, W:MonitorList["mon-3"].W/3+PerforceAdjust, H:MonitorList["mon-3"].H})
+DefaultLayout.Insert("3_2", {X:MonitorList["mon-3"].X + ((MonitorList["mon-3"].W/3)*2) - PerforceAdjust, Y:0, W:MonitorList["mon-3"].W/3 + PerforceAdjust, H:MonitorList["mon-3"].H})
 
 LayoutList := {}
 

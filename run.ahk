@@ -135,6 +135,13 @@ Return
   WinActivateMove(LayoutList["testify"])
 Return
 
+; Y {{{3
+; YouTube
+#y::
+  WinActivate, YouTube
+  WinMove, A,, DefaultLayout["2_4"].X, DefaultLayout["2_4"].Y, DefaultLayout["2_4"].W, DefaultLayout["2_4"].H
+Return
+
 ; ` {{{3
 
 ; 'F' Keys {{{3
