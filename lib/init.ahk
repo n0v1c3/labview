@@ -19,14 +19,22 @@ SetWorkingDir %A_ScriptDir%
 ; Partial tital match enabled
 SetTitleMatchMode, 2
 
-; Layout {{{1
+; Local working directory
+LocalDIR = %A_ScriptDir%\local
+LocalCSVFile = %LocalDIR%\tracker.csv
 
+; Layout {{{1
 ; X, Height, Width
 ; Monitor[0] will always be the "primary" monitor
 Monitors := [[]]
-MON_X_POS := 0
-MON_WIDTH := 1
-MON_HEIGHT := 2
+MON_X_POS := 1
+MON_WIDTH := 2
+MON_HEIGHT := 3
+
+MonitorList := {}
+MonitorList.Insert("mon-1", {X:0, W:0, H:0})
+MonitorList.Insert("mon-2", {X:0, W:0, H:0})
+MonitorList.Insert("mon-3", {X:0, W:0, H:0})
 
 ; Get current monitor and workspace information
 SysGet, MonitorCount, MonitorCount
@@ -42,9 +50,9 @@ Loop, %MonitorCount%
   ; Check the "X" offset
   If (MonitorWorkAreaLeft = 0)
   {
-    Monitors[0,MON_X_POS] := MonitorWorkAreaLeft ; X-Offset
-    Monitors[0,MON_WIDTH] := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
-    Monitors[0,MON_HEIGHT] := MonitorWorkAreaBottom ; Height
+    MonitorList["mon-1"].X := MonitorWorkAreaLeft ; X-Offset
+    MonitorList["mon-1"].W := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
+    MonitorList["mon-1"].H := MonitorWorkAreaBottom ; Height
   }
 
   ; Monitors[2] will always trail Monitors[1]
@@ -52,18 +60,24 @@ Loop, %MonitorCount%
 
   ; Note: this is not "Else'd" to ensure reuse of the "zero"
   ;       workspace for this virtual environment
-  If (MonitorWorkAreaLeft <= 0)
+  If (MonitorWorkAreaLeft <= MonitorList["mon-3"].X)
   {
-    Monitors[1,MON_X_POS] := MonitorWorkAreaLeft ; X-Offset
-    Monitors[1,MON_WIDTH] := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
-    Monitors[1,MON_HEIGHT] := MonitorWorkAreaBottom ; Height
+    MonitorList["mon-3"].X := MonitorWorkAreaLeft ; X-Offset
+    MonitorList["mon-3"].W := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
+    MonitorList["mon-3"].H := MonitorWorkAreaBottom ; Height
   }
+  
+  If (MonitorWorkAreaLeft <= 0 And MonitorWorkAreaLeft >= MonitorList["mon-3"].X)
+  {
+    MonitorList["mon-2"].X := MonitorWorkAreaLeft ; X-Offset
+    MonitorList["mon-2"].W := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
+    MonitorList["mon-2"].H := MonitorWorkAreaBottom ; Height
+  }
+  
   ; "Right" monitor will be Monitors[2]
   Else
   {
-    Monitors[2,MON_X_POS] := MonitorWorkAreaLeft ; X-Offset
-    Monitors[2,MON_WIDTH] := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
-    Monitors[2,MON_HEIGHT] := MonitorWorkAreaBottom ; Height
+    
   }
 
   if (MonitorWorkAreaLeft == -1920) ; xOffset > MonitorWorkAreaLeft || MonitorWorkAreaLeft == 0)
@@ -74,71 +88,40 @@ Loop, %MonitorCount%
   }
 }
 
-; Relative to Monitors
-Layouts := [[]]
-LAY_NAME := 1
-LAY_EXE := 2
-LAY_X := 3
-LAY_Y := 4
-LAY_WIDTH := 5
-LAY_HEIGHT := 6
+MsgBox, % MonitorList["mon-3"].X
+; Perforce cannot be 1/3 of the monitor width
+PerforceAdjust := 15
 
-LayoutsLength := 0
-CHROME := ++LayoutsLength
-EXPLORER := ++LayoutsLength
-FCS := ++LayoutsLength
-FCSLG := ++LayoutsLength
-LABVIEW := ++LayoutsLength
-TERM := ++LayoutsLength
-NIMAX := ++LayoutsLength
-NOTEPAD := ++LayoutsLength
-OUTLOOK := ++LayoutsLength
-P4V := ++LayoutsLength
-QLARITY := ++LayoutsLength
-TESTIFY := ++LayoutsLength
+DefaultLayout := {}
+DefaultLayout.Insert("3_1", {X:MonitorList["mon-3"].X, Y:0, W:MonitorList["mon-3"].W/3*2-PerforceAdjust, H:((MonitorList["mon-3"].H/3)*2)})
+; DefaultLayout.Insert("3_1", {X:0, Y:0, W:1264, H:720})
+DefaultLayout.Insert("3_2", {X:MonitorList["mon-3"].X + ((MonitorList["mon-3"].W/3)*2) - PerforceAdjust, Y:0, W:MonitorList["mon-3"].W/3+PerforceAdjust, H:MonitorList["mon-3"].H})
 
-Layouts[CHROME] := ["Chrome", "ahk_exe chrome.exe", -3849, 0, 1264, 720]
-; Layouts[EXPLORER] := ["Explorer", "ahk_exe Explorer.exe", , , , ]
-Layouts[FCS] := ["FCS", "ahk_exe FCS.exe", -3840, 0, 1264, 720]
-Layouts[FCSLG] := ["FCSLG", "ahk_exe FCSLicenseGenerator.exe", -2579, 0, 655, 1080]
-; Layouts[LABVIEW] := ["LabVIEW", "ahk_exe LabVIEW.exe", , , , ]
-Layouts[TERM] := ["term", "ahk_exe mintty.exe", -1920, 0, 1920, 830]
-Layouts[NIMAX] := ["NIMax", "ahk_exe NIMax.EXE", -2579, 0, 655, 1080]
-Layouts[NOTEPAD] := ["Notepad", "ahk_exe notepad++.exe", -3840, 0, 1264, 720]
-LayoutsOUTLOOK[] := ["Outlook", "ahk_exe OUTLOOK.exe", -2579, 0, 655, 1080]
-Layouts[P4V] := ["P4V", "ahk_exe p4v.exe", -2579, 0, 655, 1080]
-Layouts[QLARITY] := ["Qlarity", "ahk_class Afx:00400000:0", -3840, 0, 1264, 720]
-Layouts[TESTIFY] := ["Testify", "ahk_exe Testify - Scripting.exe", -3840, 0, 1264, 720]
+LayoutList := {}
 
-ProgramList := []
-ProgramList.Push("chrome.exe")
-ProgramList.Push("Explorer.exe")
-ProgramList.Push("FCS.exe")
-ProgramList.Push("FCSLicenseGenerator.exe")
-ProgramList.Push("LabVIEW.exe")
-ProgramList.Push("mintty.exe")
-ProgramList.Push("NIMax.exe")
-ProgramList.Push("Notepad++.exe")
-ProgramList.Push("Outlook.exe")
-ProgramList.Push("p4v.exe")
-ProgramList.Push("QlarityFoundry.exe")
-ProgramList.Push("Testify - Scripting.exe")
+; 3_1
+LayoutList.Insert("chrome", {path: "ahk_exe chrome.exe", layout: DefaultLayout["3_1"]})
+LayoutList.Insert("fcs", {path: "ahk_exe FCS.exe", layout: DefaultLayout["3_1"]})
+; LayoutList.Insert("labview", {path: "ahk_exe chrome.exe", layout: DefaultLayout["3_1"]})
+LayoutList.Insert("term", {path: "ahk_exe mintty.exe", layout: DefaultLayout["3_1"]})
+LayoutList.Insert("notepad", {path: "ahk_exe notepad++.exe", layout: DefaultLayout["3_1"]})
+LayoutList.Insert("qlarity", {path: "ahk_class Afx:00400000:0", layout: DefaultLayout["3_1"]})
+LayoutList.Insert("testify", {path: "ahk_exe Testify - Scripting.exe", layout: DefaultLayout["3_1"]})
 
-; IDE_ProjectExplorer := Monitors[0,APP_X_POS] ,Y,W,H
-; WIN_Explorers[0] := [Monitors[1,APP_X_POS] ,0, 50%, 33%]
-; WIN_Explorers[1] := [Monitors[1,APP_X_POS] , M, 50%, 33%]
-; WIN_Explorers[2] := [Monitors[1,APP_X_POS] ,66%, 50%, 33%]
+; 3_2
+LayoutList.Insert("fcslg", {path: "ahk_exe FCSLicenseGenerator.exe", layout: DefaultLayout["3_2"]})
+LayoutList.Insert("nimax", {path: "ahk_exe NIMax.EXE", layout: DefaultLayout["3_2"]})
+LayoutList.Insert("outlook", {path: "ahk_exe OUTLOOK.exe", layout: DefaultLayout["3_2"]})
+LayoutList.Insert("p4v", {path: "ahk_exe p4v.exe", layout: DefaultLayout["3_2"]})
+
+; 3_3
+; LayoutList.Insert("explorer", {path: "ahk_exe chrome.exe", layout: DefaultLayout["3_1"]})
 
 ; General sizings and Positions
 leftPanelWidth := 400
 bottomPanelHeight := 250
 bottomPanelY := height - bottomPanelHeight
 rightPanelWidth := width - leftPanelWidth
-
-; Local DIR {{{2
-; These directories are not sync'd with the origin
-LocalDIR = %A_ScriptDir%\local
-LocalCSVFile = %LocalDIR%\tracker.csv
 
 ; Scripting {{{1
 ; Local DIR {{{2
