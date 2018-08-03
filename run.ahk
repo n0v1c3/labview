@@ -16,8 +16,7 @@
 ; C {{{3
 ; Chrome
 #c::
-  ; WinActivateMove("ahk_exe chrome.exe", -3840, 0, 1264, 1080)
-  WinActivateMove2(Layouts[Chrome])
+  WinActivateMove(LayoutList["chrome"])
 Return
 
 ; D {{{3
@@ -53,7 +52,7 @@ Return
 ; F {{{3
 ; FracCommandSetup
 #f::
-  winActivateMove("ahk_exe FCS.exe", -3840, 0, 1264, 720)
+  WinActivateMove(LayoutList["fcs"])
 Return
 
 ; I {{{3
@@ -66,38 +65,38 @@ Return
 ; M {{{3
 ; NIMax
 #m::
-  winActivateMove("ahk_exe NIMax.EXE", -2579, 0, 655, 1080)
+  WinActivateMove(LayoutList["nimax"])
 Return
 
 ; G {{{3
 ; FCSLicenseGenerator
 #g::
-  winActivateMove("ahk_exe FCSLicenseGenerator.exe", -2579, 0, 655, 1080)
+  WinActivateMove(LayoutList["fcslg"])
 Return
 
 ; N {{{3
 ; Notepad++
 #n::
-  WinActivateMoveAll("ahk_exe notepad++.exe", -3840, 0, 1264, 720)
+  WinActivateMove(LayoutList["notepad"])
 Return
 
 ; O {{{3
 ; Outlook
 #o::
-  WinActivateMoveAll("ahk_exe OUTLOOK.exe", -2579, 0, 655, 1080)
+  WinActivateMove(LayoutList["outlook"])
 Return
 
 ; P {{{3
 ; Perforce
 #p::
-  WinActivateMoveAll("ahk_exe p4v.exe", -2579, 0, 655, 1080)
+  WinActivateMove(LayoutList["p4v"])
 Return
 
 ; Q {{{3
 ; Qlarity
 #q::
-  ; ahk_class used to prevent the "Tool-Tip" window from being moved instead of the Qlarity window
-  winActivateMove("ahk_class Afx:00400000:0", -3840, 0, 1264, 720) Return
+  WinActivateMove(LayoutList["qlarity"])
+Return
 
 ; S {{{3
 ; Snipper
@@ -127,13 +126,13 @@ Return
 ; T {{{3
 ; Terminal
 #t::
-  WinActivateMove("ahk_exe mintty.exe", -1920, 0, 1920, 830)
+  WinActivateMove(LayoutList["term"])
 Return
 
 ; U {{{3
 ; Terminal
 #u::
-  WinActivateMove("ahk_exe Testify - Scripting.exe", -3840, 0, 1264, 720)
+  WinActivateMove(LayoutList["testify"])
 Return
 
 ; ` {{{3

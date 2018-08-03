@@ -19,8 +19,11 @@ SetWorkingDir %A_ScriptDir%
 ; Partial tital match enabled
 SetTitleMatchMode, 2
 
-; Layout {{{1
+; Local working directory
+LocalDIR = %A_ScriptDir%\local
+LocalCSVFile = %LocalDIR%\tracker.csv
 
+; Layout {{{1
 ; X, Height, Width
 ; Monitor[0] will always be the "primary" monitor
 Monitors := [[]]
@@ -74,71 +77,36 @@ Loop, %MonitorCount%
   }
 }
 
-; Relative to Monitors
-Layouts := [[]]
-LAY_NAME := 1
-LAY_EXE := 2
-LAY_X := 3
-LAY_Y := 4
-LAY_WIDTH := 5
-LAY_HEIGHT := 6
+DefaultLayout := {}
+; DefaultLayout.Insert("3_1", {X:-3849, Y:0, W:1264, H:720})
+DefaultLayout.Insert("3_1", {X:0, Y:0, W:1264, H:720})
+DefaultLayout.Insert("3_2", {X:-2579, Y:0, W:655, H:1080})
 
-LayoutsLength := 0
-CHROME := ++LayoutsLength
-EXPLORER := ++LayoutsLength
-FCS := ++LayoutsLength
-FCSLG := ++LayoutsLength
-LABVIEW := ++LayoutsLength
-TERM := ++LayoutsLength
-NIMAX := ++LayoutsLength
-NOTEPAD := ++LayoutsLength
-OUTLOOK := ++LayoutsLength
-P4V := ++LayoutsLength
-QLARITY := ++LayoutsLength
-TESTIFY := ++LayoutsLength
+LayoutList := {}
 
-Layouts[CHROME] := ["Chrome", "ahk_exe chrome.exe", -3849, 0, 1264, 720]
-; Layouts[EXPLORER] := ["Explorer", "ahk_exe Explorer.exe", , , , ]
-Layouts[FCS] := ["FCS", "ahk_exe FCS.exe", -3840, 0, 1264, 720]
-Layouts[FCSLG] := ["FCSLG", "ahk_exe FCSLicenseGenerator.exe", -2579, 0, 655, 1080]
-; Layouts[LABVIEW] := ["LabVIEW", "ahk_exe LabVIEW.exe", , , , ]
-Layouts[TERM] := ["term", "ahk_exe mintty.exe", -1920, 0, 1920, 830]
-Layouts[NIMAX] := ["NIMax", "ahk_exe NIMax.EXE", -2579, 0, 655, 1080]
-Layouts[NOTEPAD] := ["Notepad", "ahk_exe notepad++.exe", -3840, 0, 1264, 720]
-LayoutsOUTLOOK[] := ["Outlook", "ahk_exe OUTLOOK.exe", -2579, 0, 655, 1080]
-Layouts[P4V] := ["P4V", "ahk_exe p4v.exe", -2579, 0, 655, 1080]
-Layouts[QLARITY] := ["Qlarity", "ahk_class Afx:00400000:0", -3840, 0, 1264, 720]
-Layouts[TESTIFY] := ["Testify", "ahk_exe Testify - Scripting.exe", -3840, 0, 1264, 720]
+; 3_1
+LayoutList.Insert("chrome", {path: "ahk_exe chrome.exe", layout: DefaultLayout["3_1"]})
+LayoutList.Insert("fcs", {path: "ahk_exe FCS.exe", layout: DefaultLayout["3_1"]})
+; LayoutList.Insert("labview", {path: "ahk_exe chrome.exe", layout: DefaultLayout["3_1"]})
+LayoutList.Insert("term", {path: "ahk_exe mintty.exe", layout: DefaultLayout["3_1"]})
+LayoutList.Insert("notepad", {path: "ahk_exe notepad++.exe", layout: DefaultLayout["3_1"]})
+LayoutList.Insert("qlarity", {path: "ahk_class Afx:00400000:0", layout: DefaultLayout["3_1"]})
+LayoutList.Insert("testify", {path: "ahk_exe Testify - Scripting.exe", layout: DefaultLayout["3_1"]})
 
-ProgramList := []
-ProgramList.Push("chrome.exe")
-ProgramList.Push("Explorer.exe")
-ProgramList.Push("FCS.exe")
-ProgramList.Push("FCSLicenseGenerator.exe")
-ProgramList.Push("LabVIEW.exe")
-ProgramList.Push("mintty.exe")
-ProgramList.Push("NIMax.exe")
-ProgramList.Push("Notepad++.exe")
-ProgramList.Push("Outlook.exe")
-ProgramList.Push("p4v.exe")
-ProgramList.Push("QlarityFoundry.exe")
-ProgramList.Push("Testify - Scripting.exe")
+; 3_2
+LayoutList.Insert("fcslg", {path: "ahk_exe FCSLicenseGenerator.exe", layout: DefaultLayout["3_2"]})
+LayoutList.Insert("nimax", {path: "ahk_exe NIMax.EXE", layout: DefaultLayout["3_2"]})
+LayoutList.Insert("outlook", {path: "ahk_exe OUTLOOK.exe", layout: DefaultLayout["3_2"]})
+LayoutList.Insert("p4v", {path: "ahk_exe p4v.exe", layout: DefaultLayout["3_2"]})
 
-; IDE_ProjectExplorer := Monitors[0,APP_X_POS] ,Y,W,H
-; WIN_Explorers[0] := [Monitors[1,APP_X_POS] ,0, 50%, 33%]
-; WIN_Explorers[1] := [Monitors[1,APP_X_POS] , M, 50%, 33%]
-; WIN_Explorers[2] := [Monitors[1,APP_X_POS] ,66%, 50%, 33%]
+; 3_3
+; LayoutList.Insert("explorer", {path: "ahk_exe chrome.exe", layout: DefaultLayout["3_1"]})
 
 ; General sizings and Positions
 leftPanelWidth := 400
 bottomPanelHeight := 250
 bottomPanelY := height - bottomPanelHeight
 rightPanelWidth := width - leftPanelWidth
-
-; Local DIR {{{2
-; These directories are not sync'd with the origin
-LocalDIR = %A_ScriptDir%\local
-LocalCSVFile = %LocalDIR%\tracker.csv
 
 ; Scripting {{{1
 ; Local DIR {{{2
