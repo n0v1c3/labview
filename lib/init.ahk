@@ -32,13 +32,16 @@ MON_WIDTH := 2
 MON_HEIGHT := 3
 
 MonitorList := {}
-MonitorList.Insert("mon-1", {X:0, W:0, H:0})
+MonitorList.Insert("mon-1", {X:0, W:3, H:0})
 MonitorList.Insert("mon-2", {X:0, W:0, H:0})
 MonitorList.Insert("mon-3", {X:0, W:0, H:0})
 
 ; Get current monitor and workspace information
 SysGet, MonitorCount, MonitorCount
 SysGet, MonitorPrimary, MonitorPrimary
+
+IsFirst := True
+
 Loop, %MonitorCount%
 {
   SysGet, MonitorName, MonitorName, %A_Index%
@@ -47,57 +50,67 @@ Loop, %MonitorCount%
 
   ; TODO-TJG [180731] - This should be able to handle "X" monitors
 
-  ; Check the "X" offset
-  If (MonitorWorkAreaLeft = 0)
+  ; Initialize all monitors to the first screen
+  If (IsFirst)
   {
-    MonitorList["mon-1"].X := MonitorWorkAreaLeft ; X-Offset
-    MonitorList["mon-1"].W := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
-    MonitorList["mon-1"].H := MonitorWorkAreaBottom ; Height
+    IsFirst := False
+    For Key, Value in MonitorList
+    {
+      Value.X := MonitorWorkAreaLeft ; X-Offset
+      Value.W := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
+      Value.H := MonitorWorkAreaBottom ; Height
+    }
   }
-
-  ; Monitors[2] will always trail Monitors[1]
-  Monitors[2] := Monitors[1]
 
   ; Note: this is not "Else'd" to ensure reuse of the "zero"
   ;       workspace for this virtual environment
   If (MonitorWorkAreaLeft <= MonitorList["mon-3"].X)
   {
+    MonitorList["mon-2"].X := MonitorList["mon-3"].X
+    MonitorList["mon-2"].W := MonitorList["mon-3"].W
+    MonitorList["mon-2"].H := MonitorList["mon-3"].H
     MonitorList["mon-3"].X := MonitorWorkAreaLeft ; X-Offset
     MonitorList["mon-3"].W := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
     MonitorList["mon-3"].H := MonitorWorkAreaBottom ; Height
   }
-  
-  If (MonitorWorkAreaLeft <= 0 And MonitorWorkAreaLeft >= MonitorList["mon-3"].X)
-  {
-    MonitorList["mon-2"].X := MonitorWorkAreaLeft ; X-Offset
-    MonitorList["mon-2"].W := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
-    MonitorList["mon-2"].H := MonitorWorkAreaBottom ; Height
-  }
-  
-  ; "Right" monitor will be Monitors[2]
-  Else
-  {
-    
-  }
 
-  if (MonitorWorkAreaLeft == -1920) ; xOffset > MonitorWorkAreaLeft || MonitorWorkAreaLeft == 0)
-  {
+  ;if (MonitorWorkAreaLeft == -1920) ; xOffset > MonitorWorkAreaLeft || MonitorWorkAreaLeft == 0)
+  ;{
     xOffset := MonitorWorkAreaLeft
     height := MonitorWorkAreaBottom
     width := MonitorWorkAreaRight - MonitorWorkAreaLeft
-  }
+  ;}
 }
 
-MsgBox, % MonitorList["mon-3"].X
 ; Perforce cannot be 1/3 of the monitor width
 PerforceAdjust := 15
 
 DefaultLayout := {}
+MonX := MonitorList["mon-2"].X
+MonW := MonitorList["mon-2"].W/4
+MonH := MonitorList["mon-2"].H/4
+DefaultLayout.Insert("2_1", {X:MonX, Y:0, W:MonW, H:MonH*3})
+DefaultLayout.Insert("2_2", {X:MonX+MonW, Y:0, W:MonW*3, H:MonH*3})
+DefaultLayout.Insert("2_3", {X:MonX, Y:MonH*3, W:MonW, H:MonH})
+; Special offsets for YouTube
+YTHeight := 200
+YTWidth := 10
+DefaultLayout.Insert("2_4", {X:MonX+MonW, Y:MonH*3-YTHeight, W:MonW+YTWidth, H:MonH+YTHeight})
+
+DefaultLayout.Insert("2_5", {X:MonX+(2*MonW), Y:MonH*3, W:MonW*2, H:MonH})
+
 DefaultLayout.Insert("3_1", {X:MonitorList["mon-3"].X, Y:0, W:MonitorList["mon-3"].W/3*2-PerforceAdjust, H:((MonitorList["mon-3"].H/3)*2)})
 ; DefaultLayout.Insert("3_1", {X:0, Y:0, W:1264, H:720})
 DefaultLayout.Insert("3_2", {X:MonitorList["mon-3"].X + ((MonitorList["mon-3"].W/3)*2) - PerforceAdjust, Y:0, W:MonitorList["mon-3"].W/3+PerforceAdjust, H:MonitorList["mon-3"].H})
+DefaultLayout.Insert("3_3", {X:MonitorList["mon-3"].X, Y:MonitorList["mon-3"].H/3*2, W:(MonitorList["mon-3"].W/3*2)-PerforceAdjust, H:MonitorList["mon-3"].H/3})
 
 LayoutList := {}
+
+; 2_4
+LayoutList.Insert("lv_project", {path: "Project Explorer", layout: DefaultLayout["2_1"]})
+
+; 2_4
+LayoutList.Insert("youtube", {path: "YouTube", layout: DefaultLayout["2_4"]})
 
 ; 3_1
 LayoutList.Insert("chrome", {path: "ahk_exe chrome.exe", layout: DefaultLayout["3_1"]})
@@ -127,4 +140,4 @@ rightPanelWidth := width - leftPanelWidth
 ; Local DIR {{{2
 ; Ensure Required directory exists
 IfNotExist, LocalDIR
-	FileCreateDir, %LocalDIR%
+  FileCreateDir, %LocalDIR%

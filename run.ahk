@@ -11,6 +11,7 @@
 #Include ahk\rocker.ahk
 ; #Include ahk\tracker.ahk
 
+
 ; GUI Hooks {{{1
 ; Keyboard {{{2
 ; C {{{3
@@ -44,7 +45,7 @@ Loop %explorerWindows%
   WinActivate, % "ahk_id " . explorerWindows%A_Index%
   If A_Index <= 2
   {
-    WinMove, A,, -3840 + ((A_Index - 1) * 632), 720, 632, 360
+    WinMove, A,, DefaultLayout["3_3"].X+((DefaultLayout["3_3"].W/2)*(A_Index-1)), DefaultLayout["3_3"].Y, DefaultLayout["3_3"].W/2, DefaultLayout["3_3"].H 
   }
 }
 Return
@@ -60,6 +61,8 @@ Return
 #i::
   ; TODO-TJG [180731] - Fix this useless activate
   WinActivate, % "ahk_exe" . "LabVIEW.exe"
+  ;WinActivate, % LayoutList["lv_project"].path
+  ;WinMove, A,, LayoutList["lv_project"].layout.X, LayoutList["lv_project"].layout.Y, LayoutList["lv_project"].layout.W, LayoutList["lv_project"].layout.H
 Return
 
 ; M {{{3
@@ -135,7 +138,12 @@ Return
   WinActivateMove(LayoutList["testify"])
 Return
 
-; ` {{{3
+; Y {{{3
+; YouTube
+#y::
+  WinActivate, % LayoutList["youtube"].path
+  WinMove, A,, LayoutList["youtube"].layout.X, LayoutList["youtube"].layout.Y, LayoutList["youtube"].layout.W, LayoutList["youtube"].layout.H
+Return
 
 ; 'F' Keys {{{3
 ; Reload this AHK script

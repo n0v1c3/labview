@@ -4,24 +4,25 @@
 
 ; Setup {{{1
 ; Activate Block Diagram selected from the drop-down list
-SelectBlockDiagram:
-Gui, LVBD: Submit
-WinActivate, %BlockDiagram%
-Return
+; SelectBlockDiagram:
+; Gui, LVBD: Submit
+; WinActivate, %BlockDiagram%
+; Return
 
 ; Display the Block Diagram drop-down list
-^`::
-BlockDiagramList := CurrentBlockDiagrams()
-Gui, LVBD: New, , LV - Blocks
-Gui, Add, DropDownList, w600 vBlockDiagram, %BlockDiagramList%
-Gui, Show, , LV - Blocks
-Return
+;^`::
+;BlockDiagramList := CurrentBlockDiagrams()
+;Gui, LVBD: New, , LV - Blocks
+;Gui, Add, DropDownList, w600 vBlockDiagram, %BlockDiagramList%
+;Gui, Show, , LV - Blocks
+;Return
 
 ; Window specific shortcuts for the LVBD GUI
 #IfWinActive LV - Blocks
 ; Submit
 Enter::
-	GoSub, SelectBlockDiagram
+  MsgBox, Test
+	; GoSub, SelectBlockDiagram
 Return
 
 ; Hide
