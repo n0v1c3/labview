@@ -92,24 +92,3 @@ LVWindowInfo[Row,1] := "Tools"
 LVWindowInfo[Row,4] := leftPanelWidth + rightPanelWidth - 115
 LVWindowInfo[Row,5] := bottomPanelY - 200
 
-; Functions {{{1
-; CurrentBlockDiagrams {{{2
-; Get list of open Block Diagrams for a drop-down list
-CurrentBlockDiagrams()
-{
-	WindowList := ""
-	isFirst := True
-
-	WinGet windows, List
-	Loop %windows%
-	{
-		id := windows%A_Index%
-		WinGetTitle wt, ahk_id %id%
-		IfInString, wt, Block Diagram
-		{
-			WindowList .= (isFirst ? wt "|" : "|" wt)
-			isFirst := False
-		}
-	}
-	Return WindowList
-}
