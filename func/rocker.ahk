@@ -79,7 +79,7 @@ RRocker()
           Send, {Down}
           Counter := Counter + 1
         }
-        GoSub, SelectBlockDiagram
+        ; GoSub, SelectBlockDiagram
       }
     }
 
@@ -163,7 +163,7 @@ LRocker()
         Gui, Show, , LV - Blocks
         Send, {End}
         Counter := 1
-        GoSub, SelectBlockDiagram
+        ; GoSub, SelectBlockDiagram
       }
     }
 
