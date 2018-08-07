@@ -83,44 +83,59 @@ DefaultLayout.Insert("2_5", {X:MonX+(2*MonW), Y:MonH*3, W:MonW*2, H:MonH})
 DefaultLayout.Insert("3_1", {X:MonitorList["mon-3"].X, Y:0, W:MonitorList["mon-3"].W/3*2-PerforceAdjust, H:((MonitorList["mon-3"].H/3)*2)})
 DefaultLayout.Insert("3_2", {X:MonitorList["mon-3"].X + ((MonitorList["mon-3"].W/3)*2) - PerforceAdjust, Y:0, W:MonitorList["mon-3"].W/3+PerforceAdjust, H:MonitorList["mon-3"].H})
 DefaultLayout.Insert("3_3", {X:MonitorList["mon-3"].X, Y:MonitorList["mon-3"].H/3*2, W:(MonitorList["mon-3"].W/3*2)-PerforceAdjust, H:MonitorList["mon-3"].H/3})
+DefaultLayout.Insert("3_3_1", {X:DefaultLayout["3_3"].X, Y:DefaultLayout["3_3"].Y, W:DefaultLayout["3_3"].W/2, H:DefaultLayout["3_3"].H})
+DefaultLayout.Insert("3_3_2", {X:DefaultLayout["3_3"].X + DefaultLayout["3_3"].W/2, Y:DefaultLayout["3_3"].Y, W:DefaultLayout["3_3"].W/2, H:DefaultLayout["3_3"].H})
 
 ; Applications {{{2
 LayoutList := {}
 
 ; 2_1 {{{3
-LayoutList.Insert("lv_project", {path: "Project Explorer", layout: DefaultLayout["2_1"]})
+Layout := DefaultLayout["2_1"]
+LayoutList.Insert("lv_project", {path: "Project Explorer", layout: Layout})
 
 ; 2_2 {{{3
-LayoutList.Insert("lv_block", {path: "Block Diagram", layout: DefaultLayout["2_2"]})
+Layout := DefaultLayout["2_2"]
+LayoutList.Insert("lv_block", {path: "Block Diagram", layout: Layout})
 
 ; 2_3 {{{3
-LayoutList.Insert("lv_navigation", {path: "Navigation", layout: DefaultLayout["2_3"]})
+Layout := DefaultLayout["2_3"]
+LayoutList.Insert("lv_navigation", {path: "Navigation", layout: Layout})
 
 ; 2_4 {{{3
-LayoutList.Insert("youtube", {path: "YouTube", layout: DefaultLayout["2_4"]})
+Layout := DefaultLayout["2_4"]
+LayoutList.Insert("youtube", {path: "YouTube", run: "chrome.exe --new-window youtube.com", layout: Layout})
 
 ; 2_5 {{{3
-LayoutList.Insert("lv_probe", {path: "Probe Watch Window", layout: DefaultLayout["2_5"]})
-LayoutList.Insert("lv_bookmark", {path: "Bookmark Manager", layout: DefaultLayout["2_5"]})
-LayoutList.Insert("lv_error", {path: "Error list", layout: DefaultLayout["2_5"]})
+Layout := DefaultLayout["2_5"]
+LayoutList.Insert("lv_probe", {path: "Probe Watch Window", layout: Layout})
+LayoutList.Insert("lv_bookmark", {path: "Bookmark Manager", layout: Layout})
+LayoutList.Insert("lv_error", {path: "Error list", layout: Layout})
 
 ; 3_1 {{{3
-LayoutList.Insert("chrome", {path: "ahk_exe chrome.exe", layout: DefaultLayout["3_1"]})
-LayoutList.Insert("fcs", {path: "ahk_exe FCS.exe", layout: DefaultLayout["3_1"]})
-LayoutList.Insert("term", {path: "ahk_exe mintty.exe", layout: DefaultLayout["3_1"]})
-LayoutList.Insert("notepad", {path: "ahk_exe notepad++.exe", layout: DefaultLayout["3_1"]})
-LayoutList.Insert("qlarity", {path: "ahk_class Afx:00400000:0", layout: DefaultLayout["3_1"]})
-LayoutList.Insert("testify", {path: "ahk_exe Testify - Scripting.exe", layout: DefaultLayout["3_1"]})
-LayoutList.Insert("lv_hierarchy", {path: "VI Hierarchy", layout: DefaultLayout["3_1"]})
+Layout := DefaultLayout["3_1"]
+LayoutList.Insert("chrome", {path: "ahk_exe chrome.exe", run: "chrome.exe", layout: Layout})
+LayoutList.Insert("paint", {path: "ahk_exe mspaint.exe", run: "mspaint.exe", layout: Layout})
+LayoutList.Insert("putty", {path: "ahk_class PuTTY", run: "putty.exe", layout: Layout})
+LayoutList.Insert("excel", {path: "ahk_exe excel.exe", run: "excel.exe", layout: Layout})
+LayoutList.Insert("fcs", {path: "ahk_exe FCS.exe", layout: Layout})
+LayoutList.Insert("term", {path: "ahk_exe mintty.exe", layout: Layout})
+LayoutList.Insert("notepad", {path: "ahk_exe notepad++.exe", run: "notepad++.exe", layout: Layout})
+LayoutList.Insert("qlarity", {path: "ahk_class Afx:00400000:0", layout: Layout})
+LayoutList.Insert("testify", {path: "ahk_exe Testify - Scripting.exe", layout: Layout})
+LayoutList.Insert("lv_hierarchy", {path: "VI Hierarchy", layout: Layout})
 
 ; 3_2 {{{3
-LayoutList.Insert("fcslg", {path: "ahk_exe FCSLicenseGenerator.exe", layout: DefaultLayout["3_2"]})
-LayoutList.Insert("nimax", {path: "ahk_exe NIMax.EXE", layout: DefaultLayout["3_2"]})
-LayoutList.Insert("outlook", {path: "ahk_exe OUTLOOK.exe", layout: DefaultLayout["3_2"]})
-LayoutList.Insert("p4v", {path: "ahk_exe p4v.exe", layout: DefaultLayout["3_2"]})
+Layout := DefaultLayout["3_2"]
+LayoutList.Insert("fcslg", {path: "ahk_exe FCSLicenseGenerator.exe", layout: Layout})
+LayoutList.Insert("nimax", {path: "ahk_exe NIMax.EXE", layout: Layout})
+LayoutList.Insert("outlook", {path: "ahk_exe OUTLOOK.exe", run: "outlook.exe", layout: Layout})
+LayoutList.Insert("p4v", {path: "ahk_exe p4v.exe", layout: Layout})
 
 ; 3_3 {{{3
-; LayoutList.Insert("explorer", {path: "ahk_exe chrome.exe", layout: DefaultLayout["3_1"]})
+Layout := DefaultLayout["3_3_1"]
+LayoutList.Insert("explorer_1", {path: "ahk_exe explorer.exe", run: "explorer.exe", layout: Layout})
+Layout := DefaultLayout["3_3_2"]
+LayoutList.Insert("explorer_2", {path: "ahk_exe explorer.exe", run: "explorer.exe", layout: Layout})
 
 ; Clean-Up {{{1
 ; General sizings and Positions
@@ -128,4 +143,3 @@ leftPanelWidth := 400
 bottomPanelHeight := 250
 bottomPanelY := height - bottomPanelHeight
 rightPanelWidth := width - leftPanelWidth
-

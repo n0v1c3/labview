@@ -19,6 +19,10 @@ SetWorkingDir %A_ScriptDir%
 ; Partial tital match enabled
 SetTitleMatchMode, 2
 
+; Explorer {{{3
+ExplorerIDs := ["",""]
+SavedIDs := []
+
 ; Directories {{{3
 ; Local working directory
 LocalDIR = %A_ScriptDir%\local

@@ -11,4 +11,7 @@
 ; #Include func\rocker.ahk
 ; #Include func\tracker.ahk
 
+;For Key, Value In LayoutList
+  ; WinActivateMove(Value)
+
 #Include lib\mappings.ahk
