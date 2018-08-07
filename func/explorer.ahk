@@ -27,25 +27,38 @@ ExplorerSwap(A, B)
 
 WinActivateMove(Application)
 {
+  Running := False
+
   If (Application.path <> "")
   {
+    WinActivate, % Application.id
     WinGet, WinList, List, % Application.path
-    Loop %WinList%
+    If (Application.id == "ahk_id " . WinExist("A"))
     {
-      WinActivate, % "ahk_id " . WinList%A_Index%
+	  Running := True
       WinMove, A,, Application.layout.X, Application.layout.Y, Application.layout.W, Application.layout.H
     }
+    Else If (WinList)
+    {
+	  Running := True
+	  Loop %WinList%
+	  {
+	    WinActivate, % "ahk_id " . WinList%A_Index%
+		WinMove, A,, Application.layout.X, Application.layout.Y, Application.layout.W, Application.layout.H
+	  }
+	}
   }
-
-  If ((Application.id == "" || !WinExist(Application.id)) && Application.run != "") 
+  
+  
+  If (!Running && Application.run != "") 
   {
     Run, % Application.run
     Sleep, 1000
+	; TODO - Only insert ID if needed (ie. Explorer)
     Application.id := "ahk_id " . WinExist("A")
   }
 
-  WinActivate, % Application.id
-  WinMove, A,, Application.layout.X, Application.layout.Y, Application.layout.W, Application.layout.H
+  
 }
 
 WinBackground()
