@@ -104,19 +104,63 @@ Return
   ; Will not reach this line
 Return
 
+; ` {{{3
+; Cycle windows
+#`::
+  WinBackground()
+Return
+
+; Close window under the cursor
+#!`::
+  WinForeground()
+Return
+
+#+`::
+  UMID := CursorID()
+  WinClose, ahk_id %UMID%
+Return
+
+; 1 {{{3
+#1::
+  WinActivate, % SavedIDs[1]
+Return
+
+#!1::
+  SavedIDs[1] := "ahk_id " . CursorID()
+Return
+
+#2::
+  WinActivate, % SavedIDs[2]
+Return
+
+#!2::
+  SavedIDs[2] := "ahk_id " . CursorID()
+Return
+
+#3::
+  WinActivate, % SavedIDs[3]
+Return
+
+#!3::
+  SavedIDs[3] := "ahk_id " . CursorID()
+Return
+
 ; C {{{3
 ; Chrome
 #c::
   WinActivateMove(LayoutList["chrome"])
-  WinActivateMove(LayoutList["youtube"])
-  Send, !{Esc}
 Return
 
 ; D {{{3
+; Perforce "Depot"
+#d::
+  WinActivateMove(LayoutList["p4v"])
+Return
+
 ; Delete
 $^d::
   ; Delete > Outlook
-  IfWinActive, % "ahk_exe" . "OUTLOOK.exe"
+  IfWinActive, % LayoutList["outlook"].path
   {
     Send, ^{q}
     Send, ^{d}
@@ -131,15 +175,16 @@ Return
 ; E {{{3
 ; Explorer
 #e::
-WinGet, explorerWindows, List, ahk_class CabinetWClass
-Loop %explorerWindows%
-{
-  WinActivate, % "ahk_id " . explorerWindows%A_Index%
-  If A_Index <= 2
-  {
-    WinMove, A,, DefaultLayout["3_3"].X+((DefaultLayout["3_3"].W/2)*(A_Index-1)), DefaultLayout["3_3"].Y, DefaultLayout["3_3"].W/2, DefaultLayout["3_3"].H 
-  }
-}
+  WinActivateMove(LayoutList["explorer_1"])
+  WinActivateMove(LayoutList["explorer_2"])
+Return
+
+#^e::
+  ExplorerSwap(LayoutList["explorer_1"], LayoutList["explorer_2"])
+Return
+
+#!e::
+  ExplorerSwap(LayoutList["explorer_2"], LayoutList["explorer_1"])
 Return
 
 ; F {{{3
@@ -178,7 +223,6 @@ IfWinActive, Configuration
 }
 Return
 
-
 ; M {{{3
 ; NIMax
 #m::
@@ -203,10 +247,16 @@ Return
   WinActivateMove(LayoutList["outlook"])
 Return
 
+; Send e-mail
+#+o::
+  WinActivateMove(LayoutList["outlook"])
+  Send, !S
+Return
+
 ; P {{{3
-; Perforce
+; Panit
 #p::
-  WinActivateMove(LayoutList["p4v"])
+  WinActivateMove(LayoutList["putty"])
 Return
 
 ; Q {{{3

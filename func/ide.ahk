@@ -38,7 +38,7 @@ BD_CleanWires()
 	Send, c
 	Send, {Enter}
 }
-
+ /*
 ; Setup {{{1
 ; Activate Block Diagram selected from the drop-down list
 SelectBlockDiagram:
@@ -66,6 +66,7 @@ Return
 Gui, LVBD: Hide
 Return
 #IfWinActive
+*/
 
 ; TODO-TJG [180804] - Remove this
 /*
@@ -93,6 +94,7 @@ Loop %windows%
 Return
 */
 
+/*
 ; TODO-TJG [180804] - WTF is this for?
 ; Clean window swap
 $^e::
@@ -119,6 +121,7 @@ Click
 MouseMove %x%, %y%
 Return
 
+*/
 /*
 ; Slow the mouse down
 $Alt::
@@ -134,4 +137,3 @@ Alt Up::
 DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, UInt, 0)
 Return
 */
-
