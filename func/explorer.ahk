@@ -31,7 +31,7 @@ WinActivateMove(Application)
 
   If (Application.path <> "")
   {
-    WinActivate, % Application.id
+    ; WinActivate, % Application.id
     WinGet, WinList, List, % Application.path
     If (Application.id == "ahk_id " . WinExist("A"))
     {
@@ -44,7 +44,7 @@ WinActivateMove(Application)
 	  Loop %WinList%
 	  {
 	    WinActivate, % "ahk_id " . WinList%A_Index%
-		WinMove, A,, Application.layout.X, Application.layout.Y, Application.layout.W, Application.layout.H
+		WinMove, % "ahk_id " . WinList%A_Index%,, Application.layout.X, Application.layout.Y, Application.layout.W, Application.layout.H
 	  }
 	}
   }

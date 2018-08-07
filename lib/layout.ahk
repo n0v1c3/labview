@@ -63,8 +63,12 @@ Loop, %MonitorCount%
 ; Perforce cannot be 1/3 of the monitor width
 PerforceAdjust := 15
 ; Special offsets for YouTube
+YTXOff := 10
+YTYOff := 25
+YTWOff := 20
+YTHOff := 200
 YTHeight := 200
-YTWidth := 10
+YTWidth := 20
 
 ; Defaults {{{2
 DefaultLayout := {}
@@ -76,8 +80,8 @@ MonH := MonitorList["mon-2"].H/4
 DefaultLayout.Insert("2_1", {X:MonX, Y:0, W:MonW, H:MonH*3})
 DefaultLayout.Insert("2_2", {X:MonX+MonW, Y:0, W:MonW*3, H:MonH*3})
 DefaultLayout.Insert("2_3", {X:MonX, Y:MonH*3, W:MonW, H:MonH})
-DefaultLayout.Insert("2_4", {X:MonX+MonW, Y:MonH*3-YTHeight, W:MonW+YTWidth, H:MonH+YTHeight})
-DefaultLayout.Insert("2_5", {X:MonX+(2*MonW), Y:MonH*3, W:MonW*2, H:MonH})
+DefaultLayout.Insert("2_4", {X:MonX+MonW-YTWidth, Y:MonH*3-YTHeight+YTYOff, W:MonW+YTWidth, H:MonH+YTHeight})
+DefaultLayout.Insert("2_5", {X:MonX+(2*MonW)-YTWOff-YTXOff, Y:MonH*3, W:MonW*2+YTWOff+YTXOff, H:MonH})
 
 ; Monitor 3 {{{3
 DefaultLayout.Insert("3_1", {X:MonitorList["mon-3"].X, Y:0, W:MonitorList["mon-3"].W/3*2-PerforceAdjust, H:((MonitorList["mon-3"].H/3)*2)})
@@ -115,21 +119,21 @@ LayoutList.Insert("lv_error", {path: "Error list", layout: Layout})
 Layout := DefaultLayout["3_1"]
 LayoutList.Insert("chrome", {path: "ahk_exe chrome.exe", run: "chrome.exe", layout: Layout})
 LayoutList.Insert("paint", {path: "ahk_exe mspaint.exe", run: "mspaint.exe", layout: Layout})
-LayoutList.Insert("putty", {path: "ahk_class PuTTY", run: "putty.exe", layout: Layout})
+LayoutList.Insert("putty", {path: "ahk_class PuTTY", run: "C:\Program Files (x86)\PuTTY\putty.exe", layout: Layout})
 LayoutList.Insert("excel", {path: "ahk_exe excel.exe", run: "excel.exe", layout: Layout})
-LayoutList.Insert("fcs", {path: "ahk_exe FCS.exe", layout: Layout})
-LayoutList.Insert("term", {path: "ahk_exe mintty.exe", layout: Layout})
+LayoutList.Insert("fcs", {path: "ahk_exe FCS.exe", run: "C:\Program Files (x86)\Advanced Measurements\FCS\FCS.exe", layout: Layout})
+LayoutList.Insert("term", {path: "ahk_exe mintty.exe", run: "C:\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico -", layout: Layout})
 LayoutList.Insert("notepad", {path: "ahk_exe notepad++.exe", run: "notepad++.exe", layout: Layout})
-LayoutList.Insert("qlarity", {path: "ahk_class Afx:00400000:0", layout: Layout})
-LayoutList.Insert("testify", {path: "ahk_exe Testify - Scripting.exe", layout: Layout})
+LayoutList.Insert("qlarity", {path: "ahk_class Afx:00400000:0", run: "C:\Program Files (x86)\QSI Corporation\Qlarity Foundry 2.63\QlarityFoundry.exe", layout: Layout})
+LayoutList.Insert("testify", {path: "ahk_exe Testify - Scripting.exe", run: "C:\LabVIEW\Testify\Scripting\Testify - Scripting.exe", layout: Layout})
 LayoutList.Insert("lv_hierarchy", {path: "VI Hierarchy", layout: Layout})
 
 ; 3_2 {{{3
 Layout := DefaultLayout["3_2"]
-LayoutList.Insert("fcslg", {path: "ahk_exe FCSLicenseGenerator.exe", layout: Layout})
-LayoutList.Insert("nimax", {path: "ahk_exe NIMax.EXE", layout: Layout})
+LayoutList.Insert("fcslg", {path: "ahk_exe FCSLicenseGenerator.exe", run: "C:\Program Files (x86)\Advanced Measurements\FCSLicenseGenerator\FCSLicenseGenerator.exe", layout: Layout})
+LayoutList.Insert("nimax", {path: "ahk_exe NIMax.EXE", run: "C:\Program Files (x86)\National Instruments\MAX\NIMax.exe", layout: Layout})
 LayoutList.Insert("outlook", {path: "ahk_exe OUTLOOK.exe", run: "outlook.exe", layout: Layout})
-LayoutList.Insert("p4v", {path: "ahk_exe p4v.exe", layout: Layout})
+LayoutList.Insert("p4v", {path: "ahk_exe p4v.exe", run: "C:\Program Files\Perforce\p4v.exe", layout: Layout})
 
 ; 3_3 {{{3
 Layout := DefaultLayout["3_3_1"]
