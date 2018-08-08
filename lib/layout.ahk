@@ -137,9 +137,9 @@ LayoutList.Insert("p4v", {path: "ahk_exe p4v.exe", run: "C:\Program Files\Perfor
 
 ; 3_3 {{{3
 Layout := DefaultLayout["3_3_1"]
-LayoutList.Insert("explorer_1", {path: "ahk_exe explorer.exe", run: "explorer.exe", layout: Layout, id: "e1"})
+LayoutList.Insert("explorer_1", {path: "ahk_class CabinetWClass", run: "explorer.exe", layout: Layout, id: "e1"})
 Layout := DefaultLayout["3_3_2"]
-LayoutList.Insert("explorer_2", {path: "ahk_exe explorer.exe", run: "explorer.exe", layout: Layout, id: "e2"})
+LayoutList.Insert("explorer_2", {path: "ahk_class CabinetWClass", run: "explorer.exe", layout: Layout, id: "e2"})
 
 ; Clean-Up {{{1
 ; General sizings and Positions

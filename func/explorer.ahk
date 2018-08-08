@@ -12,7 +12,6 @@ CursorID()
 
 ExplorerSwap(A, B)
 {
-  MsgBox, % A.id
   CurID := "ahk_id " . CursorID()
 
   If (B.id == CurID)
@@ -29,6 +28,7 @@ WinActivateMove(Application)
 {
   Running := False
 
+  ; Only target the id when present
   If (Application.id <> "")
   {
     WinActivate, % Application.id
@@ -39,6 +39,7 @@ WinActivateMove(Application)
     }
   }
 
+  ; Loop through all mathches to the path
   Else If (Application.path <> "")
   {
     WinGet, WinList, List, % Application.path
@@ -53,23 +54,23 @@ WinActivateMove(Application)
     }
   }
 
-  If (!Running && Application.run != "") 
+  ; Run application if not running
+  If (!Running && Application.run != "")
   {
     Run, % Application.run
 
+    ; Wait for the application to start
     While (!WinExist(Application.path))
-    {
       Sleep, 1
-    }
+
     ; Padding for explorer load
-    Sleep, 1000
+    Sleep, 750
 
     WinMove, A,, Application.layout.X, Application.layout.Y, Application.layout.W, Application.layout.H
 
+    ; Save ID of certain programs
     If (Application.id)
-    {
       Application.id := "ahk_id " . WinExist("A")
-    }
   }
 }
 
