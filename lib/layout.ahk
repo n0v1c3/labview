@@ -107,7 +107,7 @@ LayoutList.Insert("lv_navigation", {path: "Navigation", layout: Layout})
 
 ; 2_4 {{{3
 Layout := DefaultLayout["2_4"]
-LayoutList.Insert("youtube", {path: "YouTube", run: "chrome.exe --new-window youtube.com", layout: Layout})
+LayoutList.Insert("youtube", {path: "YouTube", run: "chrome.exe --new-window youtube.com", layout: Layout, id: "y1"})
 
 ; 2_5 {{{3
 Layout := DefaultLayout["2_5"]
@@ -137,9 +137,9 @@ LayoutList.Insert("p4v", {path: "ahk_exe p4v.exe", run: "C:\Program Files\Perfor
 
 ; 3_3 {{{3
 Layout := DefaultLayout["3_3_1"]
-LayoutList.Insert("explorer_1", {path: "ahk_exe explorer.exe", run: "explorer.exe", layout: Layout})
+LayoutList.Insert("explorer_1", {path: "ahk_exe explorer.exe", run: "explorer.exe", layout: Layout, id: "e1"})
 Layout := DefaultLayout["3_3_2"]
-LayoutList.Insert("explorer_2", {path: "ahk_exe explorer.exe", run: "explorer.exe", layout: Layout})
+LayoutList.Insert("explorer_2", {path: "ahk_exe explorer.exe", run: "explorer.exe", layout: Layout, id: "e2"})
 
 ; Clean-Up {{{1
 ; General sizings and Positions

@@ -29,36 +29,48 @@ WinActivateMove(Application)
 {
   Running := False
 
-  If (Application.path <> "")
+  If (Application.id <> "")
   {
-    ; WinActivate, % Application.id
-    WinGet, WinList, List, % Application.path
+    WinActivate, % Application.id
     If (Application.id == "ahk_id " . WinExist("A"))
     {
-	  Running := True
+      Running := True
       WinMove, A,, Application.layout.X, Application.layout.Y, Application.layout.W, Application.layout.H
     }
-    Else If (WinList)
-    {
-	  Running := True
-	  Loop %WinList%
-	  {
-	    WinActivate, % "ahk_id " . WinList%A_Index%
-		WinMove, % "ahk_id " . WinList%A_Index%,, Application.layout.X, Application.layout.Y, Application.layout.W, Application.layout.H
-	  }
-	}
   }
-  
-  
+
+  Else If (Application.path <> "")
+  {
+    WinGet, WinList, List, % Application.path
+    If (WinList)
+    {
+      Running := True
+      Loop %WinList%
+      {
+        WinActivate, % "ahk_id " . WinList%A_Index%
+        WinMove, % "ahk_id " . WinList%A_Index%,, Application.layout.X, Application.layout.Y, Application.layout.W, Application.layout.H
+      }
+    }
+  }
+
   If (!Running && Application.run != "") 
   {
     Run, % Application.run
-    Sleep, 1000
-	; TODO - Only insert ID if needed (ie. Explorer)
-    Application.id := "ahk_id " . WinExist("A")
-  }
 
-  
+    While (!WinExist(Application.path))
+    {
+      Sleep, 1
+    }
+    ; Padding for explorer load
+    Sleep, 1000
+
+    WinMove, A,, Application.layout.X, Application.layout.Y, Application.layout.W, Application.layout.H
+
+    If (Application.id)
+    {
+      Application.id := "ahk_id " . WinExist("A")
+    }
+  }
 }
 
 WinBackground()
