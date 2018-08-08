@@ -149,6 +149,9 @@ Return
 ; Chrome
 #c::
   WinActivateMove(LayoutList["chrome"])
+  WinActivateMove(LayoutList["youtube"])
+  Send, !{Esc}
+  
 Return
 
 ; D {{{3
