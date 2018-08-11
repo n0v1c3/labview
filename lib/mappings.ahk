@@ -305,6 +305,12 @@ Return
   WinActivateMove(LayoutList["testify"])
 Return
 
+; W {{{3
+#w::
+;  WinActivateMove(LayoutList["YouTube"])
+  Run, "C:\Program Files\AutoHotkey\AU3_Spy.exe"
+Return
+
 ; Y {{{3
 ; YouTube
 #y::
