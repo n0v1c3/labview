@@ -104,6 +104,7 @@ LayoutList.Insert("lv_block", {path: "Block Diagram", layout: Layout})
 ; 2_3 {{{3
 Layout := DefaultLayout["2_3"]
 LayoutList.Insert("lv_navigation", {path: "Navigation", layout: Layout})
+LayoutList.Insert("sticky", {path: "ahk_exe StikyNot.exe", layout: Layout})
 
 ; 2_4 {{{3
 Layout := DefaultLayout["2_4"]

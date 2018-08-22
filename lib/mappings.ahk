@@ -257,15 +257,21 @@ Return
 Return
 
 ; P {{{3
-; Panit
+; Sticky (Post-It)
 #p::
-  WinActivateMove(LayoutList["putty"])
+  WinActivateMove(LayoutList["sticky"])
 Return
 
 ; Q {{{3
 ; Qlarity
 #q::
   WinActivateMove(LayoutList["qlarity"])
+Return
+
+; R {{{3
+; PuTTy (Remote)
+#r::
+  WinActivateMove(LayoutList["putty"])
 Return
 
 ; S {{{3
