@@ -295,6 +295,14 @@ Return
 
 ; Save logger
 $^s::
+IfWinActive Block Diagram
+{
+  WinGetPos, X, Y, , , A
+  WinMove, 0, 0
+  Send, ^s
+  Sleep, 100
+  WinMove, %X%, %Y%
+}
   ; Tracker()
   Send, ^s
 Return
