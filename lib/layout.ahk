@@ -39,14 +39,17 @@ Loop, %MonitorCount%
   }
 
   ; Move monitor 3 down the list
-  If (MonitorWorkAreaLeft <= MonitorList["mon-3"].X)
+  If (MonitorWorkAreaLeft < 0) ; <= MonitorList["mon-3"].X)
   {
-    MonitorList["mon-2"].X := MonitorList["mon-3"].X
-    MonitorList["mon-2"].W := MonitorList["mon-3"].W
-    MonitorList["mon-2"].H := MonitorList["mon-3"].H
     MonitorList["mon-3"].X := MonitorWorkAreaLeft ; X-Offset
     MonitorList["mon-3"].W := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
     MonitorList["mon-3"].H := MonitorWorkAreaBottom ; Height
+  }
+  Else If (MonitorWorkAreaLeft > 0) ; <= MonitorList["mon-3"].X)
+  {
+    MonitorList["mon-2"].X := MonitorWorkAreaLeft ; X-Offset
+    MonitorList["mon-2"].W := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
+    MonitorList["mon-2"].H := MonitorWorkAreaBottom ; Height
   }
 
   ; TODO-TJG [180803] - This will be replaced with the object layout
@@ -84,6 +87,9 @@ DefaultLayout.Insert("2_4", {X:MonX+MonW-YTWidth, Y:MonH*3-YTHeight+YTYOff, W:Mo
 DefaultLayout.Insert("2_5", {X:MonX+(2*MonW)-YTWOff-YTXOff, Y:MonH*3, W:MonW*2+YTWOff+YTXOff, H:MonH})
 
 ; Monitor 3 {{{3
+MonX := MonitorList["mon-3"].X
+MonW := MonitorList["mon-3"].W/3
+MonH := MonitorList["mon-3"].H/3
 DefaultLayout.Insert("3_1", {X:MonitorList["mon-3"].X, Y:0, W:MonitorList["mon-3"].W/3*2-PerforceAdjust, H:((MonitorList["mon-3"].H/3)*2)})
 DefaultLayout.Insert("3_2", {X:MonitorList["mon-3"].X + ((MonitorList["mon-3"].W/3)*2) - PerforceAdjust, Y:0, W:MonitorList["mon-3"].W/3+PerforceAdjust, H:MonitorList["mon-3"].H})
 DefaultLayout.Insert("3_3", {X:MonitorList["mon-3"].X, Y:MonitorList["mon-3"].H/3*2, W:(MonitorList["mon-3"].W/3*2)-PerforceAdjust, H:MonitorList["mon-3"].H/3})
