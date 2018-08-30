@@ -346,6 +346,13 @@ Return
 ; MButton {{{3
 ; Clean wires
 MButton::
-  BD_CleanWires()
+  IfWinActive Revision Graph
+  {
+    P4V_HideHistory()
+  }
+  IfWinActive Block Diagram
+  {
+    BD_CleanWires()
+  }
 Return
 

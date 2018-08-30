@@ -104,3 +104,18 @@ WinForeground()
   WinActivate, ahk_id %PrevWin%
   Return PrevWin
 }
+
+P4V_HideHistory()
+{
+	; Prevent shift clicks
+	MouseGetPos x, y ; Save current mouse position
+	While GetKeyState("Shift", "P")
+	{
+		Sleep, 1
+	}
+	MouseMove %x%, %y% ; Prevent small mouse movements
+
+  ; Right click at current mouse location
+	Click, Right
+	Send, e
+}
