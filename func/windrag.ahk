@@ -36,7 +36,7 @@ SetWinDelay,2
 CoordMode,Mouse
 return
 
-!LButton::
+#LButton::
 If DoubleAlt
 {
     MouseGetPos,,,KDE_id
@@ -68,7 +68,7 @@ Loop
 }
 return
 
-!RButton::
+#RButton::
 If DoubleAlt
 {
     MouseGetPos,,,KDE_id
@@ -133,8 +133,8 @@ If DoubleAlt
 return
 
 ; This detects "double-clicks" of the alt key.
-~Alt::
-DoubleAlt := A_PriorHotkey = "~Alt" AND A_TimeSincePriorHotkey < 400
+~#::
+DoubleAlt := A_PriorHotkey = "~#" AND A_TimeSincePriorHotkey < 400
 Sleep 0
-KeyWait Alt  ; This prevents the keyboard's auto-repeat feature from interfering.
+KeyWait #  ; This prevents the keyboard's auto-repeat feature from interfering.
 return
