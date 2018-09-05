@@ -92,7 +92,7 @@ DefaultLayout.Insert("1_1", {X:MonX+Gaps, Y:0+Gaps, W:MonW*3-(2*Gaps), H:MonH*3-
 MonX := MonitorList["mon-2"].X
 MonW := MonitorList["mon-2"].W/4
 MonH := MonitorList["mon-2"].H/4
-DefaultLayout.Insert("2_1", {X:MonX+Gaps+Gaps, Y:0+Gaps, W:MonW-(2*Gaps), H:MonH*3-(2*Gaps)})
+DefaultLayout.Insert("2_1", {X:MonX+Gaps, Y:0+Gaps, W:MonW-(2*Gaps), H:MonH*3-(2*Gaps)})
 DefaultLayout.Insert("2_2", {X:MonX+MonW+Gaps, Y:0+Gaps, W:MonW*3-(2*Gaps), H:MonH*3-(2*Gaps)})
 DefaultLayout.Insert("2_3", {X:MonX+Gaps, Y:MonH*3+Gaps, W:MonW-(2*Gaps), H:MonH-(2*Gaps)})
 DefaultLayout.Insert("2_4", {X:MonX+MonW-YTWidth+Gaps, Y:MonH*3-YTHeight+YTYOff+Gaps, W:MonW+YTWidth-(2*Gaps), H:MonH+YTHeight-(2*Gaps)})
