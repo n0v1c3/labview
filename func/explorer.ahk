@@ -32,6 +32,7 @@ WinActivateMove(Application)
   If (Application.id <> "")
   {
     WinActivate, % Application.id
+    WinRestore, A
     If (Application.id == "ahk_id " . WinExist("A"))
     {
       Running := True
@@ -49,6 +50,7 @@ WinActivateMove(Application)
       Loop %WinList%
       {
         WinActivate, % "ahk_id " . WinList%A_Index%
+        WinRestore, A
         WinMove, % "ahk_id " . WinList%A_Index%,, Application.layout.X, Application.layout.Y, Application.layout.W, Application.layout.H
       }
     }
@@ -66,6 +68,7 @@ WinActivateMove(Application)
     ; Padding for explorer load
     Sleep, 750
 
+    WinRestore, A
     WinMove, A,, Application.layout.X, Application.layout.Y, Application.layout.W, Application.layout.H
 
     ; Save ID of certain programs

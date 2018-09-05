@@ -10,6 +10,7 @@
 #Include func\ide.ahk
 ; #Include func\rocker.ahk
 ; #Include func\tracker.ahk
+#Include func\windrag.ahk
 
 ;For Key, Value In LayoutList
   ; WinActivateMove(Value)
