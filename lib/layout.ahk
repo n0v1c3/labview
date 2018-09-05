@@ -35,6 +35,10 @@ Loop, %MonitorCount%
       Value.X := MonitorWorkAreaLeft ; X-Offset
       Value.W := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
       Value.H := MonitorWorkAreaBottom ; Height
+	  
+	  MonitorList["mon-1"].X := MonitorWorkAreaLeft ; X-Offset
+      MonitorList["mon-1"].W := MonitorWorkAreaRight - MonitorWorkAreaLeft ; Width
+	  MonitorList["mon-1"].H := MonitorWorkAreaBottom ; Height
     }
   }
 
@@ -63,6 +67,8 @@ Loop, %MonitorCount%
 
 ; Layouts {{{1
 ; Offsets {{{2
+; Gaps at the edge of windows in pixels
+Gaps := 5
 ; Perforce cannot be 1/3 of the monitor width
 PerforceAdjust := 15
 ; Special offsets for YouTube
@@ -76,28 +82,38 @@ YTWidth := 20
 ; Defaults {{{2
 DefaultLayout := {}
 
+; Monitor 1 {{{3
+MonX := MonitorList["mon-1"].X
+MonW := MonitorList["mon-1"].W/3
+MonH := MonitorList["mon-1"].H/3
+DefaultLayout.Insert("1_1", {X:MonX+Gaps, Y:0+Gaps, W:MonW*3-(2*Gaps), H:MonH*3-(2*Gaps)})
+
 ; Monitor 2 {{{3
 MonX := MonitorList["mon-2"].X
 MonW := MonitorList["mon-2"].W/4
 MonH := MonitorList["mon-2"].H/4
-DefaultLayout.Insert("2_1", {X:MonX, Y:0, W:MonW, H:MonH*3})
-DefaultLayout.Insert("2_2", {X:MonX+MonW, Y:0, W:MonW*3, H:MonH*3})
-DefaultLayout.Insert("2_3", {X:MonX, Y:MonH*3, W:MonW, H:MonH})
-DefaultLayout.Insert("2_4", {X:MonX+MonW-YTWidth, Y:MonH*3-YTHeight+YTYOff, W:MonW+YTWidth, H:MonH+YTHeight})
-DefaultLayout.Insert("2_5", {X:MonX+(2*MonW)-YTWOff-YTXOff, Y:MonH*3, W:MonW*2+YTWOff+YTXOff, H:MonH})
+DefaultLayout.Insert("2_1", {X:MonX+Gaps+Gaps, Y:0+Gaps, W:MonW-(2*Gaps), H:MonH*3-(2*Gaps)})
+DefaultLayout.Insert("2_2", {X:MonX+MonW+Gaps, Y:0+Gaps, W:MonW*3-(2*Gaps), H:MonH*3-(2*Gaps)})
+DefaultLayout.Insert("2_3", {X:MonX+Gaps, Y:MonH*3+Gaps, W:MonW-(2*Gaps), H:MonH-(2*Gaps)})
+DefaultLayout.Insert("2_4", {X:MonX+MonW-YTWidth+Gaps, Y:MonH*3-YTHeight+YTYOff+Gaps, W:MonW+YTWidth-(2*Gaps), H:MonH+YTHeight-(2*Gaps)})
+DefaultLayout.Insert("2_5", {X:MonX+(2*MonW)-YTWOff-YTXOff+Gaps, Y:MonH*3+Gaps, W:MonW*2+YTWOff+YTXOff-(2*Gaps), H:MonH-(2*Gaps)})
 
 ; Monitor 3 {{{3
 MonX := MonitorList["mon-3"].X
 MonW := MonitorList["mon-3"].W/3
 MonH := MonitorList["mon-3"].H/3
-DefaultLayout.Insert("3_1", {X:MonitorList["mon-3"].X, Y:0, W:MonitorList["mon-3"].W/3*2-PerforceAdjust, H:((MonitorList["mon-3"].H/3)*2)})
-DefaultLayout.Insert("3_2", {X:MonitorList["mon-3"].X + ((MonitorList["mon-3"].W/3)*2) - PerforceAdjust, Y:0, W:MonitorList["mon-3"].W/3+PerforceAdjust, H:MonitorList["mon-3"].H})
+DefaultLayout.Insert("3_1", {X:MonitorList["mon-3"].X+Gaps, Y:0+Gaps, W:MonitorList["mon-3"].W/3*2-PerforceAdjust-(2*Gaps), H:((MonitorList["mon-3"].H/3)*2)-(2*Gaps)})
+DefaultLayout.Insert("3_2", {X:MonitorList["mon-3"].X + ((MonitorList["mon-3"].W/3)*2) - PerforceAdjust, Y:0+Gaps, W:MonitorList["mon-3"].W/3+PerforceAdjust, H:MonitorList["mon-3"].H-(2*Gaps)})
 DefaultLayout.Insert("3_3", {X:MonitorList["mon-3"].X, Y:MonitorList["mon-3"].H/3*2, W:(MonitorList["mon-3"].W/3*2)-PerforceAdjust, H:MonitorList["mon-3"].H/3})
-DefaultLayout.Insert("3_3_1", {X:DefaultLayout["3_3"].X, Y:DefaultLayout["3_3"].Y, W:DefaultLayout["3_3"].W/2, H:DefaultLayout["3_3"].H})
-DefaultLayout.Insert("3_3_2", {X:DefaultLayout["3_3"].X + DefaultLayout["3_3"].W/2, Y:DefaultLayout["3_3"].Y, W:DefaultLayout["3_3"].W/2, H:DefaultLayout["3_3"].H})
+DefaultLayout.Insert("3_3_1", {X:DefaultLayout["3_3"].X+Gaps, Y:DefaultLayout["3_3"].Y+Gaps, W:DefaultLayout["3_3"].W/2-(2*Gaps), H:DefaultLayout["3_3"].H-(2*Gaps)})
+DefaultLayout.Insert("3_3_2", {X:DefaultLayout["3_3"].X + DefaultLayout["3_3"].W/2+Gaps, Y:DefaultLayout["3_3"].Y+Gaps, W:DefaultLayout["3_3"].W/2-(2*Gaps), H:DefaultLayout["3_3"].H-(2*Gaps)})
 
 ; Applications {{{2
 LayoutList := {}
+
+; 1_1 {{{3
+Layout := DefaultLayout["1_1"]
+LayoutList.Insert("virtualbox", {path: "ahk_exe VirtualBox.exe", run: "C:\Program Files\Oracle\VirtualBox\VBoxManage.exe startvm ArchBase", layout: Layout})
 
 ; 2_1 {{{3
 Layout := DefaultLayout["2_1"]

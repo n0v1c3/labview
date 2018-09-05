@@ -319,6 +319,12 @@ Return
   WinActivateMove(LayoutList["testify"])
 Return
 
+; V {{{3
+; Virtual Box
+#v::
+  WinActivateMove(LayoutList["virtualbox"])
+Return
+
 ; Y {{{3
 ; YouTube
 #y::
