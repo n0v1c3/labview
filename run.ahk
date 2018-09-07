@@ -2,6 +2,16 @@
 ; Description: Run and manage all the scripts for labview
 ; Author: Travis Gall
 
+
+; #Persistent
+; SetTimer, ActivateWinUM, 100
+; return
+; 
+; ActivateWinUM:
+; MouseGetPos,,, WinUMID
+; WinActivate, ahk_id %WinUMID%
+; return
+
 #Include lib\init.ahk
 #Include lib\layout.ahk
 #Include lib\labview.ahk

@@ -149,9 +149,8 @@ Return
 ; Chrome
 #c::
   WinActivateMove(LayoutList["chrome"])
-  WinActivateMove(LayoutList["youtube"])
-  Send, !{Esc}
-  
+  ; WinActivateMove(LayoutList["youtube"])
+  ; Send, !{Esc}
 Return
 
 ; D {{{3
@@ -300,7 +299,7 @@ IfWinActive Block Diagram
   WinGetPos, X, Y, , , A
   WinMove, 0, 0
   Send, ^s
-  Sleep, 100
+  Sleep, 500
   WinMove, %X%, %Y%
 }
   ; Tracker()
@@ -346,6 +345,281 @@ Return
 
 ; Mouse {{{2
 ; RButton {{{3
+ 
+
+RButton::
+  IfWinActive Block Diagram
+  {
+	LV_RBUTTON := True
+  }
+  Else
+  {
+    Send, {RButton}
+  }
+Return
+
+~i::
+	IfWinActive Block Diagram
+	{
+	  If LV_RBUTTON
+	  {
+		LV_RB_DONE := True
+		
+		Send, {RButton}
+		MouseGetPos X, Y
+		PixelGetColor Color, %X%, %Y%, RGB
+		
+		If (Color == "0xA0A0A0")
+		{
+			Send, {Down}{Right}{Enter}{Down}{Right}{Right}{Enter}{LButton Down}
+		}
+		Else
+		{
+			Send, cr{Right}{Down}{Down}{Enter}
+		}
+	  }
+	}
+Return
+
+~c::
+  IfWinActive Block Diagram
+  {
+    If LV_RBUTTON
+    {
+      LV_RB_DONE := True
+	  LV_RBUTTON := False
+	  Send, {RButton}
+		MouseGetPos X, Y
+		PixelGetColor Color, %X%, %Y%, RGB
+		If (Color == "0xA0A0A0")
+		{
+			Send, {Down}{Right}{Enter}{Down}{Enter}{LButton Down}
+		}
+		Else
+		{
+			Send, cr{Right}{Down}{Enter}
+		}
+    }
+  }
+Return
+
+~4::
+  IfWinActive Block Diagram
+  {
+    If LV_RBUTTON
+    {
+      LV_RB_DONE := True
+	  LV_RBUTTON := False
+	  Send, {RButton}{Down}{Right}{Enter}{Enter}{LButton Down}
+    }
+  }
+Return
+
+~f::
+  IfWinActive Block Diagram
+  {
+    If LV_RBUTTON
+    {
+      LV_RB_DONE := True
+	  LV_RBUTTON := False
+	  Send, {RButton}{Down}{Right}{Enter}{Down}{Down}{Enter}{LButton Down}
+    }
+  }
+Return
+
+~d::
+  IfWinActive Block Diagram
+  {
+    If LV_RBUTTON
+    {
+      LV_RB_DONE := True
+	  LV_RBUTTON := False
+	  Send, {RButton}{Down}{Right}{Enter}{Down}{Down}{Down}{Enter}{LButton Down}
+    }
+  }
+Return
+
+~u::
+  IfWinActive Block Diagram
+  {
+    If LV_RBUTTON
+    {
+      LV_RB_DONE := True
+	  LV_RBUTTON := False
+	  Send, {RButton}{Down}{Right}{Right}{Right}{Enter}{Enter}
+    }
+  }
+Return
+
+~=::
+  IfWinActive Block Diagram
+  {
+    If LV_RBUTTON
+    {
+      LV_RB_DONE := True
+	  LV_RBUTTON := False
+	  Send, {RButton}{Down}{Right}{Down}{Down}{Enter}{Enter}
+    }
+  }
+Return
+
+~^=::
+  IfWinActive Block Diagram
+  {
+    If LV_RBUTTON
+    {
+      LV_RB_DONE := True
+	  LV_RBUTTON := False
+	  Send, {RButton}{Down}{Right}{Down}{Down}{Enter}{Right}{Enter}
+    }
+  }
+Return
+
+~+::
+  IfWinActive Block Diagram
+  {
+    If LV_RBUTTON
+    {
+      LV_RB_DONE := True
+	  LV_RBUTTON := False
+	  Send, {RButton}{Down}{Right}{Down}{Enter}{Enter}
+    }
+  }
+Return
+
+~-::
+  IfWinActive Block Diagram
+  {
+    If LV_RBUTTON
+    {
+      LV_RB_DONE := True
+	  LV_RBUTTON := False
+	  Send, {RButton}{Down}{Right}{Down}{Enter}{Right}{Enter}
+    }
+  }
+Return
+
+~w::
+  IfWinActive Block Diagram
+  {
+    If LV_RBUTTON
+    {
+      LV_RB_DONE := True
+	  LV_RBUTTON := False
+	  Send, {RButton}{Down}{Right}{Enter}{Right}{Enter}
+    }
+  }
+Return
+
+~a::
+  IfWinActive Block Diagram
+  {
+    If LV_RBUTTON
+    {
+      LV_RB_DONE := True
+	  LV_RBUTTON := False
+	  Send, {RButton}{Down}{Right}{Down}{Right}{Enter}{Enter}
+    }
+  }
+Return
+
+~t::
+  IfWinActive Block Diagram
+  {
+    If LV_RBUTTON
+    {
+      LV_RB_DONE := True
+	  LV_RBUTTON := False
+	  Send, {RButton}{Down}{Right}{Down}{Down}{Right}{Enter}{Right}{Right}{Enter}
+    }
+  }
+Return
+
+~?::
+  IfWinActive Block Diagram
+  {
+    If LV_RBUTTON
+    {
+		LV_RB_DONE := True
+		LV_RBUTTON := False
+		Send, {RButton}
+
+		MouseGetPos X, Y
+		PixelGetColor Color, %X%, %Y%, RGB
+		If (Color == "0xA0A0A0")
+		{
+			Send, {Down}{Right}{Down}{Down}{Enter}{Down}{Down}{Enter}
+		}
+		Else
+		{
+			Send, {Up}{Enter}
+		}
+    }
+  }
+Return
+
+~o::
+  IfWinActive Block Diagram
+  {
+    If LV_RBUTTON
+    {
+		LV_RB_DONE := True
+		LV_RBUTTON := False
+		Send, {RButton}
+
+		MouseGetPos X, Y
+		PixelGetColor Color, %X%, %Y%, RGB
+		If (Color == "0xA0A0A0")
+		{
+			Send, {Down}{Right}{Down}{Right}{Enter}{Right}{Enter}
+		}
+		Else
+		{
+			Sleep, 50
+			Send, o{Enter}
+		}
+    }
+  }
+Return
+~RButton Up::
+  IfWinActive Block Diagram
+  {
+	If LV_RB_DONE
+	{
+	  LV_RB_DONE := False
+      Send, {LButton Up}
+	}
+	Else
+	{
+	  Send, {RButton}
+	}
+	
+	LV_RBUTTON := False
+  }
+Return
+
+^F1::
+  ControlGetText, tooltip2,,ahk_class tooltips_class32
+  MsgBox, %tooltip2%
+Return
+
+F2::
+WinGet, id, LIST,Block Diagram
+tt_text= Here_are the tooltips`n
+Loop, %id%
+{
+  this_id := id%A_Index%
+  ControlGetText, tooltip2,,ahk_id %this_id%
+
+  ifinstring, tooltip2, Here_are    ; prevents 'tooltip infinity' where a tooltip repeats itself and therefore grows in size towards infinity
+	continue
+
+  tt_text.= "******************`n" tooltip2 "`n******************`n"
+}
+Return
+
+MsgBox, %tt_text%
+
 ~*RButton::
 ;  RRocker()
 Return
@@ -367,4 +641,3 @@ MButton::
     BD_CleanWires()
   }
 Return
-

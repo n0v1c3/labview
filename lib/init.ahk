@@ -19,6 +19,10 @@ SetWorkingDir %A_ScriptDir%
 ; Partial tital match enabled
 SetTitleMatchMode, 2
 
+; Better mouse tracking
+CoordMode Pixel, Screen
+CoordMode Mouse, Screen
+	
 ; Explorer {{{3
 ExplorerIDs := ["",""]
 SavedIDs := []
