@@ -13,6 +13,7 @@ Debug := False
 ; Recommended environment settings
 #NoEnv
 #SingleInstance Force
+#Warn All, Off
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
