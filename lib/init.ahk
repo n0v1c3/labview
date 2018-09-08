@@ -6,14 +6,20 @@
 ; Debug {{{2
 ; Enable warnings to assist with detecting common errors.
 Debug := False
-; #Warn
+If Debug
+{
+  #Warn
+}
+Else
+{
+  #Warn All, Off
+}
 
 ; Environment {{{2
 ; Settings {{{3
 ; Recommended environment settings
 #NoEnv
 #SingleInstance Force
-#Warn All, Off
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
