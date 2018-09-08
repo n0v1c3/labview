@@ -1,4 +1,5 @@
 ; mappings.ahk
+
 ; Description: Manage all shortcut mappings
 ; Author: Travis Gall
 
@@ -151,7 +152,6 @@ Return
   WinActivateMove(LayoutList["chrome"])
   WinActivateMove(LayoutList["youtube"])
   Send, !{Esc}
-  
 Return
 
 ; D {{{3
