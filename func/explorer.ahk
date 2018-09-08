@@ -127,6 +127,6 @@ P4V_HideHistory()
 ; NOTE: This is used to access the Win+L key
 LockToggle()
 {
-  RegRead, CurrentLockState, REG_DWORD, HKEY_CURRENT_USER, Software\Microsoft\Windows\CurrentVersion\Policies\System, DisableLockWorkstation
-  RegWrite, REG_DWORD, HKEY_CURRENT_USER, Software\Microsoft\Windows\CurrentVersion\Policies\System, DisableLockWorkstation, !CurrentLockState
+  ;RegRead, CurrentLockState, REG_DWORD, HKEY_CURRENT_USER, Software\Microsoft\Windows\CurrentVersion\Policies\System, DisableLockWorkstation
+  ;RegWrite, REG_DWORD, HKEY_CURRENT_USER, Software\Microsoft\Windows\CurrentVersion\Policies\System, DisableLockWorkstation, !CurrentLockState
 }
