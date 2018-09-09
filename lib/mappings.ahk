@@ -7,89 +7,94 @@
 ; Left {{{3
 ; Left align
 ^Left::
-MouseGetPos x, y
-MouseMove 450, 60
-Click
-Send, {Down}{Down}{Enter}
-MouseMove %x%, %y%
+  MouseGetPos x, y
+  MouseMove 450, 60
+  Click
+  Send, {Down}{Down}{Enter}
+  MouseMove %x%, %y%
 Return
 
 ; Horizontal center align
 ^+Left::
-MouseGetPos x, y
-MouseMove 450, 60
-Click
-Send, {Down}{Down}{Right}{Enter}
-MouseMove %x%, %y%
+  MouseGetPos x, y
+  MouseMove 450, 60
+  Click
+  Send, {Down}{Down}{Right}{Enter}
+  MouseMove %x%, %y%
 Return
 
 ; Spacing left edges
 ^!+Left::
-MouseGetPos x, y
-MouseMove 475, 60
-Click
-Send, {Down}{Down}{Enter}
-MouseMove %x%, %y%
+  MouseGetPos x, y
+  MouseMove 475, 60
+  Click
+  Send, {Down}{Down}{Enter}
+  MouseMove %x%, %y%
 Return
 
 ; Up {{{3
 ; Top align
 ^Up::
-MouseGetPos x, y
-MouseMove 450, 60
-Click
-Send, {Down}{Enter}
-MouseMove %x%, %y%
+  MouseGetPos x, y
+  MouseMove 450, 60
+  Click
+  Send, {Down}{Enter}
+  MouseMove %x%, %y%
 Return
 
 ; Vertical center align
 ^+Up::
-MouseGetPos x, y
-MouseMove 450, 60
-Click
-Send, {Down}{Right}{Enter}
-MouseMove %x%, %y%
+  MouseGetPos x, y
+  MouseMove 450, 60
+  Click
+  Send, {Down}{Right}{Enter}
+  MouseMove %x%, %y%
 Return
 
 ; Spacing top edges
 ^!+Up::
-MouseGetPos x, y
-MouseMove 475, 60
-Click
-Send, {Down}{Enter}
-MouseMove %x%, %y%
+  MouseGetPos x, y
+  MouseMove 475, 60
+  Click
+  Send, {Down}{Enter}
+  MouseMove %x%, %y%
 Return
 
 ; Down {{{3
 ; Bottom align
 ^Down::
-MouseGetPos x, y
-MouseMove 450, 60
-Click
-Send, {Down}{Left}{Enter}
-MouseMove %x%, %y%
+  MouseGetPos x, y
+  MouseMove 450, 60
+  Click
+  Send, {Down}{Left}{Enter}
+  MouseMove %x%, %y%
 Return
 
 ; Right {{{3
 ; Right align
 ^Right::
-MouseGetPos x, y
-MouseMove 450, 60
-Click
-Send, {Down}{Down}{Left}{Enter}
-MouseMove %x%, %y%
+  MouseGetPos x, y
+  MouseMove 450, 60
+  Click
+  Send, {Down}{Down}{Left}{Enter}
+  MouseMove %x%, %y%
 Return
 
 ; Keyboard {{{2
+; 'Win' Keys {{{3
+LWin::
+  QuickKeys("LWin")
+Return
+
 ; 'F' Keys {{{3
 ; F1 {{{4
 $F1::
-Send, {F1}
-IfWinActive, Configuration
-{
-	Sleep, 250
-	Send, {Enter}
-}
+  Send, {F1}
+  IfWinActive, Configuration
+  {
+    Sleep, 250
+    Send, {Enter}
+  }
 Return
 ; Reload this AHK script
 
@@ -211,19 +216,19 @@ Return
 ; L {{{3
 ; Login to "Configuration GUI"
 $^l::
-Send, ^l
-IfWinActive, Configuration
-{
-	Sleep, 250
-	Send, AMI
-	Sleep, 100
-	Send, {Tab}
-	Sleep, 100
-  ; TODO-TJG [180804] - Put this in local information and handle versions
-	Send, AdvMeas7612
-	Sleep, 100
-	Send, {Enter}
-}
+  Send, ^l
+  IfWinActive, Configuration
+  {
+    Sleep, 250
+    Send, AMI
+    Sleep, 100
+    Send, {Tab}
+    Sleep, 100
+    ; TODO-TJG [180804] - Put this in local information and handle versions
+    Send, AdvMeas7612
+    Sleep, 100
+    Send, {Enter}
+  }
 Return
 
 ; M {{{3
@@ -277,32 +282,32 @@ Return
 ; S {{{3
 ; Snipper
 #s::
-WinGet, windowList, List, ahk_class Microsoft-Windows-Tablet-SnipperEditor
-; Microsoft-Windows-Tablet-SnipperToolbar
-Loop %windowList%
-{
-	WinActivate, % "ahk_id " . windowList%A_Index%
-	WinClose, A
-	If WinActive("ahk_class #32770")
-	{
-		Send, {Tab}
-		Send, {Enter}
-	}
+  WinGet, windowList, List, ahk_class Microsoft-Windows-Tablet-SnipperEditor
+  ; Microsoft-Windows-Tablet-SnipperToolbar
+  Loop %windowList%
+  {
+    WinActivate, % "ahk_id " . windowList%A_Index%
+    WinClose, A
+    If WinActive("ahk_class #32770")
+    {
+      Send, {Tab}
+      Send, {Enter}
+    }
 
-}
-Run "SnippingTool.exe"
+  }
+  Run "SnippingTool.exe"
 Return
 
 ; Save logger
 $^s::
-IfWinActive Block Diagram
-{
-  WinGetPos, X, Y, , , A
-  WinMove, 0, 0
-  Send, ^s
-  Sleep, 500
-  WinMove, %X%, %Y%
-}
+  IfWinActive Block Diagram
+  {
+    WinGetPos, X, Y, , , A
+    WinMove, 0, 0
+    Send, ^s
+    Sleep, 500
+    WinMove, %X%, %Y%
+  }
   ; Tracker()
   Send, ^s
 Return
@@ -327,59 +332,51 @@ Return
 
 ; W {{{3
 #w::
-;  WinActivateMove(LayoutList["YouTube"])
+  ;  WinActivateMove(LayoutList["YouTube"])
   Run, "C:\Program Files\AutoHotkey\AU3_Spy.exe"
 Return
 
 ; Y {{{3
 ; YouTube
 #y::
-;  WinActivateMove(LayoutList["YouTube"])
+  ;  WinActivateMove(LayoutList["YouTube"])
   WinActivateMove(LayoutList["youtube"])
   Send, !{Esc}
 Return
 
 #+y::
-;  WinActivateMove(LayoutList["YouTube"])
+  ;  WinActivateMove(LayoutList["YouTube"])
   WinActivateMove(LayoutList["youtube"])
 Return
 
 ; Mouse {{{2
 ; RButton {{{3
- 
-
 RButton::
-  IfWinActive Block Diagram
-  {
-	LV_RBUTTON := True
-  }
-  Else
-  {
-    Send, {RButton}
-  }
+  QuickKeys("RButton")
 Return
 
+
 ~i::
-	IfWinActive Block Diagram
-	{
-	  If LV_RBUTTON
-	  {
-		LV_RB_DONE := True
-		
-		Send, {RButton}
-		MouseGetPos X, Y
-		PixelGetColor Color, %X%, %Y%, RGB
-		
-		If (Color == "0xA0A0A0")
-		{
-			Send, {Down}{Right}{Enter}{Down}{Right}{Right}{Enter}{LButton Down}
-		}
-		Else
-		{
-			Send, cr{Right}{Down}{Down}{Enter}
-		}
-	  }
-	}
+  IfWinActive Block Diagram
+  {
+    If LV_RBUTTON
+    {
+      LV_RB_DONE := True
+
+      Send, {RButton}
+      MouseGetPos X, Y
+      PixelGetColor Color, %X%, %Y%, RGB
+
+      If (Color == "0xA0A0A0")
+      {
+        Send, {Down}{Right}{Enter}{Down}{Right}{Right}{Enter}{LButton Down}
+      }
+      Else
+      {
+        Send, cr{Right}{Down}{Down}{Enter}
+      }
+    }
+  }
 Return
 
 ~c::
@@ -388,18 +385,18 @@ Return
     If LV_RBUTTON
     {
       LV_RB_DONE := True
-	  LV_RBUTTON := False
-	  Send, {RButton}
-		MouseGetPos X, Y
-		PixelGetColor Color, %X%, %Y%, RGB
-		If (Color == "0xA0A0A0")
-		{
-			Send, {Down}{Right}{Enter}{Down}{Enter}{LButton Down}
-		}
-		Else
-		{
-			Send, cr{Right}{Down}{Enter}
-		}
+      LV_RBUTTON := False
+      Send, {RButton}
+      MouseGetPos X, Y
+      PixelGetColor Color, %X%, %Y%, RGB
+      If (Color == "0xA0A0A0")
+      {
+        Send, {Down}{Right}{Enter}{Down}{Enter}{LButton Down}
+      }
+      Else
+      {
+        Send, cr{Right}{Down}{Enter}
+      }
     }
   }
 Return
@@ -410,8 +407,8 @@ Return
     If LV_RBUTTON
     {
       LV_RB_DONE := True
-	  LV_RBUTTON := False
-	  Send, {RButton}{Down}{Right}{Enter}{Enter}{LButton Down}
+      LV_RBUTTON := False
+      Send, {RButton}{Down}{Right}{Enter}{Enter}{LButton Down}
     }
   }
 Return
@@ -422,8 +419,8 @@ Return
     If LV_RBUTTON
     {
       LV_RB_DONE := True
-	  LV_RBUTTON := False
-	  Send, {RButton}{Down}{Right}{Enter}{Down}{Down}{Enter}{LButton Down}
+      LV_RBUTTON := False
+      Send, {RButton}{Down}{Right}{Enter}{Down}{Down}{Enter}{LButton Down}
     }
   }
 Return
@@ -434,8 +431,8 @@ Return
     If LV_RBUTTON
     {
       LV_RB_DONE := True
-	  LV_RBUTTON := False
-	  Send, {RButton}{Down}{Right}{Enter}{Down}{Down}{Down}{Enter}{LButton Down}
+      LV_RBUTTON := False
+      Send, {RButton}{Down}{Right}{Enter}{Down}{Down}{Down}{Enter}{LButton Down}
     }
   }
 Return
@@ -446,8 +443,8 @@ Return
     If LV_RBUTTON
     {
       LV_RB_DONE := True
-	  LV_RBUTTON := False
-	  Send, {RButton}{Down}{Right}{Right}{Right}{Enter}{Enter}
+      LV_RBUTTON := False
+      Send, {RButton}{Down}{Right}{Right}{Right}{Enter}{Enter}
     }
   }
 Return
@@ -458,8 +455,8 @@ Return
     If LV_RBUTTON
     {
       LV_RB_DONE := True
-	  LV_RBUTTON := False
-	  Send, {RButton}{Down}{Right}{Down}{Down}{Enter}{Enter}
+      LV_RBUTTON := False
+      Send, {RButton}{Down}{Right}{Down}{Down}{Enter}{Enter}
     }
   }
 Return
@@ -470,8 +467,8 @@ Return
     If LV_RBUTTON
     {
       LV_RB_DONE := True
-	  LV_RBUTTON := False
-	  Send, {RButton}{Down}{Right}{Down}{Down}{Enter}{Right}{Enter}
+      LV_RBUTTON := False
+      Send, {RButton}{Down}{Right}{Down}{Down}{Enter}{Right}{Enter}
     }
   }
 Return
@@ -482,8 +479,8 @@ Return
     If LV_RBUTTON
     {
       LV_RB_DONE := True
-	  LV_RBUTTON := False
-	  Send, {RButton}{Down}{Right}{Down}{Enter}{Enter}
+      LV_RBUTTON := False
+      Send, {RButton}{Down}{Right}{Down}{Enter}{Enter}
     }
   }
 Return
@@ -494,8 +491,8 @@ Return
     If LV_RBUTTON
     {
       LV_RB_DONE := True
-	  LV_RBUTTON := False
-	  Send, {RButton}{Down}{Right}{Down}{Enter}{Right}{Enter}
+      LV_RBUTTON := False
+      Send, {RButton}{Down}{Right}{Down}{Enter}{Right}{Enter}
     }
   }
 Return
@@ -506,8 +503,8 @@ Return
     If LV_RBUTTON
     {
       LV_RB_DONE := True
-	  LV_RBUTTON := False
-	  Send, {RButton}{Down}{Right}{Enter}{Right}{Enter}
+      LV_RBUTTON := False
+      Send, {RButton}{Down}{Right}{Enter}{Right}{Enter}
     }
   }
 Return
@@ -518,8 +515,8 @@ Return
     If LV_RBUTTON
     {
       LV_RB_DONE := True
-	  LV_RBUTTON := False
-	  Send, {RButton}{Down}{Right}{Down}{Right}{Enter}{Enter}
+      LV_RBUTTON := False
+      Send, {RButton}{Down}{Right}{Down}{Right}{Enter}{Enter}
     }
   }
 Return
@@ -530,8 +527,8 @@ Return
     If LV_RBUTTON
     {
       LV_RB_DONE := True
-	  LV_RBUTTON := False
-	  Send, {RButton}{Down}{Right}{Down}{Down}{Right}{Enter}{Right}{Right}{Enter}
+      LV_RBUTTON := False
+      Send, {RButton}{Down}{Right}{Down}{Down}{Right}{Enter}{Right}{Right}{Enter}
     }
   }
 Return
@@ -541,20 +538,20 @@ Return
   {
     If LV_RBUTTON
     {
-		LV_RB_DONE := True
-		LV_RBUTTON := False
-		Send, {RButton}
+      LV_RB_DONE := True
+      LV_RBUTTON := False
+      Send, {RButton}
 
-		MouseGetPos X, Y
-		PixelGetColor Color, %X%, %Y%, RGB
-		If (Color == "0xA0A0A0")
-		{
-			Send, {Down}{Right}{Down}{Down}{Enter}{Down}{Down}{Enter}
-		}
-		Else
-		{
-			Send, {Up}{Enter}
-		}
+      MouseGetPos X, Y
+      PixelGetColor Color, %X%, %Y%, RGB
+      If (Color == "0xA0A0A0")
+      {
+        Send, {Down}{Right}{Down}{Down}{Enter}{Down}{Down}{Enter}
+      }
+      Else
+      {
+        Send, {Up}{Enter}
+      }
     }
   }
 Return
@@ -564,70 +561,45 @@ Return
   {
     If LV_RBUTTON
     {
-		LV_RB_DONE := True
-		LV_RBUTTON := False
-		Send, {RButton}
+      LV_RB_DONE := True
+      LV_RBUTTON := False
+      Send, {RButton}
 
-		MouseGetPos X, Y
-		PixelGetColor Color, %X%, %Y%, RGB
-		If (Color == "0xA0A0A0")
-		{
-			Send, {Down}{Right}{Down}{Right}{Enter}{Right}{Enter}
-		}
-		Else
-		{
-			Sleep, 50
-			Send, o{Enter}
-		}
+      MouseGetPos X, Y
+      PixelGetColor Color, %X%, %Y%, RGB
+      If (Color == "0xA0A0A0")
+      {
+        Send, {Down}{Right}{Down}{Right}{Enter}{Right}{Enter}
+      }
+      Else
+      {
+        Sleep, 50
+        Send, o{Enter}
+      }
     }
   }
 Return
+
 ~RButton Up::
   IfWinActive Block Diagram
   {
-	If LV_RB_DONE
-	{
-	  LV_RB_DONE := False
+    If LV_RB_DONE
+    {
+      LV_RB_DONE := False
       Send, {LButton Up}
-	}
-	Else
-	{
-	  Send, {RButton}
-	}
-	
-	LV_RBUTTON := False
+    }
+    Else
+    {
+      Send, {RButton}
+    }
+
+    LV_RBUTTON := False
   }
-Return
-
-^F1::
-  ControlGetText, tooltip2,,ahk_class tooltips_class32
-  MsgBox, %tooltip2%
-Return
-
-F2::
-WinGet, id, LIST,Block Diagram
-tt_text= Here_are the tooltips`n
-Loop, %id%
-{
-  this_id := id%A_Index%
-  ControlGetText, tooltip2,,ahk_id %this_id%
-
-  ifinstring, tooltip2, Here_are    ; prevents 'tooltip infinity' where a tooltip repeats itself and therefore grows in size towards infinity
-	continue
-
-  tt_text.= "******************`n" tooltip2 "`n******************`n"
-}
-Return
-
-MsgBox, %tt_text%
-
-~*RButton::
-;  RRocker()
 Return
 
 ; LButton {{{3
 ~*LButton::
-;  LRocker()
+  ;  LRocker()
 Return
 
 ; MButton {{{3
