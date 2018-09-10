@@ -140,7 +140,7 @@ LayoutList.Insert("lv_error", {path: "Error list", layout: Layout})
 
 ; 3_1 {{{3
 Layout := DefaultLayout["3_1"]
-LayoutList.Insert("chrome", {path: "ahk_exe chrome.exe", run: "chrome.exe", layout: Layout})
+LayoutList.Insert("chrome", {path: "ahk_exe qutebrowser.exe", run: "qutebrowser.exe", layout: Layout})
 LayoutList.Insert("paint", {path: "ahk_exe mspaint.exe", run: "mspaint.exe", layout: Layout})
 LayoutList.Insert("putty", {path: "ahk_class PuTTY", run: "C:\Program Files (x86)\PuTTY\putty.exe", layout: Layout})
 LayoutList.Insert("excel", {path: "ahk_exe excel.exe", run: "excel.exe", layout: Layout})

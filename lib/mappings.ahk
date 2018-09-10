@@ -364,19 +364,12 @@ Return
 	  If LV_RBUTTON
 	  {
 		LV_RB_DONE := True
+	  LV_RBUTTON := False
 		
 		Send, {RButton}
 		MouseGetPos X, Y
 		PixelGetColor Color, %X%, %Y%, RGB
-		
-		If (Color == "0xA0A0A0")
-		{
 			Send, {Down}{Right}{Enter}{Down}{Right}{Right}{Enter}{LButton Down}
-		}
-		Else
-		{
-			Send, cr{Right}{Down}{Down}{Enter}
-		}
 	  }
 	}
 Return
@@ -391,14 +384,8 @@ Return
 	  Send, {RButton}
 		MouseGetPos X, Y
 		PixelGetColor Color, %X%, %Y%, RGB
-		If (Color == "0xA0A0A0")
-		{
-			Send, {Down}{Right}{Enter}{Down}{Enter}{LButton Down}
-		}
-		Else
-		{
-			Send, cr{Right}{Down}{Enter}
-		}
+		
+		Send, {Down}{Right}{Enter}{Down}{Enter}{LButton Down}
     }
   }
 Return
