@@ -2,6 +2,63 @@
 ; Description: Manage all shortcut mappings
 ; Author: Travis Gall
 
+/*
+#IfWinActive, Block Diagram
+  $h::
+    Send, {WheelLeft}
+  Return
+  $+h::
+    Send, +{WheelLeft}
+  Return
+  $!h::
+    MouseGetPos x, y
+    Send, {Ctrl Down}{Shift Down}{LButton Down}
+	MouseMove, x+5, y
+	Send, {Ctrl Up}{Shift Up}{LButton Up}
+	MouseMove, x, y
+  Return
+  $j::
+    Send, {WheelDown}
+  Return
+  $+j::
+    Send, +{WheelDown}
+  Return
+  $!j::
+    MouseGetPos x, y
+    Send, {Ctrl Down}{Shift Down}{LButton Down}
+	MouseMove, x, y-5
+	Send, {Ctrl Up}{Shift Up}{LButton Up}
+	MouseMove, x, y
+  Return
+  $k::
+    Send, {WheelUp}
+  Return
+  $+k::
+    Send, +{WheelUp}
+  Return
+  $!k::
+    MouseGetPos x, y
+    Send, {Ctrl Down}{Shift Down}{LButton Down}
+	MouseMove, x, y+5
+	Send, {Ctrl Up}{Shift Up}{LButton Up}
+	MouseMove, x, y
+  Return
+  $l::
+    Send, {WheelRight}
+  Return
+  $+l::
+    Send, +{WheelRight}
+  Return
+  $!l::
+    MouseGetPos x, y
+    Send, {Ctrl Down}{Shift Down}{LButton Down}
+	MouseMove, x-5, y
+	Send, {Ctrl Up}{Shift Up}{LButton Up}
+	MouseMove, x, y
+  Return
+#IFWinActive
+*/
+
 ; Arrows {{{2
 ; Left {{{3
 ; Left align
@@ -328,6 +385,13 @@ Return
 #w::
 ;  WinActivateMove(LayoutList["YouTube"])
   Run, "C:\Program Files\AutoHotkey\AU3_Spy.exe"
+Return
+
+$^w::
+  IfWinActive, Block Diagram
+    WinMove, 0, 0
+  Sleep, 500
+  Send, ^w
 Return
 
 ; Y {{{3
