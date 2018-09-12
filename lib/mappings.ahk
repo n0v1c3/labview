@@ -242,6 +242,13 @@ Return
   ExplorerSwap(LayoutList["explorer_1"], LayoutList["explorer_2"])
 Return
 
+#IfWinActive, Block Diagram
+$^w::
+  Send, ^e
+  Send, ^w
+Return
+#IfWinActive
+
 #!e::
   ExplorerSwap(LayoutList["explorer_2"], LayoutList["explorer_1"])
 Return
@@ -632,6 +639,24 @@ Return
     }
   }
 Return
+
+~e::
+  IfWinActive ahk_class LVDChild
+  {
+    If LV_RBUTTON
+    {
+  WinActivateMove(LayoutList["lv_block"])
+  WinActivateMove(LayoutList["lv_navigation"])
+  WinActivateMove(LayoutList["lv_probe"])
+  WinActivateMove(LayoutList["lv_bookmark"])
+  WinActivateMove(LayoutList["lv_error"])
+  WinActivateMove(LayoutList["lv_hierarchy"])
+		LV_RB_DONE := True
+		LV_RBUTTON := False
+	}
+  }
+  Return
+
 ~RButton Up::
   IfWinActive Block Diagram
   {
@@ -692,3 +717,57 @@ MButton::
     BD_CleanWires()
   }
 Return
+
+; LabVIEW {{{1
+; Block Diagram {{{2
+#IfWinActive, Block Diagram
+!k::
+Send, {LButton Up}
+Send, {Up}
+Return
+!h::
+Send, {LButton Up}
+Send, {Left}
+Return
+!j::
+Send, {LButton Up}
+Send, {Down}
+Return
+!l::
+Send, {LButton Up}
+Send, {Right}
+Return
+!Space::
+Send, {LButton}
+Return
+#IfWinActive
+
+; Explorer {{{1
+#IfWinActive ahk_class CabinetWClass
+; Toggle navigation tree
+!t::
+  Send, {Tab}{Tab}{Tab}{Tab}{Enter}ln+{Tab}+{Tab}+{Tab}+{Tab}
+Return
+#IfWinActive
+
+; Outlook {{{1
+#IfWinActive ahk_class rctrl_renwnd32
+k::
+Send, {Up}
+Return
+h::
+Send, {Left}
+Return
+j::
+Send, {Down}
+Return
+l::
+Send, {Right}
+Return
+d::
+Send, ^q^d
+Return
+q::
+Send, ^q
+Return
+#IfWinActive
