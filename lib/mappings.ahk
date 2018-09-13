@@ -82,9 +82,9 @@ Return
 
 ; Keyboard {{{2
 ; 'Win' Keys {{{3
-LWin::
-  QuickKeys("LWin")
-Return
+; LWin::
+  ; QuickKeys("LWin")
+; Return
 
 ; 'F' Keys {{{3
 ; F1 {{{4
