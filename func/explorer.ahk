@@ -31,7 +31,8 @@ WinActivateMove(Application)
   ; Only target the id when present
   If (Application.id <> "")
   {
-    WinActivate, % Application.id
+	  If (Application.path != "Block Diagram")
+		WinActivate, % Application.id
     WinRestore, A
     If (Application.id == "ahk_id " . WinExist("A"))
     {
@@ -49,7 +50,8 @@ WinActivateMove(Application)
       Running := True
       Loop %WinList%
       {
-        WinActivate, % "ahk_id " . WinList%A_Index%
+		If (Application.path != "Block Diagram")
+		  WinActivate, % "ahk_id " . WinList%A_Index%
         WinRestore, A
         WinMove, % "ahk_id " . WinList%A_Index%,, Application.layout.X, Application.layout.Y, Application.layout.W, Application.layout.H
       }

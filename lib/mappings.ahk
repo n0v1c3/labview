@@ -3,6 +3,7 @@
 ; Description: Manage all shortcut mappings
 ; Author: Travis Gall
 
+
 ; Arrows {{{2
 ; Left {{{3
 ; Left align
@@ -83,7 +84,7 @@ Return
 ; Keyboard {{{2
 ; 'Win' Keys {{{3
 ; LWin::
-  ; QuickKeys("LWin")
+; QuickKeys("LWin")
 ; Return
 
 ; 'F' Keys {{{3
@@ -190,6 +191,13 @@ Return
 #^e::
   ExplorerSwap(LayoutList["explorer_1"], LayoutList["explorer_2"])
 Return
+
+#IfWinActive, Block Diagram
+$^w::
+  Send, ^e
+  Send, ^w
+Return
+#IfWinActive
 
 #!e::
   ExplorerSwap(LayoutList["explorer_2"], LayoutList["explorer_1"])
@@ -336,6 +344,13 @@ Return
   Run, "C:\Program Files\AutoHotkey\AU3_Spy.exe"
 Return
 
+$^w::
+  IfWinActive, Block Diagram
+    WinMove, 0, 0
+  Sleep, 500
+  Send, ^w
+Return
+
 ; Y {{{3
 ; YouTube
 #y::
@@ -362,19 +377,12 @@ Return
     If LV_RBUTTON
     {
       LV_RB_DONE := True
+      LV_RBUTTON := False
 
       Send, {RButton}
       MouseGetPos X, Y
       PixelGetColor Color, %X%, %Y%, RGB
-
-      If (Color == "0xA0A0A0")
-      {
-        Send, {Down}{Right}{Enter}{Down}{Right}{Right}{Enter}{LButton Down}
-      }
-      Else
-      {
-        Send, cr{Right}{Down}{Down}{Enter}
-      }
+      Send, {Down}{Right}{Enter}{Down}{Right}{Right}{Enter}{LButton Down}
     }
   }
 Return
@@ -389,14 +397,7 @@ Return
       Send, {RButton}
       MouseGetPos X, Y
       PixelGetColor Color, %X%, %Y%, RGB
-      If (Color == "0xA0A0A0")
-      {
-        Send, {Down}{Right}{Enter}{Down}{Enter}{LButton Down}
-      }
-      Else
-      {
-        Send, cr{Right}{Down}{Enter}
-      }
+      Send, {Down}{Right}{Enter}{Down}{Enter}{LButton Down}
     }
   }
 Return
@@ -580,6 +581,23 @@ Return
   }
 Return
 
+~e::
+  IfWinActive ahk_class LVDChild
+  {
+    If LV_RBUTTON
+    {
+      WinActivateMove(LayoutList["lv_block"])
+      WinActivateMove(LayoutList["lv_navigation"])
+      WinActivateMove(LayoutList["lv_probe"])
+      WinActivateMove(LayoutList["lv_bookmark"])
+      WinActivateMove(LayoutList["lv_error"])
+      WinActivateMove(LayoutList["lv_hierarchy"])
+      LV_RB_DONE := True
+      LV_RBUTTON := False
+    }
+  }
+Return
+
 ~RButton Up::
   IfWinActive Block Diagram
   {
@@ -614,3 +632,183 @@ MButton::
     BD_CleanWires()
   }
 Return
+
+; LabVIEW {{{1
+; Block Diagram {{{2
+DiagramMove(xOff,yOff)
+{
+  MouseGetPos x, y
+  MouseMove, 1630, 570
+  Send, {LButton}
+  MouseMove, x, y
+
+  Send, {LButton Down}
+  MouseMove, x+xOff, y+yOff
+  Send, {LButton Up}
+
+  MouseMove, 1630, 530
+  Send, {LButton}
+
+  MouseMove, x, y
+
+}
+#IfWinActive, Block Diagram
+h::
+  MouseGetPos, x, y
+  MouseMove, x-5, y
+Return
+
+j::
+  MouseGetPos, x, y
+  MouseMove, x, y+5
+Return
+
+k::
+  MouseGetPos, x, y
+  MouseMove, x, y-5
+Return
+
+l::
+  MouseGetPos, x, y
+  MouseMove, x+5, y
+Return
+
+!h::
+  MouseGetPos, x, y
+  MouseMove, x-25, y
+Return
+
+!j::
+  MouseGetPos, x, y
+  MouseMove, x, y+25
+Return
+
+!k::
+  MouseGetPos, x, y
+  MouseMove, x, y-25
+Return
+
+!l::
+  MouseGetPos, x, y
+  MouseMove, x+25, y
+Return
+
+Space::
+  Send, {LButton}
+Return
+
+!Space::
+  Send, {LButton Down}
+Return
+
+/*
+!k::
+  Send, {LButton Up}
+  Send, {Up}
+Return
+
+!h::
+  Send, {LButton Up}
+  Send, {Left}
+Return
+
+!j::
+  Send, {LButton Up}
+  Send, {Down}
+Return
+
+!l::
+  Send, {LButton Up}
+  Send, {Right}
+Return
+
+!Space::
+  Send, {LButton}
+Return
+#IfWinActive
+
+#IfWinActive, Block Diagram
+$h::
+  Send, {WheelLeft}
+Return
+$+h::
+  Send, +{WheelLeft}
+Return
+$!h::
+  MouseGetPos x, y
+  Send, {Ctrl Down}{Shift Down}{LButton Down}
+  MouseMove, x+5, y
+  Send, {Ctrl Up}{Shift Up}{LButton Up}
+  MouseMove, x, y
+Return
+$j::
+  Send, {WheelDown}
+Return
+$+j::
+  Send, +{WheelDown}
+Return
+$!j::
+  MouseGetPos x, y
+  Send, {Ctrl Down}{Shift Down}{LButton Down}
+  MouseMove, x, y-5
+  Send, {Ctrl Up}{Shift Up}{LButton Up}
+  MouseMove, x, y
+Return
+$k::
+  Send, {WheelUp}
+Return
+$+k::
+  Send, +{WheelUp}
+Return
+$!k::
+  MouseGetPos x, y
+  Send, {Ctrl Down}{Shift Down}{LButton Down}
+  MouseMove, x, y+5
+  Send, {Ctrl Up}{Shift Up}{LButton Up}
+  MouseMove, x, y
+Return
+$l::
+  Send, {WheelRight}
+Return
+$+l::
+  Send, +{WheelRight}
+Return
+$!l::
+  MouseGetPos x, y
+  Send, {Ctrl Down}{Shift Down}{LButton Down}
+  MouseMove, x-5, y
+  Send, {Ctrl Up}{Shift Up}{LButton Up}
+  MouseMove, x, y
+Return
+*/
+#IFWinActive
+
+; Explorer {{{1
+#IfWinActive ahk_class CabinetWClass
+; Toggle navigation tree
+!t::
+  Send, {Tab}{Tab}{Tab}{Tab}{Enter}ln+{Tab}+{Tab}+{Tab}+{Tab}
+Return
+#IfWinActive
+
+; Outlook {{{1
+#IfWinActive ahk_class rctrl_renwnd32
+k::
+  Send, {Up}
+Return
+h::
+  Send, {Left}
+Return
+j::
+  Send, {Down}
+Return
+l::
+  Send, {Right}
+Return
+d::
+  Send, ^q^d
+Return
+q::
+  Send, ^q
+Return
+#IfWinActive
