@@ -160,6 +160,14 @@ Return
   Send, !{Esc}
 Return
 
+; X {{{3
+; Chrome
+#x::
+  WinActivateMove(LayoutList["slack"])
+  ; WinActivateMove(LayoutList["youtube"])
+  ; Send, !{Esc}
+Return
+
 ; D {{{3
 ; Perforce "Depot"
 #d::
@@ -193,10 +201,6 @@ Return
 Return
 
 #IfWinActive, Block Diagram
-$^w::
-  Send, ^e
-  Send, ^w
-Return
 #IfWinActive
 
 #!e::
@@ -724,6 +728,13 @@ Return
 
 !Space::
   Send, {LButton}
+Return
+$^w::
+  WinGetPos, X, Y, , , A
+  WinMove, 0, 0
+  Sleep, 500
+  Send, ^e
+  Send, ^w
 Return
 #IfWinActive
 
