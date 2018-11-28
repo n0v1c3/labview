@@ -54,14 +54,22 @@ QuickKeys(keywatch)
   StringReplace, keystring, keystring, %A_Space%,,A
   StringReplace, keystring, keystring, %A_Tab%,,A
 
-  If (keystring == "see")
-    Send, {RButton}{Down}{Right}{Enter}
-  Else If (keystring == "good")
-    Send, {RButton}{Down}{Right}{Down}{Enter}
+  ; Mappings {{{
+  If (keystring == "4")
+    Send, {RButton}{Down}{Right}{Enter}{Enter}{LButton Down}
+  If (keystring == "w")
+    Send, {RButton}{Down}{Right}{Enter}{Right}{Enter}{LButton Down}
+	
+  Else If (keystring == "add")
+    Send, {RButton}{Down}{Right}{Down}{Enter}{Enter}
+  Else If (keystring == "sub")
+    Send, {RButton}{Down}{Right}{Down}{Enter}{Right}{Enter}
+
+  ; Normal Operation {{{
   Else
     Send, {%keywatch%}
 
-  ; Help with debug
+  ; Debugging {{{
   If Debug
   {
     ToolTip, % (A_TickCount - T) . " | " . KeyString
