@@ -232,12 +232,12 @@ $^l::
   IfWinActive, Configuration
   {
     Sleep, 250
-    Send, AMI
+    Send, USERNAME
     Sleep, 100
     Send, {Tab}
     Sleep, 100
     ; TODO-TJG [180804] - Put this in local information and handle versions
-    Send, AdvMeas7612
+    Send, PASSWORD
     Sleep, 100
     Send, {Enter}
   }
