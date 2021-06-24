@@ -39,3 +39,7 @@ LabVIEW libraries and tools
 - [AutoHotKey](https://autohotkey.com/docs/AutoHotkey.htm)
 - [Git](https://git-scm.com/)
 - [LabVIEW](http://www.ni.com/en-ca/shop/labview.html)
+
+## **Wow!** Thanks to the people who found this!
+- [@mstroehle](https://github.com/mstroehle)
+- [@mLichtenheld](https://github.com/mLichtenheld)
